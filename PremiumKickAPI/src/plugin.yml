@@ -1,0 +1,6 @@
+name: PremiumKick
+version: 1.0
+author: Leitung
+main: de.anweisung.premiumkickapi.Main
+commands:
+  setmaxplayers:

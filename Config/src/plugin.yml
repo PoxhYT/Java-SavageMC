@@ -1,0 +1,8 @@
+name: Config
+version: 1.0
+main: de.sw.main.Main
+commands:
+    setup:
+    admin:
+    start:
+    setsize:

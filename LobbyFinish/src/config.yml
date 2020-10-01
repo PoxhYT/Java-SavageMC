@@ -1,0 +1,7 @@
+#Hier kannst die Map-Größe ändern. Es werden folgende Größen unterstützt: 8x1, 8x2
+
+Size: 8x2
+
+#Hier kannst du den Namen der Map eintragen.
+
+MapName: 'MapName'

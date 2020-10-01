@@ -1,0 +1,9 @@
+#Nachrichten im Chat ändern
+Prefix: '&8• &eCoinSystem &8⎟ &r&7 '
+Command: '&e/tickets set/remove/add name amount'
+Offline: '&cDer Spieler %Player% ist &c Offline'
+CommandSet: '&e Du hast die Tickets von&c %Player% &e auf&c %Tickets% &e gesetzt'
+CommandRemove: '&e Du hast&c %Player% &a %Tickets% &e Tickets abgezogen sein Aktueller Ticket stand ist&c'
+CommandAdd: '&e Du hast &c %Player% &a %Tickets% &egeaddet sein Aktueller Ticket stand ist&c'
+KeineRechte: '&c Du hast keine Rechte!'
+PlayerTickets: '&r&7Dein aktueller &r&eTicketstand &r&7lautet: &r&e%Tickets% &r&eTickets&7.'

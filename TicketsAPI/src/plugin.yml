@@ -1,0 +1,6 @@
+name: TicketAPI
+version: 1.0
+author: PoxhYT
+main: de.ticketapi.main.Main
+commands:
+  tickets:
