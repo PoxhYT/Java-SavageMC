@@ -1,16 +1,12 @@
 package de.sw.manager;
 
+import java.util.List;
+
 public class TeamManager {
 
-    private int playersInTeam;
-    private int teams;
-    private String teamName;
+    private List<Team> teams;
 
-    public TeamManager(int teams) {
-        this.teams = 
+    public TeamManager(List<Team> teams) {
+        this.teams = teams;
     }
-
-
-
-
 }
