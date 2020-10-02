@@ -4,3 +4,4 @@ author: PoxhYT
 main: de.sw.main.Main
 commands:
     setup:
+    leave:

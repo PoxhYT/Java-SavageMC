@@ -29,7 +29,6 @@ public class PlayerJoinListener implements Listener {
         Main.inventoryManager.setLobbyInventory(player);
         Integer test = yamlConfiguration.getInt("maxPlayers");
         sbManager.setLobbyBoard(player);
-        Main.scoreCD();
 
     }
 }

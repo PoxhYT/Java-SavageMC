@@ -1,6 +1,7 @@
 package de.sw.main;
 
 import de.anweisung.premiumkickapi.PremiumKick;
+import de.sw.commands.Command_leave;
 import de.sw.commands.Command_setup;
 import de.sw.kits.Kit;
 import de.sw.listener.PlayerInteractListener;
@@ -11,6 +12,7 @@ import de.sw.manager.KitManager;
 import de.sw.manager.SBManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -45,8 +47,12 @@ public class Main extends JavaPlugin {
     public SBManager sbManager = new SBManager();
 
     public void onEnable() {
+<<<<<<< Updated upstream
         KitManager kitManager = new KitManager("§eStandard", new String[] {"§eYARRAK"}, Material.BAKED_POTATO, 2);
         System.out.println(kitManager);
+=======
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+>>>>>>> Stashed changes
         registerEvents();
         loadConfig();
         registerCommands();
@@ -57,6 +63,7 @@ public class Main extends JavaPlugin {
 
     public void registerCommands() {
         new Command_setup("setup");
+        getCommand("leave").setExecutor((CommandExecutor)new Command_leave(this));
     }
 
     public void registerEvents() {
@@ -84,14 +91,6 @@ public class Main extends JavaPlugin {
         }catch (IOException exception) {
             exception.printStackTrace();
         }
-    }
-
-    public static void scoreCD() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), () -> {
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                SBManager.updateScoreboard(all);
-            }
-        }, 0, 1);
     }
 
     public static Main getInstance() {

@@ -1,0 +1,7 @@
+name: BungeeCord
+version: 1.0
+author: PoxhYT
+main: de.bungee.main.Main
+commands:
+    leave:
+    ping:
