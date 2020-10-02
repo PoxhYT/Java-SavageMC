@@ -5,11 +5,11 @@ import org.bukkit.Material;
 public class KitManager {
 
     private String kitName;
-    private String kitDescription;
+    private String[] kitDescription;
     private Material kitIcon;
     private int kitPrice;
 
-    public KitManager(String kitName, String kitDescription, Material kitIcon, int kitPrice) {
+    public KitManager(String kitName, String[] kitDescription, Material kitIcon, int kitPrice) {
         this.kitName = kitName;
         this.kitDescription = kitDescription;
         this.kitIcon = kitIcon;
@@ -24,11 +24,11 @@ public class KitManager {
         this.kitName = kitName;
     }
 
-    public String getKitDescription() {
+    public String[] getKitDescription() {
         return kitDescription;
     }
 
-    public void setKitDescription(String kitDescription) {
+    public void setKitDescription(String[] kitDescription) {
         this.kitDescription = kitDescription;
     }
 
