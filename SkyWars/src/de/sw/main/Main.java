@@ -45,7 +45,7 @@ public class Main extends JavaPlugin {
     public SBManager sbManager = new SBManager();
 
     public void onEnable() {
-        KitManager kitManager = new KitManager("§eStandard", "§eYARRAK", Material.BAKED_POTATO, 2);
+        KitManager kitManager = new KitManager("§eStandard", new String[] {"§eYARRAK"}, Material.BAKED_POTATO, 2);
         System.out.println(kitManager);
         registerEvents();
         loadConfig();

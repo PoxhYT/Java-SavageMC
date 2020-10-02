@@ -17,7 +17,7 @@ public class Main extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
-        getCommand("tickets").setExecutor((CommandExecutor)new Command_tickets());
+        getCommand("tickets").setExecutor(new Command_tickets());
         MySQL.setStandardMySQL();
         MySQL.readMySQL();
         MySQL.connect();

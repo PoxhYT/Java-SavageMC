@@ -19,7 +19,6 @@ public class Main extends JavaPlugin{
 			try {
 				cfg.save(file);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

@@ -93,15 +93,15 @@ public class Main extends JavaPlugin {
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new Stats(), this);
-        pluginManager.registerEvents((Listener)new PlayerJoinListener(), (Plugin)this);
-        pluginManager.registerEvents((Listener)new ServerListPingListener(), (Plugin)this);
-        pluginManager.registerEvents((Listener)new BlockBreakListener(), (Plugin)this);
-        pluginManager.registerEvents((Listener)new PlayerQuitListener(), (Plugin)this);
-        pluginManager.registerEvents((Listener)new PlayerInteractListener(), (Plugin)this);
-        pluginManager.registerEvents((Listener)new InventoryClickListener(), (Plugin)this);
-        pluginManager.registerEvents((Listener)new BlockPlaceListener(), (Plugin)this);
-        pluginManager.registerEvents((Listener)new EntityDamageByEntityListener(), (Plugin)this);
-        pluginManager.registerEvents((Listener)new PlayerLoginListener(), (Plugin)this);
+        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new ServerListPingListener(), this);
+        pluginManager.registerEvents(new BlockBreakListener(), this);
+        pluginManager.registerEvents(new PlayerQuitListener(), this);
+        pluginManager.registerEvents(new PlayerInteractListener(), this);
+        pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new BlockPlaceListener(), this);
+        pluginManager.registerEvents(new EntityDamageByEntityListener(), this);
+        pluginManager.registerEvents(new PlayerLoginListener(), this);
     }
 
     private void registerCommands() {
