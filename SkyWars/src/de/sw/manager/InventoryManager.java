@@ -29,15 +29,15 @@ public class InventoryManager {
         Inventory inventory = Bukkit.createInventory(null, 9, "§8• §eTeams");
         TeamManager[] teams = getTeams();
         for (int i = 0; i < teams.length; i++)
-            inventory.setItem(i, new ItemBuilderAPI(teams[i].getMaterial()).setDisplayName(teams[i].getTeamName()).setLore("§8- §e" + teams[i].getPlayersInTeam()).build());
+            inventory.setItem(i, teams[i].getIcon());
         player.openInventory(inventory);
     }
 
     public static TeamManager[] getTeams() {
         TeamManager[] teamManagers = new TeamManager[2];
 
-        teamManagers[0] = (new TeamManager("§7Team1", Material.WOOL, "§eTeam1"));
-        teamManagers[1] = (new TeamManager("§7Team2", Material.WOOL, "§eTeam2"));
+        teamManagers[0] = (new TeamManager("Team1", "§e", (byte)1));
+        teamManagers[1] = (new TeamManager("Team2", "§e", (byte)1));
 
         return teamManagers;
     }

@@ -14,11 +14,13 @@ public class TeamManager {
     private byte colorData;
     private int maxPlayer;
 
-    public TeamManager(String name, String prefix, byte colorData, int maxPlayer) {
+    public TeamManager(String name, String prefix, byte colorData) {
         this.name = name;
         this.prefix = prefix;
         this.colorData = colorData;
-        this.maxPlayer = maxPlayer;
+        this.players = new ArrayList<>();
+        this.maxPlayer = 4;
+
     }
 
     public String getName() {
@@ -33,12 +35,27 @@ public class TeamManager {
         return players;
     }
 
-    public boolean isInTeam
+    public byte getColorData() {
+        return colorData;
+    }
+
+    public int getMaxPlayer() {
+        return maxPlayer;
+    }
+
+    public boolean isInTeam(Player player) {
+        if(players.contains(player.getName())) {
+            return true;
+        }
+        return false;
+    }
 
     public ItemStack getIcon() {
+        Material type;
         ItemStack itemStack = new ItemStack(Material.WOOL, 1, colorData);
-        ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(prefix + name);
-        meta.setLore(players);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(prefix + name);
+        itemMeta.setLore(players);
+        return itemStack;
     }
 }
