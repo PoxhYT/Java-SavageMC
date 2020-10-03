@@ -17,8 +17,6 @@ public class InventoryManager {
     static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
 
     public void setLobbyInventory(Player player) {
-        KitManager kitManager = new KitManager("§eStandard", new String[] {"§eYARRAK"}, Material.BAKED_POTATO, 2);
-        player.getInventory().setItem(2, new ItemBuilderAPI(kitManager.getKitIcon()).setDisplayName(kitManager.getKitName() + kitManager.getKitPrice()).setLore(kitManager.getKitDescription()).build());
         player.getInventory().setItem(0, new ItemBuilderAPI(Material.BED).setDisplayName("§8» §bTeams").build());
         player.getInventory().setItem(3, new ItemBuilderAPI(Material.CHEST).setDisplayName("§8» §eKits").build());
         player.getInventory().setItem(5, new ItemBuilderAPI(Material.NETHER_STAR).setDisplayName("§8» §dAchievements").build());
@@ -26,15 +24,21 @@ public class InventoryManager {
     }
 
     public void setTeamInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 9, "§8» §bTeams");
-        String gameSize = yamlConfiguration.getString("gameSize");
-        if(gameSize.equals("8x1")) {
-            for (int i = 0; i < 8; i++)
-            {
-                inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§7Team #§e" + i).build());
-            }
-            player.openInventory(inventory);
-        }
+
+        Inventory inventory = Bukkit.createInventory(null, 9, "§8• §eTeams");
+        TeamManager[] teams = getTeams();
+        for (int i = 0; i < teams.length; i++)
+            inventory.setItem(i, new ItemBuilderAPI(teams[i].getMaterial()).setDisplayName(teams[i].getTeamName()).build());
+        player.openInventory(inventory);
+    }
+
+    private TeamManager[] getTeams() {
+        List<TeamManager> teamManagers = new ArrayList<>();
+
+        teamManagers.add(new TeamManager("§7Team1", Material.WOOL, "§eTeam1"));
+        teamManagers.add(new TeamManager("§7Team2", Material.WOOL, "§eTeam2"));
+
+        return (TeamManager[]) teamManagers.toArray();
     }
 
     public void openKitInventory(Player player) {

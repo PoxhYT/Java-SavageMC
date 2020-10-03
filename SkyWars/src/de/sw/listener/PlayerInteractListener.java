@@ -15,21 +15,17 @@ public class PlayerInteractListener implements Listener {
     private File file = new File("plugins/SkyWars", "Config.yml");
 
     private YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+    String gameSize = yamlConfiguration.getString("gameSize");
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
         try {
-            Player player = event.getPlayer();
-            String gameSize = yamlConfiguration.getString("gameSize");
-            if (event.getItem().getType() == Material.BED) {
+            if(event.getItem().getType() == Material.BED) {
                 Main.inventoryManager.openKitInventory(player);
             }
-
-            if(event.getItem().getType() == Material.MUSHROOM_SOUP) {
-                player.setHealth(3);
-            }
-        }catch (NullPointerException exception) {
-            exception.printStackTrace();
+        }catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 }

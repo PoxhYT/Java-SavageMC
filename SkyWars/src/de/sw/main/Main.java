@@ -3,13 +3,13 @@ package de.sw.main;
 import de.anweisung.premiumkickapi.PremiumKick;
 import de.sw.commands.Command_leave;
 import de.sw.commands.Command_setup;
-import de.sw.kits.Kit;
 import de.sw.listener.PlayerInteractListener;
 import de.sw.listener.PlayerInventoryClickListener;
 import de.sw.listener.PlayerJoinListener;
 import de.sw.manager.InventoryManager;
 import de.sw.manager.KitManager;
 import de.sw.manager.SBManager;
+import de.sw.manager.TeamManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
@@ -36,6 +36,8 @@ public class Main extends JavaPlugin {
 
     public KitManager kitManager;
 
+    public TeamManager teamManager;
+
     public int playersInTeam;
 
     public int maxPlayers = yamlConfiguration.getInt("maxPlayers");
@@ -47,12 +49,9 @@ public class Main extends JavaPlugin {
     public SBManager sbManager = new SBManager();
 
     public void onEnable() {
-<<<<<<< Updated upstream
         KitManager kitManager = new KitManager("§eStandard", new String[] {"§eYARRAK"}, Material.BAKED_POTATO, 2);
         System.out.println(kitManager);
-=======
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
->>>>>>> Stashed changes
         registerEvents();
         loadConfig();
         registerCommands();
