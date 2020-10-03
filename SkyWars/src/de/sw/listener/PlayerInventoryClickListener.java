@@ -12,7 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class PlayerInventoryClickListener implements Listener {
 
-    public TeamManager[] teamManagers;
+
 
     // public TeamManager teamManager1 = new TeamManager("§eTeam1", Material.WOOL, "§eTeam1");
 
@@ -20,13 +20,11 @@ public class PlayerInventoryClickListener implements Listener {
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         try {
-            switch (event.getCurrentItem().getItemMeta().getDisplayName()) {
-
-            for (int i = 0; i < teamManagers.length; i++) {
-                if (event.getCurrentItem().getType() == teamManagers[i].material)
+            for (int i = 0; i < t.length; i++) {
+                if (event.getCurrentItem().getType() == Material.WOOL)
                 {
                     System.out.println("Found team");
-                    System.out.println(teamManagers[i].teamName);
+                    System.out.println(teamManagers[i].getName());
                 }
             }
 
