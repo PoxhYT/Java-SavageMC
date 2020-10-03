@@ -9,11 +9,11 @@ import java.util.List;
 
 public class TeamManager {
 
-    private List<Team> teams;
-    private String teamName;
-    private List<Player> playersInTeam;
-    private Material material;
-    private String playerPrefix;
+    public List<Team> teams;
+    public String teamName;
+    public List<Player> playersInTeam;
+    public Material material;
+    public String playerPrefix;
 
     public TeamManager(String teamName, Material material, String playerPrefix) {
         this.teamName = teamName;

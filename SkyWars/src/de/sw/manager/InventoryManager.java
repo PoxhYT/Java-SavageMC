@@ -29,39 +29,36 @@ public class InventoryManager {
         Inventory inventory = Bukkit.createInventory(null, 9, "§8• §eTeams");
         TeamManager[] teams = getTeams();
         for (int i = 0; i < teams.length; i++)
-            inventory.setItem(i, new ItemBuilderAPI(teams[i].getMaterial()).setDisplayName(teams[i].getTeamName()).build());
+            inventory.setItem(i, new ItemBuilderAPI(teams[i].getMaterial()).setDisplayName(teams[i].getTeamName()).setLore("§8- §e" + teams[i].getPlayersInTeam()).build());
         player.openInventory(inventory);
     }
 
-    private TeamManager[] getTeams() {
-        List<TeamManager> teamManagers = new ArrayList<>();
+    public static TeamManager[] getTeams() {
+        TeamManager[] teamManagers = new TeamManager[2];
 
-        teamManagers.add(new TeamManager("§7Team1", Material.WOOL, "§eTeam1"));
-        teamManagers.add(new TeamManager("§7Team2", Material.WOOL, "§eTeam2"));
+        teamManagers[0] = (new TeamManager("§7Team1", Material.WOOL, "§eTeam1"));
+        teamManagers[1] = (new TeamManager("§7Team2", Material.WOOL, "§eTeam2"));
 
-        return (TeamManager[]) teamManagers.toArray();
+        return teamManagers;
     }
 
     public void openKitInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 36, "§eKits");
 
-        List<KitManager> kits = getKits();
+        KitManager[] kits = getKits();
 
-        for (int i = 0; i < kits.size(); i++)
+        for (int i = 0; i < kits.length; i++)
         {
-            inventory.setItem(i, new ItemBuilderAPI(kits.get(i).getKitIcon()).setDisplayName(kits.get(i).getKitName()).setLore(kits.get(i).getKitDescription()).build());
+            inventory.setItem(i, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
         }
 
         player.openInventory(inventory);
     }
 
-<<<<<<< HEAD
-    private List<KitManager> getKits() {
-        List<KitManager> arr = new ArrayList<>();
-=======
+
     private KitManager[] getKits() {
+
         KitManager[] arr = new KitManager[3];
->>>>>>> f0f31b76e97adfe8ed84798d2a521201b12fc373
 
          arr[0] = (new KitManager("Standard §8[§aGekauft§8]",
                  new String[]
@@ -86,10 +83,7 @@ public class InventoryManager {
                         "§8✘ §71 Regenerationstrank für 1:30 Minuten"},
                 Material.GHAST_TEAR, 5000)
         );
-<<<<<<< HEAD
-=======
 
->>>>>>> f0f31b76e97adfe8ed84798d2a521201b12fc373
         return arr;
     }
 }

@@ -36,7 +36,7 @@ public class Main extends JavaPlugin {
 
     public KitManager kitManager;
 
-    public TeamManager teamManager;
+    public static TeamManager teamManager;
 
     public int playersInTeam;
 

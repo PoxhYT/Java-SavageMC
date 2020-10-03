@@ -22,7 +22,7 @@ public class PlayerInteractListener implements Listener {
         Player player = event.getPlayer();
         try {
             if(event.getItem().getType() == Material.BED) {
-                Main.inventoryManager.openKitInventory(player);
+                Main.inventoryManager.setTeamInventory(player);
             }
         }catch (NullPointerException e) {
             e.printStackTrace();
