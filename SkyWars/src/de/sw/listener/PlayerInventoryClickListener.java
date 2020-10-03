@@ -21,7 +21,7 @@ public class PlayerInventoryClickListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         try {
             switch (event.getCurrentItem().getItemMeta().getDisplayName()) {
-                
+
             }
 
         }catch (NullPointerException e) {
