@@ -55,10 +55,15 @@ public class InventoryManager {
         player.openInventory(inventory);
     }
 
+<<<<<<< HEAD
     private List<KitManager> getKits() {
         List<KitManager> arr = new ArrayList<>();
+=======
+    private KitManager[] getKits() {
+        KitManager[] arr = new KitManager[3];
+>>>>>>> f0f31b76e97adfe8ed84798d2a521201b12fc373
 
-         arr.add(new KitManager("Standard §8[§aGekauft§8]",
+         arr[0] = (new KitManager("Standard §8[§aGekauft§8]",
                  new String[]
                             {
                             "§7Du startest mit §e1 Eisenschwert§7,",
@@ -67,7 +72,7 @@ public class InventoryManager {
                  Material.IRON_PICKAXE, 0)
          );
 
-        arr.add(new KitManager("Maurer",
+        arr[1] = (new KitManager("Maurer",
                     new String[] {"§8✘ §eAusrüstung",
                             "§8✘ §764 Ziegelsteine",
                             "§8✘ §7Goldhelm mit Schutz III",
@@ -75,12 +80,16 @@ public class InventoryManager {
                     Material.BRICK, 10000)
         );
 
-        arr.add(new KitManager("Healer",
+        arr[2] = (new KitManager("Healer",
                 new String[] {"§8✘ §eAusrüstung",
                         "§8✘ §73x Heilungstränke mit Heilung II",
                         "§8✘ §71 Regenerationstrank für 1:30 Minuten"},
                 Material.GHAST_TEAR, 5000)
         );
+<<<<<<< HEAD
+=======
+
+>>>>>>> f0f31b76e97adfe8ed84798d2a521201b12fc373
         return arr;
     }
 }
