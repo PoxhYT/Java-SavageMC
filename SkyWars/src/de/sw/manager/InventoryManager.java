@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,17 +45,17 @@ public class InventoryManager {
     public void openKitInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 36, "§eKits");
 
-        KitManager[] kits = getKits();
+        List<KitManager> kits = getKits();
 
-        for (int i = 0; i < kits.length; i++)
+        for (int i = 0; i < kits.size(); i++)
         {
-            inventory.setItem(i, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
+            inventory.setItem(i, new ItemBuilderAPI(kits.get(i).getKitIcon()).setDisplayName(kits.get(i).getKitName()).setLore(kits.get(i).getKitDescription()).build());
         }
 
         player.openInventory(inventory);
     }
 
-    private KitManager[] getKits() {
+    private List<KitManager> getKits() {
         List<KitManager> arr = new ArrayList<>();
 
          arr.add(new KitManager("Standard §8[§aGekauft§8]",
@@ -80,7 +81,6 @@ public class InventoryManager {
                         "§8✘ §71 Regenerationstrank für 1:30 Minuten"},
                 Material.GHAST_TEAR, 5000)
         );
-
-        return (KitManager[]) arr.toArray();
+        return arr;
     }
 }
