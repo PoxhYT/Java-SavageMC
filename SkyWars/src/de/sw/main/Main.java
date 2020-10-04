@@ -51,7 +51,6 @@ public class Main extends JavaPlugin {
 
     public void onEnable() {
         KitManager kitManager = new KitManager("§eStandard", new String[] {"§eYARRAK"}, Material.BAKED_POTATO, 2);
-        System.out.println(kitManager);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         registerEvents();
         loadConfig();
