@@ -5,3 +5,4 @@ main: de.soup.main.Main
 commands:
     soup:
     setlocation:
+    build:

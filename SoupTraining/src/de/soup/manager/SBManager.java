@@ -25,7 +25,10 @@ public class SBManager {
         Objective obj = board.registerNewObjective("aaa", "bbb");
 
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-        obj.setDisplayName("§8• §eSoupTraining §8•");
+        obj.setDisplayName("§8• §cSoupTraining §8•");
+        obj.getScore("§4 ").setScore(9);
+        obj.getScore("§8• §r§fCoins").setScore(8);
+        obj.getScore("§8➥ §r§cSOON").setScore(7);
         obj.getScore("§1 ").setScore(6);
         obj.getScore("§8• §r§fOnline").setScore(5);
         obj.getScore(updateTeam(board, "Online", "§8➥ §a" + Bukkit.getOnlinePlayers().size() + "§7 / §c" + Bukkit.getMaxPlayers(), " §4", ChatColor.DARK_GRAY)).setScore(4);
