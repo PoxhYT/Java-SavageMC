@@ -56,7 +56,7 @@ public class Main extends JavaPlugin {
         registerEvents();
         loadConfig();
         registerCommands();
-        Bukkit.getConsoleSender().sendMessage(prefix + "§eDas Plugin wurde erfolgreich gestartet!");
+        Bukkit.getConsoleSender().sendMessage(prefix + "§eDas Plugin wurde erfolgreich gestartet!!!!");
         PremiumKick.allowPremiumKick();
 
     }

@@ -1,0 +1,7 @@
+name: SkyWars
+version: 1.0
+author: PoxhYT
+main: de.services.main.Main
+commands:
+    setup:
+    leave:
