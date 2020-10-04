@@ -3,6 +3,7 @@ package de.soup.main;
 import de.soup.commands.Command_build;
 import de.soup.commands.Command_setlocation;
 import de.soup.commands.SoupCommand;
+import de.soup.events.PlayerInteractListener;
 import de.soup.events.PlayerJoinListener;
 import de.soup.events.ProtectionListener;
 import de.soup.events.SoupListener;
@@ -46,6 +47,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents((Listener) new PlayerJoinListener(), this);
         pluginManager.registerEvents((Listener) new SoupListener(), this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
+        pluginManager.registerEvents((Listener) new PlayerInteractListener(), this);
     }
 
     private void registerCommands() {
