@@ -1,8 +1,10 @@
 package de.soup.main;
 
+import de.soup.commands.Command_build;
 import de.soup.commands.Command_setlocation;
 import de.soup.commands.SoupCommand;
 import de.soup.events.PlayerJoinListener;
+import de.soup.events.ProtectionListener;
 import de.soup.events.SoupListener;
 import de.soup.manager.SBManager;
 import de.soup.storage.Item;
@@ -17,9 +19,18 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main extends JavaPlugin {
 
     public static String prefix = "§cSoupTraining §8❘ §7";
+
+    public static String noPerms = Main.prefix + "§r§cDu hast keine Rechte§7, §r§cum dies auszuführen§7.";
+
+    public static String notFound = Main.prefix + "§r§cDieser Spieler wurde nicht gefunden§7!";
+
+    public static List<Player> build = new ArrayList<>();
 
     public static Main instance;
 
@@ -34,11 +45,13 @@ public class Main extends JavaPlugin {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents((Listener) new PlayerJoinListener(), this);
         pluginManager.registerEvents((Listener) new SoupListener(), this);
+        pluginManager.registerEvents((Listener) new ProtectionListener(), this);
     }
 
     private void registerCommands() {
         getCommand("soup").setExecutor((CommandExecutor)new SoupCommand());
         getCommand("setlocation").setExecutor((CommandExecutor)new Command_setlocation());
+        getCommand("build").setExecutor((CommandExecutor)new Command_build());
     }
 
     private void loadItems() {

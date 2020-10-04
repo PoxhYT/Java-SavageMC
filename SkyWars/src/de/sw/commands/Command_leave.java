@@ -26,12 +26,10 @@ public class Command_leave implements CommandExecutor {
             ByteArrayOutputStream b = new ByteArrayOutputStream();
             DataOutputStream out = new DataOutputStream(b);
 
-            try{
+            try {
                 out.writeUTF("Connect");
                 out.writeUTF("lobby");
-
-
-            }catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 

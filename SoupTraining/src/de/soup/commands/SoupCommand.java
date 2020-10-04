@@ -36,8 +36,6 @@ public class SoupCommand implements CommandExecutor {
     private final String hart = "§7Der §eSchwierigkeitsgrad §7wurde auf §eHart §7angepasst!";
     private final String legende = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLegende §7angepasst!";
 
-
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(command.getName().equals("soup"))
@@ -132,25 +130,26 @@ public class SoupCommand implements CommandExecutor {
 
     private void processSpeedType(Player p) {
         if (this.speedType.containsKey(p.getName())) {
-            switch ((SpeedType)this.speedType.get(p.getName())) {
+            final SpeedType type = this.speedType.get(p.getName());
+            switch (type) {
                 case NOOB:
-                    this.speedType.put(p.getName(), SpeedType.SLOW);
+                    this.speedType.put(p.getName(), SpeedType.NOOB);
                     p.sendMessage(Main.prefix + noob);
                     break;
                 case SLOW:
-                    this.speedType.put(p.getName(), SpeedType.NORMAL);
+                    this.speedType.put(p.getName(), SpeedType.SLOW);
                     p.sendMessage(Main.prefix + leicht);
                     break;
                 case NORMAL:
-                    this.speedType.put(p.getName(), SpeedType.HARD);
+                    this.speedType.put(p.getName(), SpeedType.NORMAL);
                     p.sendMessage(Main.prefix + normal);
                     break;
                 case HARD:
-                    this.speedType.put(p.getName(), SpeedType.LEGEND);
+                    this.speedType.put(p.getName(), SpeedType.HARD);
                     p.sendMessage(Main.prefix + hart);
                     break;
                 case LEGEND:
-                    this.speedType.put(p.getName(), SpeedType.NOOB);
+                    this.speedType.put(p.getName(), SpeedType.LEGEND);
                     p.sendMessage(Main.prefix + legende);
                     break;
             }

@@ -17,7 +17,6 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        event.setJoinMessage(Main.prefix + player.getDisplayName());
         SBManager.setLobbyBoard(player);
         Main.scoreCD();
         player.teleport(LocationManager.getSpawn("Lobby"));
