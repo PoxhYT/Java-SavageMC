@@ -12,24 +12,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class PlayerInventoryClickListener implements Listener {
 
-
-
-    // public TeamManager teamManager1 = new TeamManager("§eTeam1", Material.WOOL, "§eTeam1");
-
-    @EventHandler
-    public void onClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        try {
-            for (int i = 0; i < t.length; i++) {
-                if (event.getCurrentItem().getType() == Material.WOOL)
-                {
-                    System.out.println("Found team");
-                    System.out.println(teamManagers[i].getName());
-                }
-            }
-
-        }catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
 }
+
+
+
+

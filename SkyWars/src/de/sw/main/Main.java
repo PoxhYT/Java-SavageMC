@@ -6,6 +6,7 @@ import de.sw.commands.Command_setup;
 import de.sw.listener.PlayerInteractListener;
 import de.sw.listener.PlayerInventoryClickListener;
 import de.sw.listener.PlayerJoinListener;
+import de.sw.listener.TeamListener;
 import de.sw.manager.InventoryManager;
 import de.sw.manager.KitManager;
 import de.sw.manager.SBManager;
@@ -68,8 +69,8 @@ public class Main extends JavaPlugin {
     public void registerEvents() {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents((Listener) new PlayerJoinListener(), this);
-        pluginManager.registerEvents((Listener) new PlayerInteractListener(), this);pluginManager.registerEvents((Listener) new PlayerInteractListener(), this);
-        pluginManager.registerEvents((Listener) new PlayerInventoryClickListener(), this);
+        pluginManager.registerEvents((Listener) new PlayerInteractListener(), this);
+        pluginManager.registerEvents((Listener) new TeamListener(), this);
     }
 
     public void loadConfig() {
