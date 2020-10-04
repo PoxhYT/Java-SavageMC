@@ -29,13 +29,19 @@ public class SoupCommand implements CommandExecutor {
     private ConcurrentHashMap<String, Integer> time = new ConcurrentHashMap<>();
 
     private ConcurrentHashMap<String, Integer> timing = new ConcurrentHashMap<>();
+    
+    private final String noob = "§7Der §eSchwierigkeitsgrad §7wurde auf §eNoob §7angepasst!";
+    private final String leicht = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLeicht §7angepasst!";
+    private final String normal = "§7Der §eSchwierigkeitsgrad §7wurde auf §eNormal §7angepasst!";
+    private final String hart = "§7Der §eSchwierigkeitsgrad §7wurde auf §eHart §7angepasst!";
+    private final String legende = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLegende §7angepasst!";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(command.getName().equals("soup"))
             if(sender instanceof Player) {
                 Player player = (Player) sender;
-                if(args.length == 0 && args.length != 1) {
+                if(args.length == 0) {
                     player.sendMessage(Main.prefix + "§e/soup start");
                     player.sendMessage(Main.prefix + "§e/soup stop");
                     player.sendMessage(Main.prefix + "§e/soup speed");
@@ -105,17 +111,17 @@ public class SoupCommand implements CommandExecutor {
 
     private void startTask(final Player p) {
         getSpeed(p);
-        this.time.put(p.getName(), Integer.valueOf(0));
-        task.put(p.getName(), Integer.valueOf(Bukkit.getScheduler().scheduleAsyncRepeatingTask((Plugin)Main.getInstance(), new Runnable() {
+        this.time.put(p.getName(), 0);
+        task.put(p.getName(), Bukkit.getScheduler().scheduleAsyncRepeatingTask((Plugin) Main.getInstance(), new Runnable() {
             public void run() {
                 if (SoupCommand.this.playerCanSurvive(p)) {
                     p.damage(8.0D);
-                    SoupCommand.this.time.put(p.getName(), Integer.valueOf(((Integer)SoupCommand.this.time.get(p.getName())).intValue() + 1));
+                    SoupCommand.this.time.put(p.getName(), (Integer) SoupCommand.this.time.get(p.getName()) + 1);
                 } else {
                     p.performCommand("soup stop");
                 }
             }
-        },(this.timing.get(p.getName()).intValue()), ((Integer)this.timing.get(p.getName())).intValue())));
+        }, (this.timing.get(p.getName())), (Integer) this.timing.get(p.getName())));
     }
 
     private boolean playerCanSurvive(Player p) {
@@ -127,71 +133,70 @@ public class SoupCommand implements CommandExecutor {
             switch ((SpeedType)this.speedType.get(p.getName())) {
                 case NOOB:
                     this.speedType.put(p.getName(), SpeedType.SLOW);
-                    p.sendMessage(Main.prefix + "§7Der §eSchwierigkeitsgrad §7wurde auf §eLeicht §7angepasst!");
+                    p.sendMessage(Main.prefix + noob);
                     break;
                 case SLOW:
                     this.speedType.put(p.getName(), SpeedType.NORMAL);
-                    p.sendMessage(Main.prefix + "§7Der §eSchwierigkeitsgrad §7wurde auf §eNormal §7angepasst!");
+                    p.sendMessage(Main.prefix + leicht);
                     break;
                 case NORMAL:
                     this.speedType.put(p.getName(), SpeedType.HARD);
-                    p.sendMessage(Main.prefix + "§7Der §eSchwierigkeitsgrad §7wurde auf §eHart §7angepasst!");
+                    p.sendMessage(Main.prefix + normal);
                     break;
                 case HARD:
                     this.speedType.put(p.getName(), SpeedType.LEGEND);
-                    p.sendMessage(Main.prefix + "§7Der §eSchwierigkeitsgrad §7wurde auf §eLegende §7angepasst!");
+                    p.sendMessage(Main.prefix + hart);
                     break;
                 case LEGEND:
                     this.speedType.put(p.getName(), SpeedType.NOOB);
-                    p.sendMessage(Main.prefix + "§7Der §eSchwierigkeitsgrad §7wurde auf §eNoob §7angepasst!");
+                    p.sendMessage(Main.prefix + legende);
                     break;
             }
         } else {
             this.speedType.put(p.getName(), SpeedType.NOOB);
-            p.sendMessage(Main.prefix + "§7Der §eSchwierigkeitsgrad §7wurde auf §eNoob §7angepasst!");
+            p.sendMessage(Main.prefix + noob);
         }
     }
 
     private int getSpeed(Player p) {
         if (!this.speedType.containsKey(p.getName())) {
             this.speedType.put(p.getName(), SpeedType.NOOB);
-            this.timing.put(p.getName(), Integer.valueOf(25));
+            this.timing.put(p.getName(), 25);
             p.sendMessage(Main.prefix + "§7Du startest mit der §eNoobgeschwindigkeit§7.");
             return 25;
         }
         switch ((SpeedType)this.speedType.get(p.getName())) {
             case NOOB:
                 this.speedType.put(p.getName(), SpeedType.NOOB);
-                this.timing.put(p.getName(), Integer.valueOf(25));
+                this.timing.put(p.getName(), 25);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eNoobgeschwindigkeit§7.");
                 return 25;
             case SLOW:
                 this.speedType.put(p.getName(), SpeedType.SLOW);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eLangsamengeschwindigkeit§7.");
-                this.timing.put(p.getName(), Integer.valueOf(20));
+                this.timing.put(p.getName(), 20);
                 return 20;
             case NORMAL:
                 this.speedType.put(p.getName(), SpeedType.NORMAL);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eNormalengeschwindigkeit§7.");
-                this.timing.put(p.getName(), Integer.valueOf(15));
+                this.timing.put(p.getName(), 15);
                 return 15;
             case HARD:
                 this.speedType.put(p.getName(), SpeedType.HARD);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eHartengeschwindigkeit§7.");
-                this.timing.put(p.getName(), Integer.valueOf(11));
+                this.timing.put(p.getName(), 11);
                 return 12;
             case LEGEND:
                 this.speedType.put(p.getName(), SpeedType.LEGEND);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eLegendengeschwindigkeit§7.");
-                this.timing.put(p.getName(), Integer.valueOf(10));
+                this.timing.put(p.getName(), 10);
                 return 10;
         }
-        this.timing.put(p.getName(), Integer.valueOf(25));
+        this.timing.put(p.getName(), 25);
         return 25;
     }
 
     public static void killTask(Player p) {
-        Bukkit.getScheduler().cancelTask(((Integer)task.get(p.getName())).intValue());
+        Bukkit.getScheduler().cancelTask((Integer) task.get(p.getName()));
     }
 }
-
