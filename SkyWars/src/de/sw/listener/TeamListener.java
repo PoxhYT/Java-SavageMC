@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -21,6 +22,7 @@ public class TeamListener implements Listener {
 
     private TeamManager[] teamManagers = new TeamManager[8];
 
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         TeamManager[] teams = getTeams();
 
@@ -40,6 +42,7 @@ public class TeamListener implements Listener {
         }
     }
 
+    @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if(event.getPlayer().getItemInHand().getType() == Material.BED) {
@@ -50,6 +53,9 @@ public class TeamListener implements Listener {
     public void openTeamInventory(Player player) {
 
         Inventory inventory = Bukkit.createInventory(null, 9, "§8• §eTeams");
+        TeamManager[] teams = getTeams();
+        for (int i = 0; i < teams.length; i++)
+            inventory.setItem(i, teams[i].getIcon());
         player.openInventory(inventory);
     }
 
