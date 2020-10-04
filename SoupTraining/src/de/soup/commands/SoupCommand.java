@@ -30,6 +30,8 @@ public class SoupCommand implements CommandExecutor {
 
     private ConcurrentHashMap<String, Integer> timing = new ConcurrentHashMap<>();
 
+
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(command.getName().equals("soup"))
