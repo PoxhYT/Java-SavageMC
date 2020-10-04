@@ -38,7 +38,7 @@ public class SoupCommand implements CommandExecutor {
                 if(args.length == 0 && args.length != 1) {
                     player.sendMessage(Main.prefix + "§e/soup start");
                     player.sendMessage(Main.prefix + "§e/soup stop");
-                    player.sendMessage(Main.prefix + "§esoup speed");
+                    player.sendMessage(Main.prefix + "§e/soup speed");
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("start") || args[0].equalsIgnoreCase("stop") || args[0].equalsIgnoreCase("speed")) {
@@ -107,12 +107,15 @@ public class SoupCommand implements CommandExecutor {
         getSpeed(p);
         this.time.put(p.getName(), Integer.valueOf(0));
         task.put(p.getName(), Integer.valueOf(Bukkit.getScheduler().scheduleAsyncRepeatingTask((Plugin)Main.getInstance(), new Runnable() {
-
-            @Override
             public void run() {
-
+                if (SoupCommand.this.playerCanSurvive(p)) {
+                    p.damage(8.0D);
+                    SoupCommand.this.time.put(p.getName(), Integer.valueOf(((Integer)SoupCommand.this.time.get(p.getName())).intValue() + 1));
+                } else {
+                    p.performCommand("soup stop");
+                }
             }
-        }((Integer)this.timing.get(p.getName())).intValue(), ((Integer)this.timing.get(p.getName()).intValue());
+        },(this.timing.get(p.getName()).intValue()), ((Integer)this.timing.get(p.getName())).intValue())));
     }
 
     private boolean playerCanSurvive(Player p) {

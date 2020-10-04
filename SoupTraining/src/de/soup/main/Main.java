@@ -1,9 +1,15 @@
 package de.soup.main;
 
+import de.soup.commands.SoupCommand;
+import de.soup.events.SoupListener;
 import de.soup.storage.Item;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -14,6 +20,9 @@ public class Main extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
+        Bukkit.getPluginManager().registerEvents((Listener)new SoupListener(), (Plugin)this);
+        getCommand("soup").setExecutor((CommandExecutor)new SoupCommand());
+        loadItems();
     }
 
     private void loadItems() {

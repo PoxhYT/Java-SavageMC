@@ -1,0 +1,6 @@
+name: Soup
+version: 1.0
+author: PoxhYT
+main: de.soup.main.Main
+commands:
+    soup:
