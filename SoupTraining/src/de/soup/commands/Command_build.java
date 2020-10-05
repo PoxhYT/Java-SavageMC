@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class Command_build implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player) {
             Player player = (Player) sender;
             if(player.hasPermission("server.builder")) {

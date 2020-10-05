@@ -1,6 +1,6 @@
-name: SkyWars
+name: Services
 version: 1.0
-author: PoxhYT
+author: SolomonRosemite
 main: de.services.main.Main
 commands:
     setup:
