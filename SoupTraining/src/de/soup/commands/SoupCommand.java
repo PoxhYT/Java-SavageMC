@@ -121,7 +121,7 @@ public class SoupCommand implements CommandExecutor {
                     p.performCommand("soup stop");
                 }
             }
-        }, (this.timing.get(p.getName())), (Integer) this.timing.get(p.getName())));
+        }, ((Integer) this.timing.get(p.getName())), (Integer) this.timing.get(p.getName())));
     }
 
     private boolean playerCanSurvive(Player p) {
@@ -190,7 +190,7 @@ public class SoupCommand implements CommandExecutor {
             case LEGEND:
                 this.speedType.put(p.getName(), SpeedType.LEGEND);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eLegendengeschwindigkeit§7.");
-                this.timing.put(p.getName(), 10);
+                this.timing.put(p.getName(), 2);
                 return 10;
         }
         this.timing.put(p.getName(), 25);

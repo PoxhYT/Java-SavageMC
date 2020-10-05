@@ -7,3 +7,4 @@ commands:
     setlocation:
     build:
     timer:
+    setshop:

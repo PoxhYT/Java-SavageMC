@@ -1,6 +1,8 @@
 package de.soup.events;
 
+import de.soup.commands.SoupCommand;
 import de.soup.main.Main;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -30,7 +32,8 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if(!Main.build.contains(event.getWhoClicked())) {
+        Player player = (Player) event.getWhoClicked();
+        if(!SoupCommand.isInTraining(player)) {
             event.setCancelled(true);
         }
     }
@@ -51,7 +54,10 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
-        event.setCancelled(true);
+        Player player = event.getPlayer();
+        if(!SoupCommand.isInTraining(player)) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

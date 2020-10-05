@@ -1,9 +1,6 @@
 package de.soup.main;
 
-import de.soup.commands.Command_build;
-import de.soup.commands.Command_setlocation;
-import de.soup.commands.Command_timer;
-import de.soup.commands.SoupCommand;
+import de.soup.commands.*;
 import de.soup.events.*;
 import de.soup.manager.SBManager;
 import de.soup.storage.Item;
@@ -54,6 +51,7 @@ public class Main extends JavaPlugin {
         getCommand("setlocation").setExecutor((CommandExecutor)new Command_setlocation());
         getCommand("build").setExecutor((CommandExecutor)new Command_build());
         getCommand("timer").setExecutor((CommandExecutor)new Command_timer());
+        getCommand("setshop").setExecutor((CommandExecutor)new Command_setshop());
     }
 
     private void loadItems() {
