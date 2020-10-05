@@ -8,14 +8,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
 
-public class Main extends JavaPlugin {
+public class MainService extends JavaPlugin {
     public static String prefix = "§8[MySQL] §7";
 
-    public MySQL mySQL;
     public PointSystem pointSystem;
 
-    private Config config;
+    private MySQL mySQL;
 
+    private Config config;
     private String host, database, username, password;
     private int port;
 
