@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="mlgrush">
+    <output-path>$PROJECT_DIR$/../WorkBuildings</output-path>
+    <root id="archive" name="mlgrush.jar">
+      <element id="module-output" name="Stream - MLGRush" />
+    </root>
+  </artifact>
+</component>

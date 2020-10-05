@@ -2,11 +2,9 @@ package de.soup.main;
 
 import de.soup.commands.Command_build;
 import de.soup.commands.Command_setlocation;
+import de.soup.commands.Command_timer;
 import de.soup.commands.SoupCommand;
-import de.soup.events.PlayerInteractListener;
-import de.soup.events.PlayerJoinListener;
-import de.soup.events.ProtectionListener;
-import de.soup.events.SoupListener;
+import de.soup.events.*;
 import de.soup.manager.SBManager;
 import de.soup.storage.Item;
 import org.bukkit.Bukkit;
@@ -48,12 +46,14 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents((Listener) new SoupListener(), this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
         pluginManager.registerEvents((Listener) new PlayerInteractListener(), this);
+        pluginManager.registerEvents((Listener) new PlayerMoveEvent(), this);
     }
 
     private void registerCommands() {
         getCommand("soup").setExecutor((CommandExecutor)new SoupCommand());
         getCommand("setlocation").setExecutor((CommandExecutor)new Command_setlocation());
         getCommand("build").setExecutor((CommandExecutor)new Command_build());
+        getCommand("timer").setExecutor((CommandExecutor)new Command_timer());
     }
 
     private void loadItems() {

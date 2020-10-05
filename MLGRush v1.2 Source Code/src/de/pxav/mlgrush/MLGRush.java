@@ -1,79 +1,58 @@
-package de.mlgrush.main;
+package de.pxav.mlgrush;
 
-import de.mlgrush.api.MySQL;
-import de.mlgrush.commands.*;
-import de.mlgrush.enums.GameState;
-import de.mlgrush.gamestates.*;
-import de.mlgrush.handler.PointsHandler;
-import de.mlgrush.handler.ScoreboardHandler;
-import de.mlgrush.handler.TabListHandler;
-import de.mlgrush.handler.TeamHandler;
-import de.mlgrush.items.InventoryManager;
-import de.mlgrush.listener.*;
-import de.mlgrush.maps.LocationHandler;
-import de.mlgrush.maps.MapResetHandler;
-import de.mlgrush.maps.RegionManager;
-import de.mlgrush.maps.WorldManager;
-import de.mlgrush.mysql.Ranking;
-import de.mlgrush.utils.ConfigManager;
-import de.mlgrush.utils.PlayerMoveScheduler;
+import de.pxav.mlgrush.commands.BuildCommand;
+import de.pxav.mlgrush.commands.MainCommand;
+import de.pxav.mlgrush.commands.SetupCommand;
+import de.pxav.mlgrush.enums.GameState;
+import de.pxav.mlgrush.gamestates.*;
+import de.pxav.mlgrush.handler.PointsHandler;
+import de.pxav.mlgrush.handler.ScoreboardHandler;
+import de.pxav.mlgrush.handler.TabListHandler;
+import de.pxav.mlgrush.handler.TeamHandler;
+import de.pxav.mlgrush.items.InventoryManager;
+import de.pxav.mlgrush.listener.*;
+import de.pxav.mlgrush.maps.LocationHandler;
+import de.pxav.mlgrush.maps.MapResetHandler;
+import de.pxav.mlgrush.maps.RegionManager;
+import de.pxav.mlgrush.maps.WorldManager;
+import de.pxav.mlgrush.settings.ConfigManager;
+import de.pxav.mlgrush.utils.*;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin {
+public class MLGRush extends JavaPlugin {
 
+    private final String PREFIX = "§8[§3MLGRush§8] §r";
+
+    /* CLASS INSTANCES */
     private IdleCountdown idleCountdown = new IdleCountdown();
-
     private LobbyCountdown lobbyCountdown = new LobbyCountdown();
-
     private WorldManager worldManager = new WorldManager();
-
     private LocationHandler locationHandler = new LocationHandler();
-
     private EndingCountdown endingCountdown = new EndingCountdown();
-
     private InventoryManager inventoryManager = new InventoryManager();
-
     private TeamHandler teamHandler = new TeamHandler();
-
     private ScoreboardHandler scoreboardHandler = new ScoreboardHandler();
-
     private TabListHandler tabListHandler = new TabListHandler();
-
     private PointsHandler pointsHandler = new PointsHandler();
-
     private PlayerMoveScheduler playerMoveScheduler = new PlayerMoveScheduler();
-
-    private StartCountdown startCountdown = new StartCountdown();
-
+    private StartCountDown startCountDown = new StartCountDown();
     private MapResetHandler mapResetHandler = new MapResetHandler();
-
     private ConfigManager configManager = new ConfigManager();
-
     private RegionManager regionManager = new RegionManager();
 
-    public static String prefix = "§8• §eMLGRush §8❘ §7";
-
-    public static FileConfiguration configuration;
-
-    private static Main instance;
-
-    public static MySQL mySQL;
+    private static MLGRush instance;
 
     @Override
     public void onEnable() {
+        setInstance(this);
         GameStateHandler.setGameState(GameState.LOBBY);
         GameStateHandler.setAllowMove(true);
-        loadConfigurations();
-        registerEvents();
-        registerCommands();
-        instance = this;
 
-        Bukkit.getConsoleSender().sendMessage(prefix + "§ePlugin §7wurde §agestartet§7!");
+        this.loadConfigurations();
+        this.registerCommands();
+        this.registerEvents();
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
             this.getWorldManager().prepareMaps();
@@ -86,50 +65,51 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         this.getMapResetHandler().resetMap(true);
+        setInstance(null);
+    }
 
+    private void loadConfigurations() {
+        this.getConfigManager().loadFile();
+        this.getConfigManager().loadSettings();
+
+        this.getLocationHandler().loadFile();
+        if(this.getConfigManager().isCacheLoader())
+            this.getLocationHandler().loadLocations();
+    }
+
+    private void registerCommands() {
+        new SetupCommand("setup");
+        new MainCommand("mlgrush");
+        new BuildCommand("build");
     }
 
     private void registerEvents() {
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new Stats(), this);
+        final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new PlayerJoinListener(), this);
         pluginManager.registerEvents(new ServerListPingListener(), this);
         pluginManager.registerEvents(new BlockBreakListener(), this);
         pluginManager.registerEvents(new PlayerQuitListener(), this);
         pluginManager.registerEvents(new PlayerInteractListener(), this);
         pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new PlayerMoveListener(), this);
         pluginManager.registerEvents(new BlockPlaceListener(), this);
+        pluginManager.registerEvents(new WeatherChangeListener(), this);
+        pluginManager.registerEvents(new FoodLevelChangeListener(), this);
+        pluginManager.registerEvents(new CraftItemListener(), this);
         pluginManager.registerEvents(new EntityDamageByEntityListener(), this);
+        pluginManager.registerEvents(new EntityDamageListener(), this);
         pluginManager.registerEvents(new PlayerLoginListener(), this);
+        pluginManager.registerEvents(new PlayerDropItemListener(), this);
+        if(this.getConfigManager().isUseChatFormat())
+            pluginManager.registerEvents(new AsyncPlayerChatListener(), this);
     }
 
-    private void registerCommands() {
-        getCommand("stats").setExecutor(new Command_stats());
-        getCommand("shop").setExecutor(new Command_shop());
-        new Command_Build("build");
-        new Command_setup("setup");
-        new Command_MLGRush("mlgrush");
-    }
-
-    private void ConnectMySQL() {
-        mySQL = new MySQL("localhost", "mlgrush", "root", "bruh1234");
-        mySQL.update("CREATE TABLE IF NOT EXISTS Stats(UUID varchar(64), KILLS int, DEATHS int, WINS int)");
-    }
-
-    private void loadConfigurations() {
-        getConfigManager().loadFile();
-        getConfigManager().loadSettings();
-        getLocationHandler().loadFile();
-        if (getConfigManager().isCacheLoader())
-            getLocationHandler().loadLocations();
-    }
-
-    public static Main getInstance() {
+    public static MLGRush getInstance() {
         return instance;
     }
 
-    private static void setInstance(final Main instance) {
-        Main.instance = instance;
+    private static void setInstance(final MLGRush instance) {
+        MLGRush.instance = instance;
     }
 
     public IdleCountdown getIdleCountdown() {
@@ -138,6 +118,10 @@ public class Main extends JavaPlugin {
 
     public LobbyCountdown getLobbyCountdown() {
         return lobbyCountdown;
+    }
+
+    public String getPrefix() {
+        return PREFIX;
     }
 
     public WorldManager getWorldManager() {
@@ -176,8 +160,8 @@ public class Main extends JavaPlugin {
         return playerMoveScheduler;
     }
 
-    public StartCountdown getStartCountdown() {
-        return startCountdown;
+    public StartCountDown getStartCountDown() {
+        return startCountDown;
     }
 
     public MapResetHandler getMapResetHandler() {
@@ -191,11 +175,4 @@ public class Main extends JavaPlugin {
     public RegionManager getRegionManager() {
         return regionManager;
     }
-
-    public static String getPrefix() {
-        return prefix;
-    }
 }
-
-
-

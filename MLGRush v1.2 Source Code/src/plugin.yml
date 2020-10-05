@@ -1,0 +1,11 @@
+name: MLGRush
+version: 1.2
+author: PXAV
+main: de.pxav.mlgrush.MLGRush
+commands:
+     setup:
+          description: Richte das Plugin ein.
+     mlgrush:
+          description: The main and test command of the plugin.
+     build:
+          description: Allows you to build.
