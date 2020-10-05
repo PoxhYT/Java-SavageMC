@@ -1,7 +1,7 @@
 name: Services
 version: 1.0
 author: SolomonRosemite
-main: de.services.main.Main
+main: de.services.main.MainService
 commands:
     setup:
     leave:

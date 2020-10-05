@@ -2,6 +2,7 @@ package de.soup.commands;
 
 import com.google.common.collect.Maps;
 import de.magnus.coinsapi.util.CoinsAPI;
+import de.services.main.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
 import de.soup.storage.Item;
@@ -46,8 +47,16 @@ public class SoupCommand implements CommandExecutor {
     private final String hart = "§7Der §eSchwierigkeitsgrad §7wurde auf §eHart §7angepasst!";
     private final String legende = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLegende §7angepasst!";
 
+    private MainService service;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        Plugin servicePlugin = Bukkit.getPluginManager().getPlugin("Services");
+        System.out.println(servicePlugin);
+        if (servicePlugin != null) {
+            service = (MainService)servicePlugin;
+        }
+
         if(command.getName().equals("soup"))
             if(sender instanceof Player) {
                 Player player = (Player) sender;
@@ -105,6 +114,8 @@ public class SoupCommand implements CommandExecutor {
                             player.getInventory().setContents(this.oldInventory.get(player.getName()));
                             player.updateInventory();
                             SoupListener.droppedItems.remove(player.getName());
+
+                            service.pointSystem.saveForSoupScore(player, this.speedType.get(player.getName()), 0);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {

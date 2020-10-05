@@ -1,12 +1,11 @@
 package de.services.mysql;
 
-import de.services.main.Main;
-import org.bukkit.Bukkit;
+import de.services.main.MainService;
 
 import java.sql.*;
 
 public class MySQL {
-    private final String prefix = Main.prefix;
+    private final String prefix = MainService.prefix;
     private Connection connection;
     private String host, database, username, password;
     private int port;
