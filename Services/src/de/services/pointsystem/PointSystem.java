@@ -1,6 +1,7 @@
 package de.services.pointsystem;
 
 import de.services.mysql.MySQL;
+import de.soup.commands.SoupCommand;
 import de.soup.events.SoupListener;
 import de.soup.storage.SpeedType;
 import org.bukkit.entity.Player;
@@ -30,6 +31,7 @@ public class PointSystem {
         }
         // TODO: Receive Score On gameOver or /soup stop command
         // TODO: Save for Player
+
     }
 
     public void getScoresForSoup(UUID id) throws SQLException {

@@ -1,5 +1,6 @@
 package de.soup.events;
 
+import de.magnus.coinsapi.util.CoinsAPI;
 import de.soup.main.Main;
 import de.soup.manager.ItemManager;
 import de.soup.manager.LocationManager;
@@ -12,14 +13,27 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.Random;
+
 public class PlayerJoinListener implements Listener {
 
     private static String displayName;
+
+    private static int number;
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         player.getInventory().clear();
+
+        Random random = new Random();
+        for (int counter=1; counter<=100;counter++) {
+            number = random.nextInt(950);
+            event.setJoinMessage(Main.prefix + number);
+        }
+
+        CoinsAPI.addCoins(player.getUniqueId().toString(), number);
+
         getLobbyItems(player);
         SBManager.setLobbyBoard(player);
         Main.scoreCD();
@@ -36,5 +50,9 @@ public class PlayerJoinListener implements Listener {
 
     private void getLobbyItems(Player player) {
         player.getInventory().setItem(4, new ItemManager(Material.COMPASS).setDisplayName("§8» §eTeleporter").build());
+    }
+
+    private void getRandomNumber(Player player) {
+
     }
 }

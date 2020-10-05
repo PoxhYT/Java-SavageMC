@@ -1,10 +1,13 @@
 package de.soup.commands;
 
+import com.google.common.collect.Maps;
+import de.magnus.coinsapi.util.CoinsAPI;
 import de.services.main.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
 import de.soup.storage.Item;
 import de.soup.storage.SpeedType;
+import de.soup.timer.Timer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -14,6 +17,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -30,6 +36,10 @@ public class SoupCommand implements CommandExecutor {
     private ConcurrentHashMap<String, Integer> time = new ConcurrentHashMap<>();
 
     private ConcurrentHashMap<String, Integer> timing = new ConcurrentHashMap<>();
+
+    private static Map<UUID, Timer> timers = Maps.newHashMap();
+
+    private static int number;
     
     private final String noob = "§7Der §eSchwierigkeitsgrad §7wurde auf §eNoob §7angepasst!";
     private final String leicht = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLeicht §7angepasst!";
@@ -68,10 +78,12 @@ public class SoupCommand implements CommandExecutor {
                             this.oldInventory.put(player.getName(), player.getInventory().getContents());
                             inTraining.add(player);
                             player.sendMessage(Main.prefix + "Dein §eTraining §7wurde gestartet!");
+                            player.performCommand("timer start");
                             player.getInventory().clear();
                             for (i = 0; i < 35; i++)
                                 player.getInventory().setItem(i, Item.getItem());
                             startTask(player);
+
                             break;
                         case "stop":
                             if (!isInTraining(player)) {
@@ -83,12 +95,20 @@ public class SoupCommand implements CommandExecutor {
                             player.getInventory().clear();
                             Bukkit.getScheduler().cancelTask(((Integer)task.get(player.getName())).intValue());
                             player.sendMessage(Main.prefix + "§cDu hast das Training beendet!");
+
+                            Random random = new Random();
+                            for (int counter=1; counter<=100;counter++) {
+                                number = random.nextInt(950);
+                            }
+
                             if (!SoupListener.droppedItems.containsKey(player.getName()))
                                 SoupListener.droppedItems.put(player.getName(), new Integer[] { Integer.valueOf(0), Integer.valueOf(0) });
                             player.sendMessage(Main.prefix + "§7§m-------------- §c§lStatistiken §7§m--------------");
                             player.sendMessage(Main.prefix + "§eSchaden: "+ this.time.get(player.getName()) + " §eMal");
                             player.sendMessage(Main.prefix + "§eGedroppte Suppen: " + ((Integer[])SoupListener.droppedItems.get(player.getName()))[1]);
                             player.sendMessage(Main.prefix + "§eGedroppte Schüsseln: " + ((Integer[])SoupListener.droppedItems.get(player.getName()))[0]);
+                            player.performCommand("timer stop");
+                            player.sendMessage(Main.prefix + number + " §eCoins");
                             player.sendMessage(Main.prefix + "§7§m-------------- §c§lStatistiken §7§m--------------");
                             inTraining.remove(player);
                             player.getInventory().setContents(this.oldInventory.get(player.getName()));
