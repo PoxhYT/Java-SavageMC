@@ -1,13 +1,9 @@
 package de.services.mysql;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import de.services.main.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MySQL {
     private final String prefix = Main.prefix;
@@ -27,7 +23,7 @@ public class MySQL {
         this.port = port;
     }
 
-    public void connect() throws SQLException, ClassNotFoundException {
+    public Connection connect() {
         final String url = "jdbc:mysql://" + this.host+ ":" + this.port + "/" + this.database + this.characterEncoding;
 
         try {
@@ -35,7 +31,7 @@ public class MySQL {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.err.println("jdbc driver unavailable!");
-            return;
+            return null;
         }
 
         try {
@@ -43,6 +39,8 @@ public class MySQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return connection;
     }
 
     public void disable() {
@@ -53,10 +51,5 @@ public class MySQL {
         } catch(Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void log(String message)
-    {
-        Bukkit.getConsoleSender().sendMessage(prefix + message);
     }
 }

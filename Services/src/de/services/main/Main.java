@@ -2,42 +2,32 @@ package de.services.main;
 
 import de.services.config.Config;
 import de.services.mysql.MySQL;
+import de.services.pointsystem.PointSystem;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
 
 public class Main extends JavaPlugin {
     public static String prefix = "§8[MySQL] §7";
 
     public MySQL mySQL;
+    public PointSystem pointSystem;
 
     private Config config;
 
     private String host, database, username, password;
-
     private int port;
 
     public void onEnable() {
-        config = new Config(this);
+        // Initialize Config data
+        initializeConfig();
 
-        loadConfiguration();
-        mySQL = new MySQL(host, database, username, password, port);
+        // Init and Create Connection to MySQL
+        initializeMySql();
 
-        // Connect to Database
-        connectMySQL();
+        // Todo: Create SoupPointSystem (with ranking and stuff)
+        pointSystem = new PointSystem(mySQL);
     }
 
     public void onDisable() {
@@ -45,16 +35,29 @@ public class Main extends JavaPlugin {
             mySQL.disable();
     }
 
+    private void initializeConfig() {
+        config = new Config(this);
+        loadConfiguration();
+    }
+
+    private MySQL initializeMySql() {
+        mySQL = new MySQL(host, database, username, password, port);
+
+        // Connect to Database
+        connectMySQL();
+
+        return mySQL;
+    }
+
     private void connectMySQL() {
-        try {
-            mySQL.connect();
+        Connection connection =  mySQL.connect();
+        if (connection != null)
+        {
             log("§eMit MySQL verbunden!");
-        } catch (SQLException | ClassNotFoundException exception) {
-            exception.printStackTrace();
         }
     }
 
-    public void loadConfiguration() {
+    private void loadConfiguration() {
         final String sql = "mysql.credentials.";
 
         host = (String) config.getConfiguration(sql+"host");
