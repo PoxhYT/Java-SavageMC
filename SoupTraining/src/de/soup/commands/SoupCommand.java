@@ -133,24 +133,24 @@ public class SoupCommand implements CommandExecutor {
             final SpeedType type = this.speedType.get(p.getName());
             switch (type) {
                 case NOOB:
-                    this.speedType.put(p.getName(), SpeedType.NOOB);
-                    p.sendMessage(Main.prefix + noob);
-                    break;
-                case SLOW:
                     this.speedType.put(p.getName(), SpeedType.SLOW);
                     p.sendMessage(Main.prefix + leicht);
                     break;
-                case NORMAL:
+                case SLOW:
                     this.speedType.put(p.getName(), SpeedType.NORMAL);
                     p.sendMessage(Main.prefix + normal);
                     break;
-                case HARD:
+                case NORMAL:
                     this.speedType.put(p.getName(), SpeedType.HARD);
                     p.sendMessage(Main.prefix + hart);
                     break;
-                case LEGEND:
+                case HARD:
                     this.speedType.put(p.getName(), SpeedType.LEGEND);
                     p.sendMessage(Main.prefix + legende);
+                    break;
+                case LEGEND:
+                    this.speedType.put(p.getName(), SpeedType.NOOB);
+                    p.sendMessage(Main.prefix + noob);
                     break;
             }
         } else {
