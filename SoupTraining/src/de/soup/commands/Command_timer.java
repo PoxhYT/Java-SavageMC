@@ -16,13 +16,12 @@ public class Command_timer implements CommandExecutor {
     private static Map<UUID, Timer> timers = Maps.newHashMap();
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-
         if(!(sender instanceof Player)) {
             sender.sendMessage(Main.prefix + "§cDu bist kein Spieler!");
             return false;
         }
 
-        Player player = (Player) sender;
+        Player player = (Player)sender;
 
         if(args.length == 1 && args[0].equalsIgnoreCase("start")) {
             Timer timer = new Timer();
@@ -35,7 +34,8 @@ public class Command_timer implements CommandExecutor {
         if(args.length == 1 && args[0].equalsIgnoreCase("stop")) {
             Timer timer = timers.get(player.getUniqueId());
             timer.stop();
-            player.sendMessage(Main.prefix + "Deine §eZeit§8: §6" + timer);
+
+            player.sendMessage(Main.prefix + "Deine §eZeit§8: §6" + timer.getElapsedTime());
             return true;
         }
         return false;

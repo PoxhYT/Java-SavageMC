@@ -13,10 +13,6 @@ public class ConfigCountdown extends Countdown{
 
     private int taskID;
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     @Override
     public void start() {
         this.taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {

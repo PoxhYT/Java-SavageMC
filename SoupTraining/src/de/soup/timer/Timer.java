@@ -17,18 +17,8 @@ public class Timer {
     public void start(Player player) {
         executorService.scheduleAtFixedRate(() -> {
             elapsedTime += 100;
-            int hours  = (elapsedTime / 3600000);
-            int minutes = (elapsedTime / 60000) % 60;
-            int seconds = (elapsedTime / 1000) % 60;
-            int milliseconds = (elapsedTime / 10) % 100;
 
-            StringBuilder message = new StringBuilder("§7Timer§8: §e§l");
-            message.append(String.format("%02d", hours)).append(":");
-            message.append(String.format("%02d", minutes)).append(":");
-            message.append(String.format("%02d", seconds)).append(".");
-            message.append(String.format("%02d", milliseconds));
-
-            sendActionBar(player, message.toString());
+            sendActionBar(player, getTimeAsString("§7Timer§8: §e§l").toString());
         }, 0, 100, TimeUnit.MILLISECONDS);
     }
 
@@ -39,5 +29,26 @@ public class Timer {
     private void sendActionBar(Player player, String message) {
         PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + message + "\"}"), (byte) 2);
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+
+    public String getElapsedTime()
+    {
+        return getTimeAsString("").toString();
+    }
+
+    private StringBuilder getTimeAsString(String s)
+    {
+        int hours  = (elapsedTime / 3600000);
+        int minutes = (elapsedTime / 60000) % 60;
+        int seconds = (elapsedTime / 1000) % 60;
+        int milliseconds = (elapsedTime / 10) % 100;
+
+        StringBuilder message = new StringBuilder(s);
+        message.append(String.format("%02d", hours)).append(":");
+        message.append(String.format("%02d", minutes)).append(":");
+        message.append(String.format("%02d", seconds)).append(".");
+        message.append(String.format("%02d", milliseconds));
+
+        return  message;
     }
 }
