@@ -3,17 +3,21 @@ package de.soup.commands;
 import com.google.common.collect.Maps;
 import de.soup.main.Main;
 import de.soup.timer.Timer;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 public class Command_timer implements CommandExecutor {
 
-    private static Map<UUID, Timer> timers = Maps.newHashMap();
+    public static Map<UUID, Timer> timers = Maps.newHashMap();
+
+    private static int number;
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if(!(sender instanceof Player)) {
@@ -32,11 +36,12 @@ public class Command_timer implements CommandExecutor {
         }
 
         if(args.length == 1 && args[0].equalsIgnoreCase("stop")) {
-            Timer timer = timers.get(player.getUniqueId());
-            timer.stop();
-
-            player.sendMessage(Main.prefix + "Deine §eZeit§8: §6" + timer.getElapsedTime());
-            return true;
+            if(SoupCommand.isInTraining(player)) {
+                Timer timer = timers.get(player.getUniqueId());
+                timer.stop();
+                player.sendMessage(Main.prefix + "§eDeine §eZeit§7: §e" + timer.getElapsedTime());
+                return true;
+            }
         }
         return false;
     }
