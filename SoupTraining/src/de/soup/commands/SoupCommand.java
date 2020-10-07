@@ -115,8 +115,6 @@ public class SoupCommand implements CommandExecutor {
                             player.getInventory().setContents(this.oldInventory.get(player.getName()));
                             player.updateInventory();
                             SoupListener.droppedItems.remove(player.getName());
-
-                            service.pointSystem.saveForSoupScore(player, this.speedType.get(player.getName()), 0);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {
@@ -201,23 +199,23 @@ public class SoupCommand implements CommandExecutor {
         switch ((SpeedType)this.speedType.get(p.getName())) {
             case NOOB:
                 this.speedType.put(p.getName(), SpeedType.NOOB);
-                this.timing.put(p.getName(), 25);
+                this.timing.put(p.getName(), 20);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eNoobgeschwindigkeit§7.");
                 return 25;
             case SLOW:
                 this.speedType.put(p.getName(), SpeedType.SLOW);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eLangsamengeschwindigkeit§7.");
-                this.timing.put(p.getName(), 20);
+                this.timing.put(p.getName(), 15);
                 return 20;
             case NORMAL:
                 this.speedType.put(p.getName(), SpeedType.NORMAL);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eNormalengeschwindigkeit§7.");
-                this.timing.put(p.getName(), 15);
+                this.timing.put(p.getName(), 10);
                 return 15;
             case HARD:
                 this.speedType.put(p.getName(), SpeedType.HARD);
                 p.sendMessage(Main.prefix + "§7Du startest mit der §eHartengeschwindigkeit§7.");
-                this.timing.put(p.getName(), 11);
+                this.timing.put(p.getName(), 5);
                 return 12;
             case LEGEND:
                 this.speedType.put(p.getName(), SpeedType.LEGEND);

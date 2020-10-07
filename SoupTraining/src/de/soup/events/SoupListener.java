@@ -28,7 +28,7 @@ public class SoupListener implements Listener {
         if(event.getPlayer() == null)
             return;
         if(event.getItem() != null)
-            if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+            if (event.getItem().getType() == Material.MUSHROOM_SOUP)
                 if(SoupCommand.isInTraining(player))
                     heal(event.getPlayer());
 
