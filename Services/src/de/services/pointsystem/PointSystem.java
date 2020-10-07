@@ -1,5 +1,6 @@
 package de.services.pointsystem;
 
+import de.services.helper.Log;
 import de.services.mysql.MySQL;
 import de.soup.commands.SoupCommand;
 import de.soup.events.SoupListener;
@@ -17,18 +18,23 @@ public class PointSystem {
         this.mySQL = sql;
     }
 
-    public void saveForSoupScore(Player player, SpeedType type, int score) {
-        String sql = "INSERT INTO scores (uuid, soupScore) VALUES (?, ?)";
+    public void saveForSoupScore(Player player, SpeedType type, String time, int droppedSoups) {
+        String sql = "INSERT INTO scores (uuid, droppedSoups) VALUES (?, ?)";
 
-        try {
-            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement(sql);
-            preparedStatement.setString(1, player.getUniqueId().toString());
-            preparedStatement.setInt(2, score);
+        Log.log(player.getUniqueId());
+        Log.log(type);
+        Log.log(time);
+        Log.log(droppedSoups);
 
-            preparedStatement.executeUpdate();
-        } catch (SQLException e)  {
-            e.getStackTrace();
-        }
+//        try {
+//            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement(sql);
+//            preparedStatement.setString(1, player.getUniqueId().toString());
+//            preparedStatement.setInt(2, score);
+//
+//            preparedStatement.executeUpdate();
+//        } catch (SQLException e)  {
+//            e.getStackTrace();
+//        }
         // TODO: Receive Score On gameOver or /soup stop command
         // TODO: Save for Player
 

@@ -1,9 +1,11 @@
 package de.services.main;
 
 import de.services.config.Config;
+import de.services.helper.Log;
 import de.services.mysql.MySQL;
 import de.services.pointsystem.PointSystem;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
@@ -11,7 +13,7 @@ import java.sql.Connection;
 public class MainService extends JavaPlugin {
     public static String prefix = "§8[MySQL] §7";
 
-    public PointSystem pointSystem;
+    private PointSystem pointSystem;
 
     private MySQL mySQL;
 
@@ -50,22 +52,32 @@ public class MainService extends JavaPlugin {
     }
 
     private void connectMySQL() {
-        Connection connection =  mySQL.connect();
-        if (connection != null)
-        {
-            log("§eMit MySQL verbunden!");
+        Connection connection = mySQL.connect();
+        if (connection != null) {
+            Log.log("§eMit MySQL verbunden!");
         }
+    }
+
+    public static MainService getService(MainService service) {
+        Plugin servicePlugin = Bukkit.getPluginManager().getPlugin("Services");
+        if (servicePlugin != null && service == null) {
+            return (MainService) servicePlugin;
+        }
+
+        return service;
     }
 
     private void loadConfiguration() {
         final String sql = "mysql.credentials.";
 
-        host = (String) config.getConfiguration(sql+"host");
-        database = (String) config.getConfiguration(sql+"database");
-        username = (String) config.getConfiguration(sql+"username");
-        password = (String) config.getConfiguration(sql+"password");
-        port = (int) config.getConfiguration(sql+"port");
+        host = (String) config.getConfiguration(sql + "host");
+        database = (String) config.getConfiguration(sql + "database");
+        username = (String) config.getConfiguration(sql + "username");
+        password = (String) config.getConfiguration(sql + "password");
+        port = (int) config.getConfiguration(sql + "port");
     }
 
-    private void log(Object message) { Bukkit.getConsoleSender().sendMessage(prefix + message); }
+    public PointSystem getPointSystem() {
+        return pointSystem;
+    }
 }

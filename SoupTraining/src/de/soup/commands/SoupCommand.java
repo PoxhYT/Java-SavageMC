@@ -1,7 +1,9 @@
 package de.soup.commands;
 
 import com.google.common.collect.Maps;
+//import de.magnus.coinsapi.util.CoinsAPI;
 import de.magnus.coinsapi.util.CoinsAPI;
+import de.services.helper.Log;
 import de.services.main.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
@@ -31,7 +33,7 @@ public class SoupCommand implements CommandExecutor {
 
     private ConcurrentHashMap<String, SpeedType> speedType = new ConcurrentHashMap<>();
 
-    private ConcurrentHashMap<String, ItemStack[]> oldInventory = (ConcurrentHashMap)new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, ItemStack[]> oldInventory = (ConcurrentHashMap) new ConcurrentHashMap<>();
 
     private ConcurrentHashMap<String, Integer> time = new ConcurrentHashMap<>();
 
@@ -40,27 +42,25 @@ public class SoupCommand implements CommandExecutor {
     private static Map<UUID, Timer> timers = Maps.newHashMap();
 
     private static int number;
-    
+
     private final String noob = "§7Der §eSchwierigkeitsgrad §7wurde auf §eNoob §7angepasst!";
     private final String leicht = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLeicht §7angepasst!";
     private final String normal = "§7Der §eSchwierigkeitsgrad §7wurde auf §eNormal §7angepasst!";
     private final String hart = "§7Der §eSchwierigkeitsgrad §7wurde auf §eHart §7angepasst!";
     private final String legende = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLegende §7angepasst!";
 
+    // Declare Server
     private MainService service;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Plugin servicePlugin = Bukkit.getPluginManager().getPlugin("Services");
-        System.out.println(servicePlugin);
-        if (servicePlugin != null) {
-            service = (MainService)servicePlugin;
-        }
+        // Get Service
+        service = MainService.getService(service);
 
-        if(command.getName().equals("soup"))
-            if(sender instanceof Player) {
+        if (command.getName().equals("soup"))
+            if (sender instanceof Player) {
                 Player player = (Player) sender;
-                if(args.length == 0) {
+                if (args.length == 0) {
                     player.sendMessage(Main.prefix + "§e/soup start");
                     player.sendMessage(Main.prefix + "§e/soup stop");
                     player.sendMessage(Main.prefix + "§e/soup speed");
@@ -93,28 +93,40 @@ public class SoupCommand implements CommandExecutor {
                             player.setHealth(20.0D);
                             player.setFoodLevel(20);
                             player.getInventory().clear();
-                            Bukkit.getScheduler().cancelTask(((Integer)task.get(player.getName())).intValue());
+                            Bukkit.getScheduler().cancelTask(((Integer) task.get(player.getName())).intValue());
                             player.sendMessage(Main.prefix + "§cDu hast das Training beendet!");
 
                             Random random = new Random();
-                            for (int counter=1; counter<=100;counter++) {
+                            for (int counter = 1; counter <= 100; counter++) {
                                 number = random.nextInt(950);
                             }
 
+                            int droppedSoups;
+
+                            try {
+                                droppedSoups = ((Integer[])SoupListener.droppedItems.get(player.getName()))[0];
+                            } catch (Exception e) {
+                                droppedSoups = 0;
+                            }
+
                             if (!SoupListener.droppedItems.containsKey(player.getName()))
-                                SoupListener.droppedItems.put(player.getName(), new Integer[] { Integer.valueOf(0), Integer.valueOf(0) });
+                                SoupListener.droppedItems.put(player.getName(), new Integer[]{Integer.valueOf(0), Integer.valueOf(0)});
+
                             player.sendMessage(Main.prefix + "§7§m-------------- §c§lStatistiken §7§m--------------");
-                            player.sendMessage(Main.prefix + "§eSchaden: "+ this.time.get(player.getName()) + " §eMal");
-                            player.sendMessage(Main.prefix + "§eGedroppte Suppen: " + ((Integer[])SoupListener.droppedItems.get(player.getName()))[1]);
-                            player.sendMessage(Main.prefix + "§eGedroppte Schüsseln: " + ((Integer[])SoupListener.droppedItems.get(player.getName()))[0]);
+                            player.sendMessage(Main.prefix + "§eSchaden: " + this.time.get(player.getName()) + " §eMal");
+                            player.sendMessage(Main.prefix + "§eGedroppte Suppen: " + ((Integer[]) SoupListener.droppedItems.get(player.getName()))[1]);
+                            player.sendMessage(Main.prefix + "§eGedroppte Schüsseln: " + droppedSoups);
                             player.performCommand("timer stop");
                             player.sendMessage(Main.prefix + number + " §eCoins");
-                            CoinsAPI.addCoins(player.getUniqueId().toString(), number);
                             player.sendMessage(Main.prefix + "§7§m-------------- §c§lStatistiken §7§m--------------");
                             inTraining.remove(player);
                             player.getInventory().setContents(this.oldInventory.get(player.getName()));
                             player.updateInventory();
                             SoupListener.droppedItems.remove(player.getName());
+
+                            Timer time = Command_timer.timers.get(player.getUniqueId());
+
+                            service.getPointSystem().saveForSoupScore(player, this.speedType.get(player.getName()), time.getElapsedTime(), droppedSoups);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {
@@ -155,7 +167,7 @@ public class SoupCommand implements CommandExecutor {
     }
 
     private boolean playerCanSurvive(Player p) {
-        return ((int)p.getHealth() > 8);
+        return ((int) p.getHealth() > 8);
     }
 
     private void processSpeedType(Player p) {
@@ -196,7 +208,7 @@ public class SoupCommand implements CommandExecutor {
             p.sendMessage(Main.prefix + "§7Du startest mit der §eNoobgeschwindigkeit§7.");
             return 25;
         }
-        switch ((SpeedType)this.speedType.get(p.getName())) {
+        switch ((SpeedType) this.speedType.get(p.getName())) {
             case NOOB:
                 this.speedType.put(p.getName(), SpeedType.NOOB);
                 this.timing.put(p.getName(), 20);
