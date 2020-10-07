@@ -26,6 +26,9 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         player.getInventory().clear();
 
+        String uuid = player.getUniqueId().toString();
+        CoinsAPI.createPlayer(uuid);
+
         Random random = new Random();
         for (int counter=1; counter<=100;counter++) {
             number = random.nextInt(950);

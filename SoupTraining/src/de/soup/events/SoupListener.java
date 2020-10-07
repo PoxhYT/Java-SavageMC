@@ -76,23 +76,8 @@ public class SoupListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        if (SoupCommand.isInTraining(e.getPlayer()))
-        {
+        if (SoupCommand.isInTraining(e.getPlayer())) {
             SoupCommand.killTask(e.getPlayer());
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
-            System.out.println("Here");
         }
     }
 }

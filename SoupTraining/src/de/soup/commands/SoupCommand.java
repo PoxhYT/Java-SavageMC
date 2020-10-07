@@ -109,6 +109,7 @@ public class SoupCommand implements CommandExecutor {
                             player.sendMessage(Main.prefix + "§eGedroppte Schüsseln: " + ((Integer[])SoupListener.droppedItems.get(player.getName()))[0]);
                             player.performCommand("timer stop");
                             player.sendMessage(Main.prefix + number + " §eCoins");
+                            CoinsAPI.addCoins(player.getUniqueId().toString(), number);
                             player.sendMessage(Main.prefix + "§7§m-------------- §c§lStatistiken §7§m--------------");
                             inTraining.remove(player);
                             player.getInventory().setContents(this.oldInventory.get(player.getName()));
