@@ -51,4 +51,8 @@ public class MySQL {
             e.printStackTrace();
         }
     }
+
+    public Connection getConnection() {
+        return connection;
+    }
 }
