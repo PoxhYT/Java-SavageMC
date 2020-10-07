@@ -53,6 +53,7 @@ public class PlayerJoinListener implements Listener {
 
     private void getLobbyItems(Player player) {
         player.getInventory().setItem(4, new ItemManager(Material.COMPASS).setDisplayName("§8» §eTeleporter").build());
+        player.getInventory().setItem(6, new ItemManager(Material.CHEST).setDisplayName("§8» §eInventory").build());
     }
 
     private void getRandomNumber(Player player) {
