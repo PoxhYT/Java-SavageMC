@@ -1,0 +1,4 @@
+name: ServicePlugin
+version: 1.0.0
+main: de.services.MainService
+author: SolomonRosemite

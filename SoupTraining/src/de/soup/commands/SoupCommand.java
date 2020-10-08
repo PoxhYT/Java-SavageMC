@@ -3,8 +3,10 @@ package de.soup.commands;
 import com.google.common.collect.Maps;
 //import de.magnus.coinsapi.util.CoinsAPI;
 import de.magnus.coinsapi.util.CoinsAPI;
-import de.services.helper.Log;
-import de.services.main.MainService;
+//import de.services.MainService;
+//import de.services.helper.Log;
+//import de.services.main.MainService;
+import de.services.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
 import de.soup.storage.Item;
@@ -56,6 +58,7 @@ public class SoupCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Get Service
         service = MainService.getService(service);
+        System.out.println(service.age);
 
         if (command.getName().equals("soup"))
             if (sender instanceof Player) {
@@ -126,7 +129,7 @@ public class SoupCommand implements CommandExecutor {
 
                             Timer time = Command_timer.timers.get(player.getUniqueId());
 
-                            service.getPointSystem().saveForSoupScore(player, this.speedType.get(player.getName()), time.getElapsedTime(), droppedSoups);
+//                            service.getPointSystem().saveForSoupScore(player, this.speedType.get(player.getName()), time.getElapsedTime(), droppedSoups);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {

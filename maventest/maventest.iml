@@ -9,8 +9,20 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: junit:junit:4.10" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:17.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.2.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.avaje:ebean:2.8.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.persistence:persistence-api:1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.15" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:bungeecord-chat:1.8-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.8.8-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.google.firebase:firebase-admin:7.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.api-client:google-api-client:1.30.10" level="project" />
     <orderEntry type="library" name="Maven: com.google.oauth-client:google-oauth-client:1.31.0" level="project" />
@@ -36,7 +48,6 @@
     <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.3.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.apis:google-api-services-storage:v1-rev20200430-1.30.9" level="project" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.6" level="project" />
     <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-core:1.93.6" level="project" />
     <orderEntry type="library" name="Maven: com.google.api.grpc:proto-google-common-protos:1.18.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.cloud:google-cloud-core-http:1.93.6" level="project" />
@@ -71,7 +82,6 @@
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Maven: org.conscrypt:conscrypt-openjdk-uber:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: io.grpc:grpc-stub:1.30.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava:29.0-android" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.50.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.50.Final" level="project" />

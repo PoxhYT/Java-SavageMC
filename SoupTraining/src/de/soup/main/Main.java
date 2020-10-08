@@ -1,7 +1,6 @@
 package de.soup.main;
 
 import de.services.*;
-import de.services.main.MainService;
 import de.soup.commands.*;
 import de.soup.events.*;
 import de.soup.manager.SBManager;
