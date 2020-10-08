@@ -4,13 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>org.rosemite</groupId>
     <artifactId>Services</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>
-        Services
-    </name>
+    <name>Services</name>
+    <description>A Service Module</description>
+
+    <properties>
+        <mainClass>org.rosemite.services.main.MainService</mainClass>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <repositories>
         <repository>
@@ -27,27 +31,25 @@
             <scope>provided</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.google.firebase</groupId>-->
-<!--            <artifactId>firebase-admin</artifactId>-->
-<!--            <version>7.0.1</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>7.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.1</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <defaultGoal>clean packages</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>plugin.yml</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
 </project>

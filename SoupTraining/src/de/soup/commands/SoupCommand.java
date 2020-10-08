@@ -6,7 +6,7 @@ import de.magnus.coinsapi.util.CoinsAPI;
 //import de.services.MainService;
 //import de.services.helper.Log;
 //import de.services.main.MainService;
-import de.services.MainService;
+//import de.services.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
 import de.soup.storage.Item;
@@ -52,13 +52,13 @@ public class SoupCommand implements CommandExecutor {
     private final String legende = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLegende §7angepasst!";
 
     // Declare Server
-    private MainService service;
+//    private MainService service;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Get Service
-        service = MainService.getService(service);
-        System.out.println(service.age);
+//        service = MainService.getService(service);
+//        System.out.println(service.age);
 
         if (command.getName().equals("soup"))
             if (sender instanceof Player) {

@@ -7,26 +7,5 @@ public class MainService extends JavaPlugin {
         this.getLogger().info("Maven Works");
         System.out.println("POG");
         System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
-        System.out.println("POG");
     }
 }
