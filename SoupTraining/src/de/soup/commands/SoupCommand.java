@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 //import de.services.helper.Log;
 //import de.services.main.MainService;
 //import de.services.MainService;
+import org.rosemite.services.main.MainService;
 import org.rosemite.services.models.SpeedType;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
@@ -51,12 +52,12 @@ public class SoupCommand implements CommandExecutor {
     private final String legende = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLegende §7angepasst!";
 
     // Declare Server
-//    private MainService service;
+    private MainService service;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Get Service
-//        service = MainService.getService(service);
+        service = MainService.getService(service);
 
         if (command.getName().equals("soup"))
             if (sender instanceof Player) {
@@ -127,7 +128,7 @@ public class SoupCommand implements CommandExecutor {
 
                             Timer time = Command_timer.timers.get(player.getUniqueId());
 
-//                            service.getPointSystem().saveForSoupScore(player, this.speedType.get(player.getName()), time.getElapsedTime(), droppedSoups);
+                            service.getPointSystem().saveForSoupScore(player, this.speedType.get(player.getName()), time.getElapsedTime(), droppedSoups);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {
