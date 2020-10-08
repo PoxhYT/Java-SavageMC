@@ -1,4 +1,5 @@
-name: MavenPlugin
+name: Service
 version: 1.0
-main: me.tsccoding.maven.MavenMain
-author: TheSourceCode
+main: de.service.main.MainService
+#main: me.tsccoding.maven.MainService
+author: SolomonRosemite
