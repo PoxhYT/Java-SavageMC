@@ -3,7 +3,7 @@ package de.services.main;
 import de.services.config.Config;
 import de.services.helper.Log;
 import de.services.mysql.MySQL;
-import de.services.pointsystem.PointSystem;
+import de.services.systems.PointSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
