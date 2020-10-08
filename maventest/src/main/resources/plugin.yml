@@ -1,5 +1,0 @@
-name: Service
-version: 1.0
-main: de.service.main.MainService
-#main: me.tsccoding.maven.MainService
-author: SolomonRosemite
