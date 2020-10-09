@@ -1,8 +1,8 @@
-package org.rosemite.services.systems;
+package com.rosemite.services.systems;
 
+import com.rosemite.services.helper.Log;
+import com.rosemite.services.models.SpeedType;
 import org.bukkit.entity.Player;
-import org.rosemite.services.helper.Log;
-import org.rosemite.services.models.SpeedType;
 
 import java.util.UUID;
 
@@ -10,7 +10,7 @@ import static org.apache.commons.lang.StringUtils.repeat;
 
 public class PointSystem {
 //    public void saveForSoupScore(Player player, SpeedType type, String time, int droppedSoups) {
-    public void saveForSoupScore(Player player, SpeedType type, String time, int droppedSoups) {
+    public void saveForSoupScore(Player player, Object type, String time, int droppedSoups) {
         Log.log(player.getUniqueId());
         Log.log(type);
         Log.log(time);

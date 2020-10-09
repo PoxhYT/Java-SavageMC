@@ -1,4 +1,4 @@
-package org.rosemite.services.helper;
+package com.rosemite.services.helper;
 
 import org.bukkit.Bukkit;
 

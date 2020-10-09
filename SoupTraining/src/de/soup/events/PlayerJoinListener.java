@@ -1,6 +1,6 @@
 package de.soup.events;
 
-import de.magnus.coinsapi.util.CoinsAPI;
+//import de.magnus.coinsapi.util.CoinsAPI;
 import de.soup.main.Main;
 import de.soup.manager.ItemManager;
 import de.soup.manager.LocationManager;
@@ -27,13 +27,13 @@ public class PlayerJoinListener implements Listener {
         player.getInventory().clear();
 
         String uuid = player.getUniqueId().toString();
-        CoinsAPI.createPlayer(uuid);
+//        CoinsAPI.createPlayer(uuid);
         Random random = new Random();
         for (int counter=1; counter<=100;counter++) {
             number = random.nextInt(950);
             event.setJoinMessage(Main.prefix + number);
         }
-        CoinsAPI.addCoins(player.getUniqueId().toString(), number);
+//        CoinsAPI.addCoins(player.getUniqueId().toString(), number);
         getLobbyItems(player);
         SBManager.setLobbyBoard(player);
         Main.scoreCD();

@@ -1,4 +1,4 @@
-package org.rosemite.services.models;
+package de.soup.storage;
 
 public enum SpeedType {
     NOOB, SLOW, NORMAL, HARD, LEGEND;

@@ -1,4 +1,4 @@
-package org.rosemite.services.systems;
+package com.rosemite.services.systems;
 
 import org.bukkit.entity.Player;
 

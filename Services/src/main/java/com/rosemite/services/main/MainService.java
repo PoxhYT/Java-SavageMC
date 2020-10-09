@@ -1,11 +1,11 @@
-package org.rosemite.services.main;
+package com.rosemite.services.main;
 
+import com.rosemite.services.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.rosemite.services.config.Config;
-import org.rosemite.services.helper.Log;
-import org.rosemite.services.systems.PointSystem;
+import com.rosemite.services.helper.Log;
+import com.rosemite.services.systems.PointSystem;
 
 public class MainService extends JavaPlugin {
     public static String prefix = "§8[Service] §7";
@@ -13,14 +13,16 @@ public class MainService extends JavaPlugin {
     private PointSystem pointSystem;
     private Config config;
 
-
+    public enum SpeedType {
+        NOOB, SLOW, NORMAL, HARD, LEGEND;
+    }
 
     public void onEnable() {
-        Log.log("Done");
+        Log.log("Loaded Services");
         // Initialize Config data
-        initializeConfig();
-
-        // Todo: Create SoupPointSystem (with ranking and stuff)
+//        initializeConfig();
+//
+//        // Todo: Create SoupPointSystem (with ranking and stuff)
         pointSystem = new PointSystem();
     }
 

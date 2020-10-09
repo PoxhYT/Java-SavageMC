@@ -1,16 +1,11 @@
 package de.soup.commands;
 
 import com.google.common.collect.Maps;
-//import de.magnus.coinsapi.util.CoinsAPI;
-//import de.services.MainService;
-//import de.services.helper.Log;
-//import de.services.main.MainService;
-//import de.services.MainService;
-import org.rosemite.services.main.MainService;
-import org.rosemite.services.models.SpeedType;
+import com.rosemite.services.main.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
 import de.soup.storage.Item;
+import de.soup.storage.SpeedType;
 import de.soup.timer.Timer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
