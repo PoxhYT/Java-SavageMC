@@ -3,8 +3,8 @@ package de.sw.main;
 import de.anweisung.premiumkickapi.PremiumKick;
 import de.sw.commands.Command_leave;
 import de.sw.commands.Command_setup;
+import de.sw.gameManager.GameStates;
 import de.sw.listener.PlayerInteractListener;
-import de.sw.listener.PlayerInventoryClickListener;
 import de.sw.listener.PlayerJoinListener;
 import de.sw.listener.TeamListener;
 import de.sw.manager.InventoryManager;
@@ -33,12 +33,6 @@ public class Main extends JavaPlugin {
 
     private YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
 
-    public int teams;
-
-    public KitManager kitManager;
-
-    public static TeamManager teamManager;
-
     public int playersInTeam;
 
     public int maxPlayers = yamlConfiguration.getInt("maxPlayers");
@@ -47,17 +41,22 @@ public class Main extends JavaPlugin {
 
     public String allKitsPerm;
 
+    public static GameStates state;
+
     public SBManager sbManager = new SBManager();
 
     public void onEnable() {
-        KitManager kitManager = new KitManager("§eStandard", new String[] {"§eYARRAK"}, Material.BAKED_POTATO, 2);
-        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        init();
+
+    }
+
+    public void init() {
+        state = GameStates.LOBBY;
         registerEvents();
         loadConfig();
         registerCommands();
         Bukkit.getConsoleSender().sendMessage(prefix + "§eDas Plugin wurde erfolgreich gestartet!!!!");
         PremiumKick.allowPremiumKick();
-
     }
 
     public void registerCommands() {
@@ -78,6 +77,7 @@ public class Main extends JavaPlugin {
             return;
         }
         if(!file.exists()) {
+            yamlConfiguration.set("minplayers", 1);
             yamlConfiguration.set("maxPlayers", 3);
             yamlConfiguration.set("teams", 8);
             yamlConfiguration.set("playersInTeam", 1);

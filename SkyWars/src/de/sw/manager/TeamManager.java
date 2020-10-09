@@ -9,53 +9,54 @@ import java.util.ArrayList;
 
 public class TeamManager {
 
-    private String name, prefix;
-    private ArrayList<String> players;
-    private byte colorData;
-    private int maxPlayer;
+    private String teamName;
+    private String teamPrefix;
+    private int teamSize;
+    public ArrayList<String> players;
+    public ArrayList<Player> sizePlayers;
 
-    public TeamManager(String name, String prefix, byte colorData) {
-        this.name = name;
-        this.prefix = prefix;
-        this.colorData = colorData;
+    public TeamManager(String teamName, String teamPrefix, int teamSize) {
+        this.teamName = teamName;
+        this.teamPrefix = teamPrefix;
+        this.teamSize = teamSize;
         this.players = new ArrayList<>();
-        this.maxPlayer = 4;
-
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPrefix() {
-        return prefix;
     }
 
     public ArrayList<String> getPlayers() {
         return players;
     }
 
-    public byte getColorData() {
-        return colorData;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public int getMaxPlayer() {
-        return maxPlayer;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
-    public boolean isInTeam(Player player) {
-        if(players.contains(player.getName())) {
-            return true;
-        }
-        return false;
+    public String getTeamPrefix() {
+        return teamPrefix;
+    }
+
+    public void setTeamPrefix(String teamPrefix) {
+        this.teamPrefix = teamPrefix;
+    }
+
+    public int getTeamSize() {
+        return teamSize;
+    }
+
+    public void setTeamSize(int teamSize) {
+        this.teamSize = teamSize;
     }
 
     public ItemStack getIcon() {
-        Material type;
-        ItemStack itemStack = new ItemStack(Material.WOOL, 1, colorData);
+        ItemStack itemStack = new ItemStack(Material.WOOL);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(prefix + name);
+        itemMeta.setDisplayName(teamName);
         itemMeta.setLore(players);
+        itemStack.setItemMeta(itemMeta);
+
         return itemStack;
     }
 }

@@ -1,5 +1,6 @@
 package de.sw.listener;
 
+import de.sw.main.Main;
 import de.sw.manager.ItemBuilderAPI;
 import de.sw.manager.TeamManager;
 import org.bukkit.Bukkit;
@@ -20,23 +21,19 @@ public class TeamListener implements Listener {
 
     static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
 
-    private TeamManager[] teamManagers = new TeamManager[8];
-
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        TeamManager[] teams = getTeams();
+        Player player = (Player) event.getWhoClicked();
+
+        TeamManager team1 = new TeamManager("§eTeam1", "§eTeam1", 2);
 
         try {
-            for (int i = 0; i < teamManagers.length; i++) {
-                if(event.getClickedInventory().getTitle().equals("§8• §eTeams")) {
-                    if (event.getCurrentItem().getType() == Material.WOOL) {
-                        if(event.getCurrentItem().getData().getData() == (byte)1) {
-                            System.out.println("Found team");
-                            System.out.println(teamManagers[i].getName());
-                        }
-                    }
+            if(event.getClickedInventory().getTitle().equals("§eTeamauswahl")) {
+                if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§eTeam1")) {
+                    team1.sizePlayers.add(player);
                 }
             }
+
         }catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -52,19 +49,13 @@ public class TeamListener implements Listener {
 
     public void openTeamInventory(Player player) {
 
-        Inventory inventory = Bukkit.createInventory(null, 9, "§8• §eTeams");
-        TeamManager[] teams = getTeams();
-        for (int i = 0; i < teams.length; i++)
-            inventory.setItem(i, teams[i].getIcon());
+        TeamManager team1 = new TeamManager("§eTeam1", "§eTeam1", 2);
+        TeamManager team2 = new TeamManager("§eTeam2", "§eTeam2", 2);
+
+        Inventory inventory = Bukkit.createInventory(null, 9, "§eTeamauswahl");
+        inventory.setItem(0, team1.getIcon());
+        inventory.setItem(1, team2.getIcon());
         player.openInventory(inventory);
-    }
 
-    public static TeamManager[] getTeams() {
-        TeamManager[] teamManagers = new TeamManager[2];
-
-        teamManagers[0] = (new TeamManager("Team1", "§e", (byte)1));
-        teamManagers[1] = (new TeamManager("Team2", "§e", (byte)1));
-
-        return teamManagers;
     }
 }
