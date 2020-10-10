@@ -1,0 +1,4 @@
+name: Services
+version: 1.0
+author: SolomonRosemite
+main: com.rosemtie.services.main.MainService

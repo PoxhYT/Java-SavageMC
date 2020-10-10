@@ -1,7 +1,7 @@
 package de.soup.commands;
 
 import com.google.common.collect.Maps;
-import com.rosemite.services.main.MainService;
+import com.rosemtie.services.main.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
 import de.soup.storage.Item;
