@@ -13,34 +13,43 @@ package com.rosemite.services.backend.http;
 //import org.apache.http.util.EntityUtils;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.jlabsys.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.rosemite.services.helper.Log;
 import com.rosemite.services.models.HttpResponse;
-import javafx.util.Pair;
+import com.rosemite.services.models.Path;
 import okhttp3.*;
-import org.bukkit.craftbukkit.libs.org.ibex.nestedvm.util.Seekable;
 
 public class Http {
-
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private final String key;
+    private final String url;
 
-    public HttpResponse request(String url, HttpType type, Map<String, Object> body, Map<String, String> headers) throws IOException {
+    public Http(String key, String url) {
+        this.key = key;
+        this.url = url;
+    }
+
+    public HttpResponse request(HttpType type, Map<String, Object> body, Path path) throws IOException {
         if (body == null) {
             body = new HashMap<>();
+        } else {
+            String bodyData = new Gson().toJson(body);
+            body.clear();
+
+            body.put("data", bodyData);
         }
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("path", path.get());
+        headers.put("key", key);
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
                 .headers(Headers.of(headers))
-                .build();;
+                .build();
 
         RequestBody requestBody = RequestBody.create(JSON, toString(body));
 

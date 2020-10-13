@@ -1,11 +1,13 @@
 package com.rosemite.services.main;
 
 import com.github.jlabsys.ObjectMapper;
+import com.google.gson.Gson;
 import com.rosemite.services.backend.http.Http;
 import com.rosemite.services.backend.http.HttpType;
 import com.rosemite.services.config.Config;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.models.HttpResponse;
+import com.rosemite.services.models.SoupScoreModel;
 import com.rosemite.services.systems.CoinSystem;
 import com.rosemite.services.systems.PlayerSystem;
 import com.rosemite.services.systems.PointSystem;
@@ -31,10 +33,13 @@ public class MainService extends JavaPlugin {
 
     public void onEnable() {
         // Initialize Config data
-        initializeConfig();
+        config = new Config(this);
+        String key = config.getConfiguration("backend.key").toString();
+        String url = "http://localhost:3000/";
+//        String url = config.getConfiguration("backend.url").toString();
 
         // Initialize Http Client
-        http = new Http();
+        http = new Http(key, url);
 
         // Initialize Systems
         playerSystem = new PlayerSystem(http);
@@ -47,33 +52,26 @@ public class MainService extends JavaPlugin {
 
         Map<String, String> header = new HashMap<>();
         header.put("path", "SoupTraining/uuid 1");
-        header.put("key", ""); // Todo: Key here
+        header.put("key", key);
 
 //        try {
 //            HttpResponse data = http.request("http://localhost:3000/", HttpType.GET, body, header);
 //
-//            Map<String, Object> map = data.getAsMap();
-//
 //            Log.d(data.statusCode);
 //            Log.d(data.content);
 //
-//            ObjectMapper mapper = new ObjectMapper();
+//            String json = new Gson().toJson(data.getAsMap().get("data"));
+//            SoupScoreModel score = new Gson().fromJson(json, SoupScoreModel.class);
 //
-//            //JSON URL to Java object
-////            Http obj = mapper.isGetter(data.content, Http.class);
-//
-////            Log.d(map.get("easy"));
-////            Log.d(map.get("uuid"));
+//            Log.d(score.HARD);
+//            Log.d(score.LEGEND);
+//            Log.d(score.UUID);
+//            Log.d(score.SLOW);
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
 
         Log.d("Loaded Services Successfully");
-    }
-
-    private void initializeConfig() {
-        config = new Config(this);
-        loadConfiguration();
     }
 
     public static MainService getService(MainService service) {
@@ -83,10 +81,6 @@ public class MainService extends JavaPlugin {
         }
 
         return service;
-    }
-
-    private void loadConfiguration() {
-//       final String sql = "mysql.credentials.";
     }
 
     public PointSystem getPointSystem() {
