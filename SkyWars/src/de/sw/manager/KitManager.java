@@ -8,16 +8,28 @@ public class KitManager {
     private String[] kitDescription;
     private Material kitIcon;
     private int kitPrice;
+    private String Kit;
+    private String notBought;
 
-    public KitManager(String kitName, String[] kitDescription, Material kitIcon, int kitPrice) {
+    public KitManager(String kitName, String[] kitDescription, Material kitIcon, int kitPrice, String Kit, String notBought) {
         this.kitName = kitName;
         this.kitDescription = kitDescription;
         this.kitIcon = kitIcon;
         this.kitPrice = kitPrice;
+        this.Kit = Kit;
+        this.notBought = notBought;
     }
 
     public String getKitName() {
         return "§8• §e" + kitName;
+    }
+
+    public String getNotBought() {
+        return "§8• §e" + notBought;
+    }
+
+    public void setNotBought(String notBought) {
+        this.notBought = notBought;
     }
 
     public void setKitName(String kitName) {
@@ -46,5 +58,13 @@ public class KitManager {
 
     public void setKitPrice(int kitPrice) {
         this.kitPrice = kitPrice;
+    }
+
+    public String getKit() {
+        return "§e" + Kit;
+    }
+
+    public void setKit(String kit) {
+        Kit = kit;
     }
 }

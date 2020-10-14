@@ -19,7 +19,6 @@ public class PlayerJoinListener implements Listener {
         SBManager.setLobbyBoard(player);
         Main.scoreCD();
         Data.playing.add(player);
-        player.teleport(Locations.getSpawn("Lobby"));
         Main.inventoryManager.LobbyInventory(player);
         Data.alive.add(player);
 

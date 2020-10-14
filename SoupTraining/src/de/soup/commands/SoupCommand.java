@@ -55,7 +55,6 @@ public class SoupCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Get Service
-        service = MainService.getService(service);
 
         if (command.getName().equals("soup"))
             if (sender instanceof Player) {

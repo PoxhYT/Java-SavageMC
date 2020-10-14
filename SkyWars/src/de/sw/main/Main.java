@@ -3,16 +3,15 @@ package de.sw.main;
 import de.anweisung.premiumkickapi.PremiumKick;
 import de.sw.commands.Command_leave;
 import de.sw.commands.Command_setup;
-import de.sw.gameManager.GameStates;
-import de.sw.listener.PlayerInteractListener;
-import de.sw.listener.PlayerJoinListener;
+import de.sw.gameManager.GameState_Manager;
+import de.sw.gameManager.Game_State;
+import de.sw.listener.KitListener;
+import de.sw.listener.PlayerConnectionEvent;
+import de.sw.listener.ProtectionListener;
 import de.sw.listener.TeamListener;
 import de.sw.manager.InventoryManager;
-import de.sw.manager.KitManager;
 import de.sw.manager.SBManager;
-import de.sw.manager.TeamManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -22,12 +21,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends JavaPlugin {
 
-    public static String prefix = "§8[§bSkyWars§8] §7";
-
     public static Main instance;
+
+    public static String prefix = "§bSkyWars §8❘ §7";
+
+    public ArrayList<Player> players;
 
     private File file = new File("plugins/SkyWars", "Config.yml");
 
@@ -41,9 +44,11 @@ public class Main extends JavaPlugin {
 
     public String allKitsPerm;
 
-    public static GameStates state;
+    private GameState_Manager gameStateManager;
 
     public SBManager sbManager = new SBManager();
+
+    public static List<Player> build = new ArrayList<>();
 
     public void onEnable() {
         init();
@@ -51,8 +56,12 @@ public class Main extends JavaPlugin {
     }
 
     public void init() {
-        state = GameStates.LOBBY;
+        gameStateManager = new GameState_Manager(this);
+        gameStateManager.setGameState(Game_State.LOBBY_STATE);
+        players = new ArrayList<>();
+
         registerEvents();
+        instance = this;
         loadConfig();
         registerCommands();
         Bukkit.getConsoleSender().sendMessage(prefix + "§eDas Plugin wurde erfolgreich gestartet!!!!");
@@ -66,9 +75,10 @@ public class Main extends JavaPlugin {
 
     public void registerEvents() {
         final PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents((Listener) new PlayerJoinListener(), this);
-        pluginManager.registerEvents((Listener) new PlayerInteractListener(), this);
+        pluginManager.registerEvents((Listener) new PlayerConnectionEvent(), this);
         pluginManager.registerEvents((Listener) new TeamListener(), this);
+        pluginManager.registerEvents((Listener) new KitListener(), this);
+        pluginManager.registerEvents((Listener) new ProtectionListener(), this);
     }
 
     public void loadConfig() {
@@ -81,7 +91,7 @@ public class Main extends JavaPlugin {
             yamlConfiguration.set("maxPlayers", 3);
             yamlConfiguration.set("teams", 8);
             yamlConfiguration.set("playersInTeam", 1);
-            yamlConfiguration.set("gameSize", "8x1");
+            yamlConfiguration.set("gameSize", "4x2");
             yamlConfiguration.set("MapName", "Forest");
         }
         try {
@@ -98,5 +108,13 @@ public class Main extends JavaPlugin {
 
     public InventoryManager getInventoryManager() {
         return inventoryManager;
+    }
+
+    public GameState_Manager getGameStateManager() {
+        return gameStateManager;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }

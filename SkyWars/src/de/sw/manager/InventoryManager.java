@@ -36,54 +36,10 @@ public class InventoryManager {
     public static TeamManager[] getTeams() {
         TeamManager[] teamManagers = new TeamManager[2];
 
-        teamManagers[0] = (new TeamManager("Team1", "§e", (byte)1));
-        teamManagers[1] = (new TeamManager("Team2", "§e", (byte)1));
+        teamManagers[0] = (new TeamManager("Team1", "§e", (byte) 1));
+        teamManagers[1] = (new TeamManager("Team2", "§e", (byte) 1));
 
         return teamManagers;
     }
 
-    public void openKitInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 36, "§eKits");
-
-        KitManager[] kits = getKits();
-
-        for (int i = 0; i < kits.length; i++)
-        {
-            inventory.setItem(i, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
-        }
-
-        player.openInventory(inventory);
-    }
-
-
-    private KitManager[] getKits() {
-
-        KitManager[] arr = new KitManager[3];
-
-         arr[0] = (new KitManager("Standard §8[§aGekauft§8]",
-                 new String[]
-                            {
-                            "§7Du startest mit §e1 Eisenschwert§7,",
-                            "§e1 Eisenspitzhacke§7, §e1 Eisenaxt"
-                            },
-                 Material.IRON_PICKAXE, 0)
-         );
-
-        arr[1] = (new KitManager("Maurer",
-                    new String[] {"§8✘ §eAusrüstung",
-                            "§8✘ §764 Ziegelsteine",
-                            "§8✘ §7Goldhelm mit Schutz III",
-                            "§8✘ §7Goldspitzhacke mit Effizienz III und Haltbarkeit II"},
-                    Material.BRICK, 10000)
-        );
-
-        arr[2] = (new KitManager("Healer",
-                new String[] {"§8✘ §eAusrüstung",
-                        "§8✘ §73x Heilungstränke mit Heilung II",
-                        "§8✘ §71 Regenerationstrank für 1:30 Minuten"},
-                Material.GHAST_TEAR, 5000)
-        );
-
-        return arr;
-    }
 }

@@ -80,7 +80,6 @@ public class Main extends JavaPlugin {
         instance = this;
         registerCommands();
         state = GameState.LOBBY;
-        MySQL.getInstance().connect();
         new ServerConfig(this);
     }
 

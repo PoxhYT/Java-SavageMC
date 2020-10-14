@@ -76,12 +76,11 @@ public class LobbyCountdown extends Countdown{
         for (Player all : Bukkit.getOnlinePlayers())
             all.setLevel(60);
         this.idleID = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin)Main.getInstance(), new Runnable() {
-            int missing = Data.MIN_PLAYERS - Data.playing.size();
 
             public void run() {
                 for (Player all : Bukkit.getOnlinePlayers())
                     all.playSound(all.getLocation(), Sound.ANVIL_BREAK, 1.0F, 1.0F);
-                    Bukkit.broadcastMessage(Main.prefix + "§cEs fehlen " + Main.getInstance().getConfig().getInt("MinPlayers") + ", damit das Spiel starten kann!");
+                    Bukkit.broadcastMessage(Main.prefix + "§cWarten auf weitere Spieler...");
             }
         },0L, 300L);
     }
@@ -109,6 +108,14 @@ public class LobbyCountdown extends Countdown{
             isRunning = false;
             Bukkit.getScheduler().cancelTask(this.taskID);
         }
+    }
+
+    public static boolean isIsIdling() {
+        return isIdling;
+    }
+
+    public static boolean isIsRunning() {
+        return isRunning;
     }
 }
 

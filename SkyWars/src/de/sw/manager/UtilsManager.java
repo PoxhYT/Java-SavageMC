@@ -16,9 +16,11 @@ public class UtilsManager {
 
     public static boolean canThrow = false;
 
-    public static ArrayList<Player> onlinePlayers = new ArrayList<>();
+    public static ArrayList<Player> players = new ArrayList<>();
 
     public static ArrayList<Player> spectator = new ArrayList<>();
 
     public static int minPlayers = yamlConfiguration.getInt("minPlayers");
+
+    public static int maxPlayers = yamlConfiguration.getInt("maxPlayers");
 }

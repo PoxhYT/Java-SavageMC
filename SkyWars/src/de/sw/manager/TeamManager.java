@@ -11,14 +11,13 @@ public class TeamManager {
 
     private String teamName;
     private String teamPrefix;
-    private int teamSize;
+    private int maxPlayers;
     public ArrayList<String> players;
-    public ArrayList<Player> sizePlayers;
 
     public TeamManager(String teamName, String teamPrefix, int teamSize) {
         this.teamName = teamName;
         this.teamPrefix = teamPrefix;
-        this.teamSize = teamSize;
+        this.maxPlayers = teamSize;
         this.players = new ArrayList<>();
     }
 
@@ -42,12 +41,19 @@ public class TeamManager {
         this.teamPrefix = teamPrefix;
     }
 
-    public int getTeamSize() {
-        return teamSize;
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
     }
 
-    public void setTeamSize(int teamSize) {
-        this.teamSize = teamSize;
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public boolean isInTeam(Player player) {
+        if (players.contains(player.getName())) {
+            return true;
+        }
+        return false;
     }
 
     public ItemStack getIcon() {
@@ -56,7 +62,6 @@ public class TeamManager {
         itemMeta.setDisplayName(teamName);
         itemMeta.setLore(players);
         itemStack.setItemMeta(itemMeta);
-
         return itemStack;
     }
 }
