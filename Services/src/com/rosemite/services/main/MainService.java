@@ -35,8 +35,7 @@ public class MainService extends JavaPlugin {
         // Initialize Config data
         config = new Config(this);
         String key = config.getConfiguration("backend.key").toString();
-        String url = "http://localhost:3000/";
-//        String url = config.getConfiguration("backend.url").toString();
+        String url = config.getConfiguration("backend.url").toString();
 
         // Initialize Http Client
         http = new Http(key, url);
@@ -46,32 +45,11 @@ public class MainService extends JavaPlugin {
         pointSystem = new PointSystem(http);
         coinSystem = new CoinSystem(http);
 
-        Map<String, Object> body = new HashMap<>();
-        body.put("Age", 21);
-        body.put("test", true);
-
-        Map<String, String> header = new HashMap<>();
-        header.put("path", "SoupTraining/uuid 1");
-        header.put("key", key);
-
-//        try {
-//            HttpResponse data = http.request("http://localhost:3000/", HttpType.GET, body, header);
-//
-//            Log.d(data.statusCode);
-//            Log.d(data.content);
-//
-//            String json = new Gson().toJson(data.getAsMap().get("data"));
-//            SoupScoreModel score = new Gson().fromJson(json, SoupScoreModel.class);
-//
-//            Log.d(score.HARD);
-//            Log.d(score.LEGEND);
-//            Log.d(score.UUID);
-//            Log.d(score.SLOW);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         Log.d("Loaded Services Successfully");
+    }
+
+    public PointSystem getPointSystem() {
+        return pointSystem;
     }
 
     public static MainService getService(MainService service) {
@@ -81,9 +59,5 @@ public class MainService extends JavaPlugin {
         }
 
         return service;
-    }
-
-    public PointSystem getPointSystem() {
-        return pointSystem;
     }
 }

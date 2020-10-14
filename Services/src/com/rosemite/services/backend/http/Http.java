@@ -1,17 +1,5 @@
 package com.rosemite.services.backend.http;
 
-//import org.apache.http.Header;
-//import org.apache.http.HttpEntity;
-//import org.apache.http.NameValuePair;
-//import org.apache.http.client.entity.UrlEncodedFormEntity;
-//import org.apache.http.client.methods.CloseableHttpResponse;
-//import org.apache.http.client.methods.HttpGet;
-//import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.impl.client.CloseableHttpClient;
-//import org.apache.http.impl.client.HttpClients;
-//import org.apache.http.message.BasicNameValuePair;
-//import org.apache.http.util.EntityUtils;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +20,12 @@ public class Http {
     }
 
     public HttpResponse request(HttpType type, Map<String, Object> body, Path path) throws IOException {
+        Map<String, String> headers = new HashMap<>();
+
+        return request(type, body, path, headers);
+    }
+
+    public HttpResponse request(HttpType type, Map<String, Object> body, Path path, Map<String, String> headers) throws IOException {
         if (body == null) {
             body = new HashMap<>();
         } else {
@@ -41,9 +35,13 @@ public class Http {
             body.put("data", bodyData);
         }
 
-        Map<String, String> headers = new HashMap<>();
+        if (headers == null) {
+            headers = new HashMap<>();
+        }
+
         headers.put("path", path.get());
         headers.put("key", key);
+
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -68,24 +66,24 @@ public class Http {
         switch (type) {
             case POST:
                 request = new Request.Builder()
-                    .url(url)
-                    .headers(Headers.of(headers))
-                    .post(requestBody)
-                    .build();
+                        .url(url)
+                        .headers(Headers.of(headers))
+                        .post(requestBody)
+                        .build();
                 break;
             case PUT:
                 request = new Request.Builder()
-                    .url(url)
-                    .headers(Headers.of(headers))
-                    .put(requestBody)
-                    .build();
+                        .url(url)
+                        .headers(Headers.of(headers))
+                        .put(requestBody)
+                        .build();
                 break;
             case DELETE:
                 request = new Request.Builder()
-                    .url(url)
-                    .headers(Headers.of(headers))
-                    .delete(requestBody)
-                    .build();
+                        .url(url)
+                        .headers(Headers.of(headers))
+                        .delete(requestBody)
+                        .build();
                 break;
         }
 
@@ -94,9 +92,8 @@ public class Http {
         return new HttpResponse(response.body().string(), response.code());
     }
 
-    public Map<String, Object> toMap(String value) {
-        Map<String, Object> x = new Gson().fromJson(value, Map.class);
-        return x;
+    public void reportError() {
+        // TODO: Report a error & save it to Firebase
     }
 
     public String toString(Map<String, Object> value) {

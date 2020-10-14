@@ -1,17 +1,20 @@
 package com.rosemite.services.systems;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.rosemite.services.backend.http.Http;
 import com.rosemite.services.backend.http.HttpType;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.models.HttpResponse;
 import com.rosemite.services.models.Path;
 import com.rosemite.services.models.Paths;
+import com.rosemite.services.models.SoupScoreModel;
+import javafx.util.Pair;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class PointSystem {
     private Http http;
@@ -20,37 +23,91 @@ public class PointSystem {
         this.http = http;
     }
 
-//    public void saveForSoupScore(Player player, SpeedType type, String time, int droppedSoups) {
-    public void saveForSoupScore(Player player, Object type, String time, int droppedSoups) {
-        Log.d(player.getUniqueId());
-        Log.d(type);
-        Log.d(time);
-        Log.d(droppedSoups);
+    public boolean saveForSoupScore(Player player, Object type, String time, int droppedSoups) {
+        Pair<SoupScoreModel, Map<String, Object>> previousScore = getAllScoresForSoup(player.getUniqueId());
 
-        Map<String, Object> body = new HashMap<>();
-        body.put("UUID", player.getUniqueId().toString());
-        body.put(type.toString(), droppedSoups);
+        if (previousScore == null) {
+            // TODO: Handle null
+            Log.d("bad");
+            return false;
+        }
 
-        Path path = new Path(Paths.SoupTraining, player.getUniqueId().toString());
+        int score = -1;
 
-        Log.d(path.get());
+        if (previousScore.getValue() != null && previousScore.getValue().containsKey(type.toString())) {
+            score = (int) Math.round((double)previousScore.getValue().get(type.toString()));
+        }
 
-        // TODO: Only save score if current score is higher
+        if (droppedSoups > score) {
+            Map<String, Object> body = new HashMap<>();
+            body.put("UUID", player.getUniqueId().toString());
+            body.put(type.toString(), droppedSoups);
+            body.put("PLAYERNAME", player.getDisplayName());
+
+            Path path = new Path(Paths.SoupTraining, player.getUniqueId().toString());
+
+            try {
+                HttpResponse res = http.request(HttpType.POST,body, path);
+
+                if (res.statusCode != 200) {
+                    http.reportError();
+                    return false;
+                }
+
+                Log.d("New Record!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public Pair<SoupScoreModel, Map<String, Object>> getAllScoresForSoup(UUID id)  {
         try {
-            HttpResponse res =  http.request(HttpType.POST,body, new Path(Paths.SoupTraining, player.getUniqueId().toString()));
+            HttpResponse res =  http.request(HttpType.GET,null, new Path(Paths.SoupTraining, id.toString()));
 
-            Log.d(res.statusCode);
-            Log.d(res.content);
+            if (res.statusCode != 200) {
+                http.reportError();
+                return null;
+            }
+
+            String json = new Gson().toJson(res.getAsMap().get("data"));
+
+            return new Pair<>(
+                    new Gson().fromJson(json, SoupScoreModel.class),
+                    new Gson().fromJson(json, Map.class)
+            );
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    public void getScoresForSoup(UUID id)  {
-        // TODO: Search by UUID
-    }
+    public List<SoupScoreModel> getAllScoresForSoup() {
+        try {
+            Map<String, String> header = new HashMap<>();
+            header.put("collection", "true");
 
-    public void getScoresForSoup(Object type) {
-        // TODO: Search by type
+            HttpResponse res = http.request(HttpType.GET,null, new Path(Paths.SoupTraining, ""), header);
+
+            if (res.statusCode != 200) {
+                Log.d(res.content);
+                http.reportError();
+                return null;
+            }
+
+            String json = new Gson().toJson(res.getAsMap().get("data"));
+
+            Type listType = new TypeToken<ArrayList<SoupScoreModel>>(){}.getType();
+            List<SoupScoreModel> list = new Gson().fromJson(json, listType);
+
+            return list;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
