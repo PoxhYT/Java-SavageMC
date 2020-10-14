@@ -1,4 +1,4 @@
-package de.services.config;
+package com.rosemite.services.config;
 
 import org.bukkit.plugin.Plugin;
 

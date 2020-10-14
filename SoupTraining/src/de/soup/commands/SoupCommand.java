@@ -1,10 +1,8 @@
 package de.soup.commands;
 
 import com.google.common.collect.Maps;
-//import de.magnus.coinsapi.util.CoinsAPI;
-import de.magnus.coinsapi.util.CoinsAPI;
-import de.services.helper.Log;
-import de.services.main.MainService;
+import com.rosemite.services.helper.Log;
+import com.rosemite.services.main.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
 import de.soup.storage.Item;
@@ -124,8 +122,9 @@ public class SoupCommand implements CommandExecutor {
                             SoupListener.droppedItems.remove(player.getName());
 
                             Timer time = Command_timer.timers.get(player.getUniqueId());
+                            SpeedType type = this.speedType.get(player.getName());
 
-                            service.getPointSystem().saveForSoupScore(player, this.speedType.get(player.getName()), time.getElapsedTime(), droppedSoups);
+                            service.getPointSystem().saveForSoupScore(player, type, time.getElapsedTime(), droppedSoups);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {

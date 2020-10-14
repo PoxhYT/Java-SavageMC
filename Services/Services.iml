@@ -7,8 +7,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="server1" level="project" />
-    <orderEntry type="library" name="mysql-connector-java-5.1.49" level="project" />
-    <orderEntry type="module" module-name="SoupTraining" />
+    <orderEntry type="library" exported="" name="server1" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../Apis/SavageMC/gson-2.8.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="okhttp-3.9.0" level="project" />
+    <orderEntry type="library" exported="" name="spring-aop-5.1.9.RELEASE" level="project" />
   </component>
 </module>
