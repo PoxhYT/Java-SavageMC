@@ -1,7 +1,10 @@
 package com.rosemite.services.models;
 
 public enum Paths {
-    SoupTraining("SoupTraining/");
+    SoupTraining("SoupTraining/"),
+    SkywarsKits("SkyWarsKits/"),
+    Test("Test/"),
+    SkywarsKitsTest("SkyWarsKitsTest/");
     private final String text;
 
     @Override

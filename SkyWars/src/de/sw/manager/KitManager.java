@@ -3,68 +3,37 @@ package de.sw.manager;
 import org.bukkit.Material;
 
 public class KitManager {
+    private final String kitName;
+    private final String kitDescription;
+    private final int kitIcon;
+    private final int kitPrice;
 
-    private String kitName;
-    private String[] kitDescription;
-    private Material kitIcon;
-    private int kitPrice;
-    private String Kit;
-    private String notBought;
+    public KitManager(String kitName, String kitDescription, double kitIcon, double kitPrice) {
+        int icon = (int)Math.round(kitIcon);
+        this.kitIcon = icon;
 
-    public KitManager(String kitName, String[] kitDescription, Material kitIcon, int kitPrice, String Kit, String notBought) {
         this.kitName = kitName;
         this.kitDescription = kitDescription;
-        this.kitIcon = kitIcon;
-        this.kitPrice = kitPrice;
-        this.Kit = Kit;
-        this.notBought = notBought;
+        this.kitPrice = (int)Math.round(kitPrice);
     }
 
     public String getKitName() {
         return "§8• §e" + kitName;
     }
 
-    public String getNotBought() {
-        return "§8• §e" + notBought;
-    }
-
-    public void setNotBought(String notBought) {
-        this.notBought = notBought;
-    }
-
-    public void setKitName(String kitName) {
-        this.kitName = kitName;
-    }
-
     public String[] getKitDescription() {
-        return kitDescription;
-    }
-
-    public void setKitDescription(String[] kitDescription) {
-        this.kitDescription = kitDescription;
+        return kitDescription.split(",");
     }
 
     public Material getKitIcon() {
-        return kitIcon;
-    }
-
-    public void setKitIcon(Material kitIcon) {
-        this.kitIcon = kitIcon;
+        return Material.getMaterial(kitIcon);
     }
 
     public int getKitPrice() {
         return kitPrice;
     }
 
-    public void setKitPrice(int kitPrice) {
-        this.kitPrice = kitPrice;
-    }
-
     public String getKit() {
-        return "§e" + Kit;
-    }
-
-    public void setKit(String kit) {
-        Kit = kit;
+        return "§e" + kitName;
     }
 }

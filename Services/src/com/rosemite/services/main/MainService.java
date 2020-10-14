@@ -8,6 +8,7 @@ import com.rosemite.services.config.Config;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.models.HttpResponse;
 import com.rosemite.services.models.SoupScoreModel;
+import com.rosemite.services.services.skywars.SkywarsServices;
 import com.rosemite.services.systems.CoinSystem;
 import com.rosemite.services.systems.PlayerSystem;
 import com.rosemite.services.systems.PointSystem;
@@ -27,6 +28,8 @@ public class MainService extends JavaPlugin {
     private PointSystem pointSystem;
     private CoinSystem coinSystem;
 
+    private SkywarsServices skywarsServices;
+
     private Config config;
 
     private Http http;
@@ -45,11 +48,18 @@ public class MainService extends JavaPlugin {
         pointSystem = new PointSystem(http);
         coinSystem = new CoinSystem(http);
 
+        // Initialize Services
+        skywarsServices = new SkywarsServices(http);
+
         Log.d("Loaded Services Successfully");
     }
 
     public PointSystem getPointSystem() {
         return pointSystem;
+    }
+
+    public SkywarsServices getSkywarsServices() {
+        return skywarsServices;
     }
 
     public static MainService getService(MainService service) {

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.rosemite.services.helper.Log;
 import com.rosemite.services.models.HttpResponse;
 import com.rosemite.services.models.Path;
 import okhttp3.*;
@@ -41,7 +42,6 @@ public class Http {
 
         headers.put("path", path.get());
         headers.put("key", key);
-
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()

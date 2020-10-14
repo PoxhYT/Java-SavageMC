@@ -8,10 +8,6 @@ public class Path {
     }
 
     public Path(Paths paths, String document) {
-        switch (paths) {
-            case SoupTraining:
-                this.path = paths + document;
-                break;
-        }
+        this.path = paths + document;
     }
 }

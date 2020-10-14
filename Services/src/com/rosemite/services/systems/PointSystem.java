@@ -17,7 +17,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class PointSystem {
-    private Http http;
+    private final Http http;
 
     public PointSystem(Http http) {
         this.http = http;
@@ -27,8 +27,6 @@ public class PointSystem {
         Pair<SoupScoreModel, Map<String, Object>> previousScore = getAllScoresForSoup(player.getUniqueId());
 
         if (previousScore == null) {
-            // TODO: Handle null
-            Log.d("bad");
             return false;
         }
 
@@ -40,6 +38,7 @@ public class PointSystem {
 
         if (droppedSoups > score) {
             Map<String, Object> body = new HashMap<>();
+
             body.put("UUID", player.getUniqueId().toString());
             body.put(type.toString(), droppedSoups);
             body.put("PLAYERNAME", player.getDisplayName());
@@ -91,7 +90,7 @@ public class PointSystem {
             Map<String, String> header = new HashMap<>();
             header.put("collection", "true");
 
-            HttpResponse res = http.request(HttpType.GET,null, new Path(Paths.SoupTraining, ""), header);
+            HttpResponse res = http.request(HttpType.GET,null, new Path(Paths.SkywarsKits, ""), header);
 
             if (res.statusCode != 200) {
                 Log.d(res.content);

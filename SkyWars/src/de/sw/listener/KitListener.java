@@ -1,10 +1,10 @@
 package de.sw.listener;
 
+import com.rosemite.services.helper.Log;
+import com.rosemite.services.main.MainService;
 import de.sw.main.Main;
-import de.sw.manager.InventoryManager;
 import de.sw.manager.ItemBuilderAPI;
 import de.sw.manager.KitManager;
-import de.sw.manager.TeamManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -16,13 +16,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class KitListener implements Listener {
 
-    private static KitManager[] arr = new KitManager[3];
-
     private static ArrayList<Player> players = new ArrayList<>();
-
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
@@ -55,7 +53,6 @@ public class KitListener implements Listener {
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
                     player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKit()).build());
                     player.closeInventory();
-
                 }
             }
         }catch (NullPointerException e) {
@@ -66,33 +63,23 @@ public class KitListener implements Listener {
     public void openKitInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 36, "§eKits");
         KitManager[] kits = getKits();
+
         for (int i = 0; i < kits.length; i++)
         {
-            inventory.setItem(i, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
+            try {
+                inventory.setItem(i, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         player.openInventory(inventory);
     }
 
     private KitManager[] getKits() {
+        MainService service = MainService.getService(null);
+        List<KitManager> kits = service.getSkywarsServices().getEveryKit();
 
-        arr[0] = (new KitManager("Standard §8[§aGekauft§8]", new String[]{"§7Du startest mit §e1 Eisenschwert§7,",
-                "§e1 Eisenspitzhacke§7, §e1 Eisenaxt"}, Material.IRON_PICKAXE, 0, "Standart",
-                "Standard §8[§cNicht gekauft§8]")
-        );
-        arr[1] = (new KitManager("Maurer §8[§aGekauft§8]",
-                new String[] {"§8✘ §eAusrüstung",
-                        "§8✘ §764 Ziegelsteine",
-                        "§8✘ §7Goldhelm mit Schutz III",
-                        "§8✘ §7Goldspitzhacke mit Effizienz III und Haltbarkeit II"},
-                Material.BRICK, 10000, "Maurer", "Maurer §8[§cNicht gekauft§8]")
-        );
-        arr[2] = (new KitManager("Healer §8[§aGekauft§8]",
-                new String[] {"§8✘ §eAusrüstung",
-                        "§8✘ §73x Heilungstränke mit Heilung II",
-                        "§8✘ §71 Regenerationstrank für 1:30 Minuten"},
-                Material.GHAST_TEAR, 5000, "Healer", "Heiler §8[§cNicht gekauft§8]")
-        );
-        return arr;
+        return kits.toArray(new KitManager[kits.size()]);
     }
 
     private void setIngameItems(Player player) {
