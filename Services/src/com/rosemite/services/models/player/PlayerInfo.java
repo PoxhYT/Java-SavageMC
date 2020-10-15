@@ -1,8 +1,6 @@
 package com.rosemite.services.models.player;
 
 public class PlayerInfo {
-    private PlayerSkywarsKits skywarsKits;
-
     private boolean hasPremium;
     private final String playername;
     private final String uuid;
@@ -13,10 +11,6 @@ public class PlayerInfo {
         this.playername = playername;
         this.uuid = uuid;
         this.coins = coins;
-    }
-
-    public PlayerSkywarsKits getSkywarsKits() {
-        return skywarsKits;
     }
 
     public boolean isHasPremium() {

@@ -7,10 +7,10 @@ import com.rosemite.services.services.skywars.SkywarsServices;
 import com.rosemite.services.services.souptraining.SoupTrainingService;
 
 public class ServiceHolder {
-    private SoupTrainingService soupTrainingService;
-    private SkywarsServices skywarsServices;
-    private PlayerService playerService;
-    private CoinService coinService;
+    private final SoupTrainingService soupTrainingService;
+    private final SkywarsServices skywarsServices;
+    private final PlayerService playerService;
+    private final CoinService coinService;
 
     public ServiceHolder(Http http) {
         this.soupTrainingService = new SoupTrainingService(http);

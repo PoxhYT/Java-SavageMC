@@ -2,6 +2,9 @@ package com.rosemite.services.services.skywars;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.rosemite.services.helper.Log;
+import com.rosemite.services.main.MainService;
+import com.rosemite.services.models.player.PlayerSkywarsKits;
 import com.rosemite.services.services.http.Http;
 import com.rosemite.services.models.http.HttpType;
 import com.rosemite.services.models.http.HttpResponse;
@@ -14,18 +17,45 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class SkywarsServices {
+    private Map<UUID, PlayerSkywarsKits> map;
     private final Http http;
 
-    private List<KitManager> kits;
+    private List<KitManager> allKits;
 
     public SkywarsServices(Http http) {
         this.http = http;
-        kits = new ArrayList<>();
+        allKits = new ArrayList<>();
+
+        map = new HashMap<>();
+    }
+
+    public List<KitManager> verifyKits(List<KitManager> kits, UUID uuid) {
+        if (map.get(uuid) == null) {
+            map.put(uuid, MainService.getService(null)
+                    .getPlayerService()
+                    .fetchPlayerSkywarsKits(uuid));
+        }
+
+        PlayerSkywarsKits playerKits = map.get(uuid);
+
+        if (playerKits == null) {
+            Log.d("Problem");
+            http.reportError("Player Kits was null but it should not be. Check if this UUID is under players collection: " + uuid.toString());
+            return kits;
+        }
+
+        for (int i = 0; i < kits.size(); i++) {
+            if (playerKits.hasSkywarsKit(kits.get(i).getKitNameLiteralString())) {
+                kits.get(i).setHasKit(true);
+            }
+        }
+
+        return kits;
     }
 
     public List<KitManager> getEveryKit() {
-        if (kits.size() != 0) {
-            return kits;
+        if (allKits.size() != 0) {
+            return allKits;
         }
         try {
             Map<String, String> header = new HashMap<>();
@@ -45,7 +75,7 @@ public class SkywarsServices {
 
             list.sort(Comparator.comparingInt(KitManager::getKitPrice));
 
-            kits.addAll(list);
+            allKits.addAll(list);
 
             return list;
         } catch (IOException e) {

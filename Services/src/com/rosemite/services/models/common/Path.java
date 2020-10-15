@@ -12,6 +12,6 @@ public class Path {
     }
 
     public Path(Paths path, String document, Paths path2, String document2) {
-        this.path = path + document + path2 + document;
+        this.path = path + document + path2 + document2;
     }
 }

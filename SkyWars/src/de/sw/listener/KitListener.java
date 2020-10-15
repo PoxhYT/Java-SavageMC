@@ -21,27 +21,30 @@ import java.util.List;
 public class KitListener implements Listener {
 
     private static ArrayList<Player> players = new ArrayList<>();
+    private MainService service;
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        try{
+        try {
             if(event.getItem().getType() == Material.CHEST) {
                 openKitInventory(player);
             }
-        }catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         try{
-            KitManager[] kits = getKits();
+            KitManager[] kits = getKits(player);
 
             for (int i = 0; i < kits.length; i++)
             {
-                Inventory inventory = Bukkit.createInventory(null, 9, "§e" + kits[i].getKit());
-                inventory.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName("§e" + kits[i].getKit()).setLore(kits[i].getKitDescription()).build());
+                Inventory inventory = Bukkit.createInventory(null, 9, "§e" + kits[i].getKitName());
+                inventory.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName("§e" + kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
                 inventory.setItem(0, new ItemBuilderAPI(Material.BARRIER).setDisplayName("§cZurück").build());
                 inventory.setItem(8, new ItemBuilderAPI(Material.EMERALD).setDisplayName("§aKit auswählen").build());
                 if(event.getCurrentItem().getType() == Material.BARRIER) {
@@ -49,9 +52,9 @@ public class KitListener implements Listener {
                     player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 }
                 if(event.getCurrentItem().getType() == kits[i].getKitIcon()) {
-                    player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKit() + " §eKit §7ausgewählt!");
+                    player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitName() + " §eKit §7ausgewählt!");
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
-                    player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKit()).build());
+                    player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitName()).build());
                     player.closeInventory();
                 }
             }
@@ -62,7 +65,7 @@ public class KitListener implements Listener {
     
     public void openKitInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 36, "§eKits");
-        KitManager[] kits = getKits();
+        KitManager[] kits = getKits(player);
 
         for (int i = 0; i < kits.length; i++)
         {
@@ -75,11 +78,13 @@ public class KitListener implements Listener {
         player.openInventory(inventory);
     }
 
-    private KitManager[] getKits() {
-        MainService service = MainService.getService(null);
-        List<KitManager> kits = service.getSkywarsServices().getEveryKit();
+    private KitManager[] getKits(Player player) {
+        service = MainService.getService(service);
 
-        return kits.toArray(new KitManager[kits.size()]);
+        List<KitManager> kits = service.getSkywarsService().getEveryKit();
+        kits = service.getSkywarsService().verifyKits(kits, player.getUniqueId());
+
+        return kits.toArray(new KitManager[0]);
     }
 
     private void setIngameItems(Player player) {
