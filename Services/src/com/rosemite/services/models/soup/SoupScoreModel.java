@@ -1,4 +1,4 @@
-package com.rosemite.services.models;
+package com.rosemite.services.models.soup;
 
 public class SoupScoreModel {
     public final int NOOB;

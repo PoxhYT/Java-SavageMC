@@ -1,14 +1,14 @@
-package com.rosemite.services.systems;
+package com.rosemite.services.services.souptraining;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.rosemite.services.backend.http.Http;
-import com.rosemite.services.backend.http.HttpType;
+import com.rosemite.services.services.http.Http;
+import com.rosemite.services.models.http.HttpType;
 import com.rosemite.services.helper.Log;
-import com.rosemite.services.models.HttpResponse;
-import com.rosemite.services.models.Path;
-import com.rosemite.services.models.Paths;
-import com.rosemite.services.models.SoupScoreModel;
+import com.rosemite.services.models.http.HttpResponse;
+import com.rosemite.services.models.common.Path;
+import com.rosemite.services.models.common.Paths;
+import com.rosemite.services.models.soup.SoupScoreModel;
 import javafx.util.Pair;
 import org.bukkit.entity.Player;
 
@@ -16,15 +16,15 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class PointSystem {
+public class SoupTrainingService {
     private final Http http;
 
-    public PointSystem(Http http) {
+    public SoupTrainingService(Http http) {
         this.http = http;
     }
 
-    public boolean saveForSoupScore(Player player, Object type, String time, int droppedSoups) {
-        Pair<SoupScoreModel, Map<String, Object>> previousScore = getAllScoresForSoup(player.getUniqueId());
+    public boolean saveScore(Player player, Object type, String time, int droppedSoups) {
+        Pair<SoupScoreModel, Map<String, Object>> previousScore = getAllScores(player.getUniqueId());
 
         if (previousScore == null) {
             return false;
@@ -49,7 +49,7 @@ public class PointSystem {
                 HttpResponse res = http.request(HttpType.POST,body, path);
 
                 if (res.statusCode != 200) {
-                    http.reportError();
+                    http.reportError(res.content);
                     return false;
                 }
 
@@ -64,12 +64,12 @@ public class PointSystem {
         return false;
     }
 
-    public Pair<SoupScoreModel, Map<String, Object>> getAllScoresForSoup(UUID id)  {
+    public Pair<SoupScoreModel, Map<String, Object>> getAllScores(UUID id)  {
         try {
             HttpResponse res =  http.request(HttpType.GET,null, new Path(Paths.SoupTraining, id.toString()));
 
             if (res.statusCode != 200) {
-                http.reportError();
+                http.reportError(res.content);
                 return null;
             }
 
@@ -85,7 +85,7 @@ public class PointSystem {
         }
     }
 
-    public List<SoupScoreModel> getAllScoresForSoup() {
+    public List<SoupScoreModel> getAllScores() {
         try {
             Map<String, String> header = new HashMap<>();
             header.put("collection", "true");
@@ -93,8 +93,7 @@ public class PointSystem {
             HttpResponse res = http.request(HttpType.GET,null, new Path(Paths.SkywarsKits, ""), header);
 
             if (res.statusCode != 200) {
-                Log.d(res.content);
-                http.reportError();
+                http.reportError(res.content);
                 return null;
             }
 

@@ -1,7 +1,6 @@
 package de.soup.commands;
 
 import com.google.common.collect.Maps;
-import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
@@ -124,7 +123,7 @@ public class SoupCommand implements CommandExecutor {
                             Timer time = Command_timer.timers.get(player.getUniqueId());
                             SpeedType type = this.speedType.get(player.getName());
 
-                            service.getPointSystem().saveForSoupScore(player, type, time.getElapsedTime(), droppedSoups);
+                            service.getPointSystem().saveScore(player, type, time.getElapsedTime(), droppedSoups);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {

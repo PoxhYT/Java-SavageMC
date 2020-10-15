@@ -2,14 +2,12 @@ package com.rosemite.services.services.skywars;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.rosemite.services.backend.http.Http;
-import com.rosemite.services.backend.http.HttpType;
-import com.rosemite.services.helper.Log;
-import com.rosemite.services.models.HttpResponse;
-import com.rosemite.services.models.Path;
-import com.rosemite.services.models.Paths;
+import com.rosemite.services.services.http.Http;
+import com.rosemite.services.models.http.HttpType;
+import com.rosemite.services.models.http.HttpResponse;
+import com.rosemite.services.models.common.Path;
+import com.rosemite.services.models.common.Paths;
 import de.sw.manager.KitManager;
-import org.bukkit.Material;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -36,8 +34,7 @@ public class SkywarsServices {
             HttpResponse res = http.request(HttpType.GET,null, new Path(Paths.SkywarsKits, ""), header);
 
             if (res.statusCode != 200) {
-                Log.d(res.content);
-                http.reportError();
+                http.reportError(res.content);
                 return null;
             }
 

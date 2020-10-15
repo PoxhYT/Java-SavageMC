@@ -1,65 +1,52 @@
 package com.rosemite.services.main;
 
-import com.github.jlabsys.ObjectMapper;
-import com.google.gson.Gson;
-import com.rosemite.services.backend.http.Http;
-import com.rosemite.services.backend.http.HttpType;
+import com.rosemite.services.models.player.PlayerInfo;
+import com.rosemite.services.services.http.Http;
 import com.rosemite.services.config.Config;
 import com.rosemite.services.helper.Log;
-import com.rosemite.services.models.HttpResponse;
-import com.rosemite.services.models.SoupScoreModel;
 import com.rosemite.services.services.skywars.SkywarsServices;
-import com.rosemite.services.systems.CoinSystem;
-import com.rosemite.services.systems.PlayerSystem;
-import com.rosemite.services.systems.PointSystem;
-import javafx.util.Pair;
+import com.rosemite.services.services.souptraining.SoupTrainingService;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 public class MainService extends JavaPlugin {
     public static String prefix = "§8[Service] §7";
 
-    private PlayerSystem playerSystem;
-    private PointSystem pointSystem;
-    private CoinSystem coinSystem;
+    private ServiceHolder holder;
 
-    private SkywarsServices skywarsServices;
-
+    private Map<String, PlayerInfo> players;
     private Config config;
-
-    private Http http;
 
     public void onEnable() {
         // Initialize Config data
         config = new Config(this);
+
         String key = config.getConfiguration("backend.key").toString();
         String url = config.getConfiguration("backend.url").toString();
 
-        // Initialize Http Client
-        http = new Http(key, url);
-
-        // Initialize Systems
-        playerSystem = new PlayerSystem(http);
-        pointSystem = new PointSystem(http);
-        coinSystem = new CoinSystem(http);
-
         // Initialize Services
-        skywarsServices = new SkywarsServices(http);
+        holder = new ServiceHolder(new Http(key, url));
 
         Log.d("Loaded Services Successfully");
     }
 
-    public PointSystem getPointSystem() {
-        return pointSystem;
+    public PlayerInfo getPlayerInfo(String uuid) {
+        if (players.get(uuid) == null) {
+            // TODO: Try to fetch player. If found return else return null
+        }
+
+        return players.get(uuid);
+    }
+
+    public SoupTrainingService getPointSystem() {
+        return holder.getSoupTrainingService();
     }
 
     public SkywarsServices getSkywarsServices() {
-        return skywarsServices;
+        return holder.getSkywarsServices();
     }
 
     public static MainService getService(MainService service) {

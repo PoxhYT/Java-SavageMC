@@ -9,8 +9,7 @@ public class KitManager {
     private final int kitPrice;
 
     public KitManager(String kitName, String kitDescription, double kitIcon, double kitPrice) {
-        int icon = (int)Math.round(kitIcon);
-        this.kitIcon = icon;
+        this.kitIcon = (int)Math.round(kitIcon);
 
         this.kitName = kitName;
         this.kitDescription = kitDescription;

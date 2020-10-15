@@ -1,13 +1,13 @@
-package com.rosemite.services.backend.http;
+package com.rosemite.services.services.http;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.rosemite.services.helper.Log;
-import com.rosemite.services.models.HttpResponse;
-import com.rosemite.services.models.Path;
+import com.rosemite.services.models.http.HttpResponse;
+import com.rosemite.services.models.common.Path;
+import com.rosemite.services.models.http.HttpType;
 import okhttp3.*;
 
 public class Http {
@@ -92,7 +92,7 @@ public class Http {
         return new HttpResponse(response.body().string(), response.code());
     }
 
-    public void reportError() {
+    public void reportError(String content) {
         // TODO: Report a error & save it to Firebase
     }
 

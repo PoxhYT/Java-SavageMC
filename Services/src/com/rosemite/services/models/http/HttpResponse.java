@@ -1,4 +1,4 @@
-package com.rosemite.services.models;
+package com.rosemite.services.models.http;
 
 import com.google.gson.Gson;
 
