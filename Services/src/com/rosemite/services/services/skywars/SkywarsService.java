@@ -16,17 +16,44 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class SkywarsServices {
+public class SkywarsService {
     private Map<UUID, PlayerSkywarsKits> map;
     private final Http http;
 
     private List<KitManager> allKits;
 
-    public SkywarsServices(Http http) {
+    public SkywarsService(Http http) {
         this.http = http;
         allKits = new ArrayList<>();
 
         map = new HashMap<>();
+    }
+
+    public boolean initializeKits(String uuid) {
+        Map<String, Object> body = new HashMap<>();
+
+        body.put("Standard", true);
+
+        Path path = new Path(
+            Paths.PlayerInfo,
+            uuid,
+            Paths.Kits,
+            "SkyWars"
+        );
+
+        try {
+            HttpResponse res = http.request(HttpType.POST,body, path);
+
+            if (res.statusCode != 200) {
+                http.reportError(res.content);
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     public List<KitManager> verifyKits(List<KitManager> kits, UUID uuid) {

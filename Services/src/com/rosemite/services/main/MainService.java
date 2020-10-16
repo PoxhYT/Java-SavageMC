@@ -1,14 +1,16 @@
 package com.rosemite.services.main;
 
+import com.rosemite.services.listener.PlayerJoinEvent;
 import com.rosemite.services.services.coin.CoinService;
 import com.rosemite.services.services.http.Http;
 import com.rosemite.services.config.Config;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.services.player.PlayerService;
-import com.rosemite.services.services.skywars.SkywarsServices;
+import com.rosemite.services.services.skywars.SkywarsService;
 import com.rosemite.services.services.souptraining.SoupTrainingService;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MainService extends JavaPlugin {
@@ -28,15 +30,27 @@ public class MainService extends JavaPlugin {
         // Initialize Services
         holder = new ServiceHolder(new Http(key, url));
 
+        // Register Events
+        registerEvents();
+
         Log.d("Loaded Services Successfully");
+    }
+
+    private void registerEvents() {
+        final PluginManager pluginManager = Bukkit.getPluginManager();
+
+        pluginManager.registerEvents(new PlayerJoinEvent(
+             holder.getPlayerService(),
+            holder.getSkywarsService()
+        ), this);
     }
 
     public SoupTrainingService getSoupTrainingService() {
         return holder.getSoupTrainingService();
     }
 
-    public SkywarsServices getSkywarsService() {
-        return holder.getSkywarsServices();
+    public SkywarsService getSkywarsService() {
+        return holder.getSkywarsService();
     }
 
     public CoinService getCoinService() {

@@ -1,5 +1,6 @@
 package de.soup.main;
 
+import com.rosemite.services.listener.PlayerJoinEvent;
 import de.soup.commands.*;
 import de.soup.events.*;
 import de.soup.manager.SBManager;

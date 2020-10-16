@@ -22,6 +22,10 @@ public class KitManager {
         return kitName;
     }
 
+    public String getKitNameLiteralStringColored() {
+        return "§e" + kitName;
+    }
+
     public void setHasKit(boolean hasKit) {
         this.hasKit = hasKit;
     }
@@ -36,6 +40,10 @@ public class KitManager {
 
     public int getKitPrice() {
         return kitPrice;
+    }
+
+    public boolean getHasKit() {
+        return hasKit;
     }
 
     public String getKitName() {

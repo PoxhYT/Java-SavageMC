@@ -1,5 +1,10 @@
 package com.rosemite.services.models.player;
 
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class PlayerInfo {
     private boolean hasPremium;
     private final String playername;
@@ -11,6 +16,26 @@ public class PlayerInfo {
         this.playername = playername;
         this.uuid = uuid;
         this.coins = coins;
+    }
+
+    public String toJsonAsString() {
+        Map<String, Object> json = new HashMap<>();
+        json.put("hasPremium", hasPremium);
+        json.put("playername", playername);
+        json.put("uuid", uuid);
+        json.put("coins", coins);
+
+        return new Gson().toJson(json);
+    }
+
+    public Map<String, Object> toJsonAsMap() {
+        Map<String, Object> json = new HashMap<>();
+        json.put("hasPremium", hasPremium);
+        json.put("playername", playername);
+        json.put("uuid", uuid);
+        json.put("coins", coins);
+
+        return json;
     }
 
     public boolean isHasPremium() {

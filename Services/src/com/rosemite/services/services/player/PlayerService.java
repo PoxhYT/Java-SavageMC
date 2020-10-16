@@ -9,6 +9,7 @@ import com.rosemite.services.models.player.PlayerInfo;
 import com.rosemite.services.models.player.PlayerSkywarsKits;
 import com.rosemite.services.services.http.Http;
 import com.rosemite.services.models.http.HttpType;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,6 +23,40 @@ public class PlayerService {
     public PlayerService(Http http) {
         this.players = new HashMap<>();
         this.http = http;
+    }
+
+    public PlayerInfo createNewPlayer(Player player) {
+        try {
+            PlayerInfo playerInfo = new PlayerInfo(false,
+                player.getDisplayName(),
+                player.getUniqueId().toString(),
+                500
+            );
+
+            Path path = new Path(
+                    Paths.PlayerInfo,
+                    player.getUniqueId().toString()
+            );
+
+            HttpResponse res = http.request(
+                    HttpType.POST,
+                    playerInfo.toJsonAsMap(),
+                    path
+            );
+
+            if (res.statusCode != 200) {
+                Log.d(res.content);
+                http.reportError(res.content);
+                return null;
+            }
+
+            String json = new Gson().toJson(res.getAsMap().get("data"));
+
+            return new Gson().fromJson(json, PlayerInfo.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public PlayerInfo getPlayerInfo(String uuid) {
