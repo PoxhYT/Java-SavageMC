@@ -12,11 +12,11 @@ public class ServiceHolder {
     private final PlayerService playerService;
     private final CoinService coinService;
 
-    public ServiceHolder(Http http) {
+    public ServiceHolder(Http http, MainService service) {
         this.soupTrainingService = new SoupTrainingService(http);
         this.skywarsService = new SkywarsService(http);
         this.playerService = new PlayerService(http);
-        this.coinService = new CoinService(http);
+        this.coinService = new CoinService(http, service);
     }
 
     public SoupTrainingService getSoupTrainingService() {

@@ -39,36 +39,34 @@ public class KitListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        try{
-            KitManager[] kits = getKits(player);
+        KitManager[] kits = getKits(player);
 
-            for (int i = 0; i < kits.length; i++)
-            {
-                Inventory inventory = Bukkit.createInventory(null, 9, "§e" + kits[i].getKitName());
-                inventory.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName("§e" + kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
-                inventory.setItem(0, new ItemBuilderAPI(Material.BARRIER).setDisplayName("§cZurück").build());
-                inventory.setItem(8, new ItemBuilderAPI(Material.EMERALD).setDisplayName("§aKit auswählen").build());
+        for (int i = 0; i < kits.length; i++)
+        {
+            Inventory inventory = Bukkit.createInventory(null, 9, "§e" + kits[i].getKitName());
+            inventory.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName("§e" + kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
+            inventory.setItem(0, new ItemBuilderAPI(Material.BARRIER).setDisplayName("§cZurück").build());
+            inventory.setItem(8, new ItemBuilderAPI(Material.EMERALD).setDisplayName("§aKit auswählen").build());
 
-                if(event.getCurrentItem().getType() == Material.BARRIER) {
-                    openKitInventory(player);
+            if(event.getCurrentItem().getType() == Material.BARRIER) {
+                openKitInventory(player);
+                player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+            }
+
+            if (event.getCurrentItem().getType() == kits[i].getKitIcon()) {
+                if (kits[i].getHasKit()) {
+                    player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " §eKit §7ausgewählt!");
+                    player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
+                    player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).build());
+                    player.closeInventory();
+                } else {
+                    // TODO: Open Chest with the option to buy the kit
+
+                    player.sendMessage(Main.prefix + ChatColor.RED + "Du hast das " + kits[i].getKitNameLiteralStringColored() + ChatColor.RED + " Kit nicht gekauft!");
                     player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-                }
-
-                if (event.getCurrentItem().getType() == kits[i].getKitIcon()) {
-                    if (kits[i].getHasKit()) {
-                        player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " §eKit §7ausgewählt!");
-                        player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
-                        player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).build());
-                        player.closeInventory();
-                    } else {
-                        player.sendMessage(Main.prefix + ChatColor.RED + "Du hast das " + kits[i].getKitNameLiteralStringColored() + ChatColor.RED + " Kit §7nicht gekauft!");
-                        player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-                        player.closeInventory();
-                    }
+                    player.closeInventory();
                 }
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
     }
     

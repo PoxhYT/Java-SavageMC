@@ -28,7 +28,10 @@ public class MainService extends JavaPlugin {
         String url = config.getConfiguration("backend.url").toString();
 
         // Initialize Services
-        holder = new ServiceHolder(new Http(key, url));
+        holder = new ServiceHolder(
+            new Http(key, url),
+            this
+        );
 
         // Register Events
         registerEvents();
@@ -41,7 +44,7 @@ public class MainService extends JavaPlugin {
 
         pluginManager.registerEvents(new PlayerJoinEvent(
              holder.getPlayerService(),
-            holder.getSkywarsService()
+             holder.getSkywarsService()
         ), this);
     }
 
