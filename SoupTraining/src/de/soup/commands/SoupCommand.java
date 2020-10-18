@@ -1,6 +1,7 @@
 package de.soup.commands;
 
 import com.google.common.collect.Maps;
+import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
@@ -52,6 +53,7 @@ public class SoupCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Get Service
+        service = MainService.getService(service);
 
         if (command.getName().equals("soup"))
             if (sender instanceof Player) {

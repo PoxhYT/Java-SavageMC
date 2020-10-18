@@ -1,6 +1,5 @@
 package de.sw.listener;
 
-import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import de.sw.main.Main;
 import de.sw.manager.ItemBuilderAPI;
@@ -58,14 +57,13 @@ public class KitListener implements Listener {
                     player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " §eKit §7ausgewählt!");
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
                     player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).build());
-                    player.closeInventory();
                 } else {
                     // TODO: Open Chest with the option to buy the kit
 
                     player.sendMessage(Main.prefix + ChatColor.RED + "Du hast das " + kits[i].getKitNameLiteralStringColored() + ChatColor.RED + " Kit nicht gekauft!");
                     player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-                    player.closeInventory();
                 }
+                player.closeInventory();
             }
         }
     }
@@ -88,15 +86,10 @@ public class KitListener implements Listener {
     private KitManager[] getKits(Player player) {
         service = MainService.getService(service);
 
-        List<KitManager> kits = service.getSkywarsService().getEveryKit();
-        kits = service.getSkywarsService().verifyKits(kits, player.getUniqueId());
+        List<KitManager> kits = service.getSkywarsService().getDefaultKits();
+        kits = service.getSkywarsService().verifyKits(kits, player.getUniqueId().toString());
 
         return kits.toArray(new KitManager[0]);
-    }
-
-    private void setIngameItems(Player player) {
-        if(players.contains(player)) {
-        }
     }
 }
 
