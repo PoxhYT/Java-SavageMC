@@ -8,10 +8,7 @@ import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Path;
 import com.rosemite.services.models.common.Paths;
-import com.rosemite.services.models.http.HttpResponse;
-import com.rosemite.services.models.http.HttpType;
 import com.rosemite.services.models.player.PlayerInfo;
-import com.rosemite.services.services.http.Http;
 import org.bson.Document;
 import javafx.util.Pair;
 

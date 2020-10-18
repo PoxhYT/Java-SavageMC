@@ -3,7 +3,6 @@ package com.rosemite.services.main;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.services.services.coin.CoinService;
-import com.rosemite.services.services.http.Http;
 import com.rosemite.services.services.player.PlayerService;
 import com.rosemite.services.services.skywars.SkywarsService;
 import com.rosemite.services.services.souptraining.SoupTrainingService;
