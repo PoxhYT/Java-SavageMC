@@ -125,7 +125,7 @@ public class SoupCommand implements CommandExecutor {
                             Timer time = Command_timer.timers.get(player.getUniqueId());
                             SpeedType type = this.speedType.get(player.getName());
 
-                            service.getSoupTrainingService().saveScore(player, type, time.getElapsedTime(), droppedSoups);
+                            service.getSoupTrainingService().saveScore(player, type, time.getElapsedTime(), droppedSoups, number);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {

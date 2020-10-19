@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.rosemite.services.helper.Converters;
+import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.player.PlayerInfo;
@@ -13,9 +14,10 @@ import com.rosemite.services.models.soup.SoupScoreModel;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
-import javax.print.Doc;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
@@ -32,7 +34,7 @@ public class SoupTrainingService {
         service = MainService.getService(null);
     }
 
-    public void saveScore(Player player, Object type, String time, int droppedSoups) {
+    public void saveScore(Player player, Object type, String time, int droppedSoups, int coins) {
         Document doc = collection.find(Filters.eq("UUID", player.getUniqueId().toString())).first();
 
         if (doc == null) {
@@ -43,6 +45,16 @@ public class SoupTrainingService {
             initializePlayer(player);
         }
 
+        // Add Coins
+        Document document = db.getCollection(Paths.PlayerInfo.toString()).find(Filters.eq("uuid", player.getUniqueId().toString())).first();
+        coins += Converters.c(document.get("coins"));
+
+        db.getCollection(Paths.PlayerInfo.toString()).updateOne(Filters.eq("uuid", player.getUniqueId().toString()),
+            combine(
+                    set("coins", coins)
+        ));
+
+        // Update Score
         if (doc != null && Converters.c(doc.get(type.toString())) > droppedSoups) {
             return;
         }
