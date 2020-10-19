@@ -49,6 +49,6 @@ public class PlayerService {
     public PlayerSkywarsKits getPlayerSkywarsKits(String uuid) {
         Document doc = db.getCollection(Paths.PlayerSkywarsKits.toString()).find( eq("uuid", uuid)).first();
 
-        return new Gson().fromJson(doc.toJson(), PlayerSkywarsKits.class);
+        return new PlayerSkywarsKits(new Gson().fromJson(doc.toJson(), Map.class));
     }
 }

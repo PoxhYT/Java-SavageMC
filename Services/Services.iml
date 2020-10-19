@@ -19,7 +19,7 @@
     </orderEntry>
     <orderEntry type="library" exported="" name="okhttp-3.9.0" level="project" />
     <orderEntry type="library" exported="" name="spring-aop-5.1.9.RELEASE" level="project" />
-    <orderEntry type="module" module-name="SkyWars" exported="" />
     <orderEntry type="library" exported="" name="bson-4.1.1" level="project" />
+    <orderEntry type="module" module-name="SkyWars" />
   </component>
 </module>

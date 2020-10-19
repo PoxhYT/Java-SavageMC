@@ -24,9 +24,4 @@ public class PlayerSkywarsKits {
 
         return (boolean)playerKits.get(kitName);
     }
-
-    // Todo: When player buys a kit. This Function needs to be called then.
-    public void addKitToBought(String kitName) {
-        playerKits.put(kitName, true);
-    }
 }

@@ -4,7 +4,9 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
+import com.mongodb.client.result.UpdateResult;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
@@ -14,6 +16,9 @@ import org.bson.Document;
 
 import java.lang.reflect.Type;
 import java.util.*;
+
+import static com.mongodb.client.model.Updates.combine;
+import static com.mongodb.client.model.Updates.set;
 
 public class SkywarsService {
     private final MongoDatabase db;
@@ -32,6 +37,15 @@ public class SkywarsService {
         data.put("uuid", uuid);
 
         return db.getCollection(Paths.PlayerSkywarsKits.toString()).insertOne(new Document(data));
+    }
+
+    public UpdateResult buyKit(String uuid, String kitName) {
+        UpdateResult result = db.getCollection(Paths.PlayerSkywarsKits.toString()).updateOne(
+                Filters.eq("uuid", uuid),
+                combine(set(kitName, true))
+        );
+
+        return result;
     }
 
     public List<KitManager> verifyKits(List<KitManager> kits, String uuid) {

@@ -40,7 +40,7 @@ public class SoupScoreModel {
 
     public SoupScoreModel(String playerUUID, String playername) {
         int ds = 0;
-        String dst = "00:00:00";
+        String dst = "00:00:00:00";
 
         this.NOOB = ds;
         this.SLOW = ds;
