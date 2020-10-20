@@ -54,6 +54,7 @@ public class SoupCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Get Service
+        service = MainService.getService(service);
 
         if (command.getName().equals("soup"))
             if (sender instanceof Player) {
@@ -125,7 +126,7 @@ public class SoupCommand implements CommandExecutor {
                             Timer time = Command_timer.timers.get(player.getUniqueId());
                             SpeedType type = this.speedType.get(player.getName());
 
-                            service.getPointSystem().saveForSoupScore(player, type, time.getElapsedTime(), droppedSoups);
+                            service.getSoupTrainingService().saveScore(player, type, time.getElapsedTime(), droppedSoups, number);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {

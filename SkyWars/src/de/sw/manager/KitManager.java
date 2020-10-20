@@ -3,68 +3,53 @@ package de.sw.manager;
 import org.bukkit.Material;
 
 public class KitManager {
+    private final String kitName;
+    private final String kitDescription;
+    private final int kitIcon;
+    private final int kitPrice;
 
-    private String kitName;
-    private String[] kitDescription;
-    private Material kitIcon;
-    private int kitPrice;
-    private String Kit;
-    private String notBought;
+    private boolean hasKit = false;
 
-    public KitManager(String kitName, String[] kitDescription, Material kitIcon, int kitPrice, String Kit, String notBought) {
+    public KitManager(String kitName, String kitDescription, double kitIcon, double kitPrice) {
+        this.kitIcon = (int)Math.round(kitIcon);
+
         this.kitName = kitName;
         this.kitDescription = kitDescription;
-        this.kitIcon = kitIcon;
-        this.kitPrice = kitPrice;
-        this.Kit = Kit;
-        this.notBought = notBought;
+        this.kitPrice = (int)Math.round(kitPrice);
     }
 
-    public String getKitName() {
-        return "§8• §e" + kitName;
+    public String getKitNameLiteralString() {
+        return kitName;
     }
 
-    public String getNotBought() {
-        return "§8• §e" + notBought;
+    public String getKitNameLiteralStringColored() {
+        return "§e" + kitName;
     }
 
-    public void setNotBought(String notBought) {
-        this.notBought = notBought;
-    }
-
-    public void setKitName(String kitName) {
-        this.kitName = kitName;
+    public void setHasKit(boolean hasKit) {
+        this.hasKit = hasKit;
     }
 
     public String[] getKitDescription() {
-        return kitDescription;
-    }
-
-    public void setKitDescription(String[] kitDescription) {
-        this.kitDescription = kitDescription;
+        return kitDescription.split(",");
     }
 
     public Material getKitIcon() {
-        return kitIcon;
-    }
-
-    public void setKitIcon(Material kitIcon) {
-        this.kitIcon = kitIcon;
+        return Material.getMaterial(kitIcon);
     }
 
     public int getKitPrice() {
         return kitPrice;
     }
 
-    public void setKitPrice(int kitPrice) {
-        this.kitPrice = kitPrice;
+    public boolean getHasKit() {
+        return hasKit;
     }
 
-    public String getKit() {
-        return "§e" + Kit;
-    }
-
-    public void setKit(String kit) {
-        Kit = kit;
+    public String getKitName() {
+        if (hasKit) {
+            return "§e" + kitName + " §8[§aGekauft§8]";
+        }
+        return "§e" + kitName + "§8[Nicht §cGekauft§8]";
     }
 }

@@ -1,55 +1,76 @@
 package com.rosemite.services.main;
 
-import com.github.jlabsys.ObjectMapper;
-import com.google.gson.Gson;
-import com.rosemite.services.backend.http.Http;
-import com.rosemite.services.backend.http.HttpType;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.rosemite.services.listener.PlayerJoinEvent;
+import com.rosemite.services.models.common.Paths;
+import com.rosemite.services.services.coin.CoinService;
 import com.rosemite.services.config.Config;
 import com.rosemite.services.helper.Log;
-import com.rosemite.services.models.HttpResponse;
-import com.rosemite.services.models.SoupScoreModel;
-import com.rosemite.services.systems.CoinSystem;
-import com.rosemite.services.systems.PlayerSystem;
-import com.rosemite.services.systems.PointSystem;
-import javafx.util.Pair;
+import com.rosemite.services.services.player.PlayerService;
+import com.rosemite.services.services.skywars.SkywarsService;
+import com.rosemite.services.services.souptraining.SoupTrainingService;
+import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainService extends JavaPlugin {
     public static String prefix = "§8[Service] §7";
 
-    private PlayerSystem playerSystem;
-    private PointSystem pointSystem;
-    private CoinSystem coinSystem;
-
-    private Config config;
-
-    private Http http;
+    private ServiceHolder holder;
 
     public void onEnable() {
         // Initialize Config data
-        config = new Config(this);
-        String key = config.getConfiguration("backend.key").toString();
-        String url = config.getConfiguration("backend.url").toString();
+        Config config = new Config(this);
 
-        // Initialize Http Client
-        http = new Http(key, url);
+        // Credentials & Connect to Mongodb
+        String connectionString = config.getConfiguration("backend.url").toString();
 
-        // Initialize Systems
-        playerSystem = new PlayerSystem(http);
-        pointSystem = new PointSystem(http);
-        coinSystem = new CoinSystem(http);
+        MongoClient mongoClient = MongoClients.create(connectionString);
+        MongoDatabase db = mongoClient.getDatabase("savagemc");
+
+        // Initialize Services
+        holder = new ServiceHolder(db,this);
+
+        // Register Events
+        registerEvents();
 
         Log.d("Loaded Services Successfully");
     }
 
-    public PointSystem getPointSystem() {
-        return pointSystem;
+    public void reportError(String err) {
+        // Todo: Report error to server
+        Log.w(err);
+    }
+
+    private void registerEvents() {
+        final PluginManager pluginManager = Bukkit.getPluginManager();
+
+        pluginManager.registerEvents(new PlayerJoinEvent(
+                holder.getPlayerService(),
+                holder.getSkywarsService()
+        ), this);
+    }
+
+    public SoupTrainingService getSoupTrainingService() {
+        return holder.getSoupTrainingService();
+    }
+
+    public SkywarsService getSkywarsService() {
+        return holder.getSkywarsService();
+    }
+
+    public CoinService getCoinService() {
+        return holder.getCoinService();
+    }
+
+    public PlayerService getPlayerService() {
+        return holder.getPlayerService();
     }
 
     public static MainService getService(MainService service) {
