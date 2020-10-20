@@ -1,43 +1,47 @@
-package de.soup.manager;
+package de.lobby.api;
 
-//import de.magnus.coinsapi.util.CoinsAPI;
+import de.lobby.main.Main;
 import de.magnus.coinsapi.util.CoinsAPI;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.io.File;
+public class ScoreboardAPI {
 
-public class SBManager {
+    private Main instance;
+    private LuckPerms luckPerms;
+    private ScoreboardAPI scoreboardAPI;
 
-    static File file = new File("plugins/Config", "config.yml");
+    public ScoreboardAPI(Main instance, LuckPerms luckPerms) {
+        this.instance = instance;
+        this.luckPerms = luckPerms;
+    }
 
-
-
-    public static void setLobbyBoard(Player player) {
+    public void setScoreboard(Player player) {
+        CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
+        String prefix = metaData.getPrefix();
 
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective obj = board.registerNewObjective("aaa", "bbb");
 
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-        obj.setDisplayName("§8• §cSoupTraining §8•");
-        obj.getScore("§4 ").setScore(9);
-        obj.getScore("§8• §r§fCoins").setScore(8);
-        obj.getScore(updateTeam(board, "Coins", "§8➥ §7" + CoinsAPI.getCoins(player.getUniqueId().toString()), " §4", ChatColor.DARK_RED)).setScore(7);
-        obj.getScore("§1 ").setScore(6);
+        obj.setDisplayName("§8• §r§eSavageMC§7.§r§enet");
+        obj.getScore("§1 ").setScore(9);
+        obj.getScore("§8• §r§fDein Rang").setScore(8);
+        obj.getScore(updateTeam(board, "Prefix", "§8➥ §a" + prefix, " §4", ChatColor.GREEN)).setScore(7);
+        obj.getScore("§2 ").setScore(6);
         obj.getScore("§8• §r§fOnline").setScore(5);
         obj.getScore(updateTeam(board, "Online", "§8➥ §a" + Bukkit.getOnlinePlayers().size() + "§7 / §c" + Bukkit.getMaxPlayers(), " §4", ChatColor.DARK_GRAY)).setScore(4);
-        obj.getScore("§2 ").setScore(3);
-        obj.getScore("§8• §r§fRekord").setScore(2);
-        obj.getScore("§8➥ §cSOON").setScore(1);
-
+        obj.getScore("§5 ").setScore(3);
+        obj.getScore("§8• §r§fDeine Coins").setScore(2);
+        obj.getScore(updateTeam(board, "Coins", "§8➥ §c" + CoinsAPI.getCoins(player.getUniqueId().toString()), " §fCoins", ChatColor.DARK_RED)).setScore(1);
         obj.getScore("§3 ").setScore(0);
-
         player.setScoreboard(board);
     }
 
@@ -45,7 +49,7 @@ public class SBManager {
         Scoreboard board = player.getScoreboard();
         Objective obj = board.getObjective("aaa");
         obj.getScore(updateTeam(board, "Online", "§8➥ §a" + Bukkit.getOnlinePlayers().size() + "§7 / §c" + Bukkit.getMaxPlayers(), " §4", ChatColor.DARK_GRAY)).setScore(4);
-//        obj.getScore(updateTeam(board, "Coins", "§8➥ §e" + CoinsAPI.getCoins(player.getUniqueId().toString()), " §4", ChatColor.DARK_RED)).setScore(7);
+        obj.getScore(updateTeam(board, "Coins", "§8➥ §c" + CoinsAPI.getCoins(player.getUniqueId().toString()), " §fCoins", ChatColor.DARK_RED)).setScore(1);
 
     }
 
@@ -74,3 +78,4 @@ public class SBManager {
         return entry.toString();
     }
 }
+

@@ -1,6 +1,6 @@
-package de.sw.api;
+package de.lobby.api;
 
-import de.sw.main.Main;
+import de.lobby.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -53,3 +53,4 @@ public class LocationAPI {
         return loc;
     }
 }
+

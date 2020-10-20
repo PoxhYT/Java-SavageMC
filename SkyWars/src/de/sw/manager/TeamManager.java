@@ -12,16 +12,26 @@ public class TeamManager {
     private String teamName;
     private String teamPrefix;
     private int maxPlayers;
-    public ArrayList<String> players;
+    public ArrayList<Player> players;
+    public Material material;
 
-    public TeamManager(String teamName, String teamPrefix, int teamSize) {
+    public TeamManager(String teamName, String teamPrefix, int teamSize, Material material) {
         this.teamName = teamName;
         this.teamPrefix = teamPrefix;
         this.maxPlayers = teamSize;
         this.players = new ArrayList<>();
+        this.material = material;
     }
 
-    public ArrayList<String> getPlayers() {
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
@@ -54,14 +64,5 @@ public class TeamManager {
             return true;
         }
         return false;
-    }
-
-    public ItemStack getIcon() {
-        ItemStack itemStack = new ItemStack(Material.WOOL);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(teamName);
-        itemMeta.setLore(players);
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
     }
 }

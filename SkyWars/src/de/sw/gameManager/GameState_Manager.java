@@ -12,7 +12,7 @@ public class GameState_Manager {
         this.instance = instance;
         game_states = new Game_State[3];
 
-        game_states[Game_State.LOBBY_STATE] = new Lobby_State(this);
+        game_states[Game_State.ONLINE] = new Lobby_State(this);
         game_states[Game_State.INGAME_STATE] = new Ingame_State();
         game_states[Game_State.ENDING_STATE] = new Ending_State();
     }

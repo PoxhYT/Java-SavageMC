@@ -24,6 +24,7 @@ public class KitListener implements Listener {
     private static ArrayList<Player> players = new ArrayList<>();
 
 
+
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -42,14 +43,6 @@ public class KitListener implements Listener {
 
             for (int i = 0; i < kits.length; i++)
             {
-                Inventory inventory = Bukkit.createInventory(null, 9, "§e" + kits[i].getKit());
-                inventory.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName("§e" + kits[i].getKit()).setLore(kits[i].getKitDescription()).build());
-                inventory.setItem(0, new ItemBuilderAPI(Material.BARRIER).setDisplayName("§cZurück").build());
-                inventory.setItem(8, new ItemBuilderAPI(Material.EMERALD).setDisplayName("§aKit auswählen").build());
-                if(event.getCurrentItem().getType() == Material.BARRIER) {
-                    openKitInventory(player);
-                    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-                }
                 if(event.getCurrentItem().getType() == kits[i].getKitIcon()) {
                     player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKit() + " §eKit §7ausgewählt!");
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
@@ -73,10 +66,9 @@ public class KitListener implements Listener {
         player.openInventory(inventory);
     }
 
-    private KitManager[] getKits() {
+    private static KitManager[] getKits() {
 
-        arr[0] = (new KitManager("Standard §8[§aGekauft§8]", new String[]{"§7Du startest mit §e1 Eisenschwert§7,",
-                "§e1 Eisenspitzhacke§7, §e1 Eisenaxt"}, Material.IRON_PICKAXE, 0, "Standart",
+        arr[0] = (new KitManager("Standard §8[§aGekauft§8]", new String[]{"§7Du startest mit §e1 Eisenschwert§7,", "§e1 Eisenspitzhacke§7, §e1 Eisenaxt"}, Material.IRON_PICKAXE, 0, "Standart",
                 "Standard §8[§cNicht gekauft§8]")
         );
         arr[1] = (new KitManager("Maurer §8[§aGekauft§8]",

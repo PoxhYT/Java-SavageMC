@@ -11,12 +11,14 @@ import de.sw.listener.ProtectionListener;
 import de.sw.listener.TeamListener;
 import de.sw.manager.InventoryManager;
 import de.sw.manager.SBManager;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -27,6 +29,8 @@ import java.util.List;
 public class Main extends JavaPlugin {
 
     public static Main instance;
+
+    public static boolean ff = false;
 
     public static String prefix = "§bSkyWars §8❘ §7";
 
@@ -50,14 +54,15 @@ public class Main extends JavaPlugin {
 
     public static List<Player> build = new ArrayList<>();
 
+    private LuckPerms luckPerms;
+
     public void onEnable() {
         init();
-
     }
 
     public void init() {
         gameStateManager = new GameState_Manager(this);
-        gameStateManager.setGameState(Game_State.LOBBY_STATE);
+        gameStateManager.setGameState(Game_State.ONLINE);
         players = new ArrayList<>();
 
         registerEvents();
@@ -71,6 +76,7 @@ public class Main extends JavaPlugin {
     public void registerCommands() {
         new Command_setup("setup");
         getCommand("leave").setExecutor((CommandExecutor)new Command_leave(this));
+
     }
 
     public void registerEvents() {
@@ -91,7 +97,7 @@ public class Main extends JavaPlugin {
             yamlConfiguration.set("maxPlayers", 3);
             yamlConfiguration.set("teams", 8);
             yamlConfiguration.set("playersInTeam", 1);
-            yamlConfiguration.set("gameSize", "4x2");
+            yamlConfiguration.set("gameSize", "8x1");
             yamlConfiguration.set("MapName", "Forest");
         }
         try {
