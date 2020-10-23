@@ -11,6 +11,7 @@ import de.sw.listener.PlayerConnectionEvent;
 import de.sw.listener.ProtectionListener;
 import de.sw.manager.InventoryManager;
 import de.sw.manager.SBManager;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,48 +29,36 @@ import java.util.List;
 public class Main extends JavaPlugin {
 
     public static Main instance;
-
-    public static boolean ff = false;
+    public static LuckPerms luckPerms;
 
     public static String prefix = "§bSkyWars §8❘ §7";
-
     public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
-
     public ArrayList<Player> players;
-
     private File file = new File("plugins/SkyWars", "Config.yml");
-
     private YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-
     public int playersInTeam;
-
     public int maxPlayers = yamlConfiguration.getInt("maxPlayers");
-
     public static InventoryManager inventoryManager = new InventoryManager();
-
-    public String allKitsPerm;
-
     private GameState_Manager gameStateManager;
-
     public SBManager sbManager = new SBManager();
-
     public static List<Player> build = new ArrayList<>();
 
     public void onEnable() {
+        luckPerms = getServer().getServicesManager().load(LuckPerms.class);
+        this.instance = this;
         init();
     }
 
     public void init() {
+
         gameStateManager = new GameState_Manager(this);
         gameStateManager.setGameState(Game_State.ONLINE);
         players = new ArrayList<>();
 
         registerEvents();
-        instance = this;
         loadConfig();
         registerCommands();
         Bukkit.getConsoleSender().sendMessage(prefix + "§eDas Plugin wurde erfolgreich gestartet!!!!");
-        PremiumKick.allowPremiumKick();
     }
 
     public void registerCommands() {
@@ -81,7 +70,7 @@ public class Main extends JavaPlugin {
 
     public void registerEvents() {
         final PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents((Listener) new PlayerConnectionEvent(), this);
+        pluginManager.registerEvents((Listener) new PlayerConnectionEvent(this, this.luckPerms), this);
         pluginManager.registerEvents((Listener) new KitListener(), this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
     }

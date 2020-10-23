@@ -10,7 +10,6 @@ public class Ingame_State extends Game_State {
 
     @Override
     public void start() {
-        kitListener.kitMap.
     }
 
     @Override

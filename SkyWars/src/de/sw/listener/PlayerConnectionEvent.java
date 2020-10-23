@@ -6,6 +6,8 @@ import de.sw.main.Main;
 import de.sw.manager.InventoryManager;
 import de.sw.manager.ItemBuilderAPI;
 import de.sw.manager.UtilsManager;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,12 +21,16 @@ import java.io.File;
 public class PlayerConnectionEvent implements Listener {
 
     private Main instance;
+    private LuckPerms luckPerms;
 
     private static File file = new File("plugins/SkyWars", "Config.yml");
-
     private static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-
     private static InventoryManager inventoryManager;
+
+    public PlayerConnectionEvent(Main instance, LuckPerms luckPerms) {
+        this.instance = instance;
+        this.luckPerms = luckPerms;
+    }
 
     @EventHandler
     public void onJoin(org.bukkit.event.player.PlayerJoinEvent event) {
@@ -40,7 +46,10 @@ public class PlayerConnectionEvent implements Listener {
         player.getInventory().setItem(5, new ItemBuilderAPI(Material.NETHER_STAR).setDisplayName("§8» §dAchievements").build());
         player.getInventory().setItem(8, new ItemBuilderAPI(Material.MAGMA_CREAM).setDisplayName("§8» §cVerlassen").build());
 
-        event.setJoinMessage(Main.prefix + "§8» §e" + player.getDisplayName() + " §7hat das Spiel betreten! §7[§a"
+        CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
+        String prefix = metaData.getPrefix();
+
+        event.setJoinMessage(Main.prefix + "§8» §e" + prefix + " §7❘ " + player.getName() + " §7hat das Spiel betreten! §7[§a"
                 + Main.instance.players.size() + "§7/§c" + MAX_PLAYERS + "§7]");
 
         Lobby_State lobbyState = (Lobby_State) Main.instance.getGameStateManager().getCurrentGame_State();
