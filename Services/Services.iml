@@ -8,48 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="server1" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/gson-2.8.6.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/lombok-1.18.8.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/object-mapper-1.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/okhttp-3.9.0.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/okio-1.13.0.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/spring-aop-5.1.9.RELEASE.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/spring-beans-5.1.9.RELEASE.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/spring-context-5.1.9.RELEASE.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/spring-core-5.1.9.RELEASE.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/spring-expression-5.1.9.RELEASE.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../../Neuer Ordner/spring-jcl-5.1.9.RELEASE.jar!/" />
-          <root url="file://$MODULE_DIR$/../.." />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../../Config/src" />
-          <root url="file://$MODULE_DIR$/../BungeeCord/src" />
-          <root url="file://$MODULE_DIR$/../Config/src" />
-          <root url="file://$MODULE_DIR$/../LobbyFinish/src" />
-          <root url="file://$MODULE_DIR$/../Lobby/src" />
-          <root url="file://$MODULE_DIR$/../MLGRush/src" />
-          <root url="file://$MODULE_DIR$/../PremiumKickAPI/src" />
-          <root url="file://$MODULE_DIR$/src" />
-          <root url="file://$MODULE_DIR$/../SkyWars/src" />
-          <root url="file://$MODULE_DIR$/../SoupTraining/src" />
-          <root url="file://$MODULE_DIR$/../TablistAPI/src" />
-          <root url="file://$MODULE_DIR$/../TicketsAPI/src" />
-          <root url="file://$MODULE_DIR$/../../LobbyFinish/src" />
-          <root url="file://$MODULE_DIR$/../../MLGRush/src" />
-          <root url="file://$MODULE_DIR$/../../PremiumKickAPI/src" />
-          <root url="file://$MODULE_DIR$/../../SkyWars/src" />
-          <root url="file://$MODULE_DIR$/../../TicketsAPI/src" />
-          <root url="file://$MODULE_DIR$/../../learning/src" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="library" exported="" name="okhttp-3.9.0" level="project" />
-    <orderEntry type="library" exported="" name="spring-aop-5.1.9.RELEASE" level="project" />
-    <orderEntry type="library" exported="" name="bson-4.1.1" level="project" />
     <orderEntry type="module" module-name="SkyWars" />
+    <orderEntry type="library" exported="" name="bson-4.1.1" level="project" />
   </component>
 </module>

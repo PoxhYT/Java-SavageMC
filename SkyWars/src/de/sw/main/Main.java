@@ -3,15 +3,14 @@ package de.sw.main;
 import de.anweisung.premiumkickapi.PremiumKick;
 import de.sw.commands.Command_leave;
 import de.sw.commands.Command_setup;
+import de.sw.commands.Command_start;
 import de.sw.gameManager.GameState_Manager;
 import de.sw.gameManager.Game_State;
 import de.sw.listener.KitListener;
 import de.sw.listener.PlayerConnectionEvent;
 import de.sw.listener.ProtectionListener;
-import de.sw.listener.TeamListener;
 import de.sw.manager.InventoryManager;
 import de.sw.manager.SBManager;
-import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -34,6 +33,8 @@ public class Main extends JavaPlugin {
 
     public static String prefix = "§bSkyWars §8❘ §7";
 
+    public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
+
     public ArrayList<Player> players;
 
     private File file = new File("plugins/SkyWars", "Config.yml");
@@ -53,8 +54,6 @@ public class Main extends JavaPlugin {
     public SBManager sbManager = new SBManager();
 
     public static List<Player> build = new ArrayList<>();
-
-    private LuckPerms luckPerms;
 
     public void onEnable() {
         init();
@@ -76,13 +75,13 @@ public class Main extends JavaPlugin {
     public void registerCommands() {
         new Command_setup("setup");
         getCommand("leave").setExecutor((CommandExecutor)new Command_leave(this));
+        getCommand("start").setExecutor((CommandExecutor) new Command_start());
 
     }
 
     public void registerEvents() {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents((Listener) new PlayerConnectionEvent(), this);
-        pluginManager.registerEvents((Listener) new TeamListener(), this);
         pluginManager.registerEvents((Listener) new KitListener(), this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
     }

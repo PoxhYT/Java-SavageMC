@@ -18,10 +18,6 @@ public class InventoryManager {
     static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
 
     public void setLobbyInventory(Player player) {
-        player.getInventory().setItem(0, new ItemBuilderAPI(Material.BED).setDisplayName("§8» §bTeams").build());
-        player.getInventory().setItem(3, new ItemBuilderAPI(Material.CHEST).setDisplayName("§8» §eKits").build());
-        player.getInventory().setItem(5, new ItemBuilderAPI(Material.NETHER_STAR).setDisplayName("§8» §dAchievements").build());
-        player.getInventory().setItem(8, new ItemBuilderAPI(Material.MAGMA_CREAM).setDisplayName("§8» §cVerlassen").build());
     }
 
     public void setTeamInventory(Player player) {

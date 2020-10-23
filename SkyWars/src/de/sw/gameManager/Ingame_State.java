@@ -1,15 +1,16 @@
 package de.sw.gameManager;
 
-import de.sw.listener.TeamListener;
-import de.sw.manager.TeamManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
+
+import de.sw.listener.KitListener;
 
 public class Ingame_State extends Game_State {
 
+    private KitListener kitListener;
+
+
     @Override
     public void start() {
+        kitListener.kitMap.
     }
 
     @Override

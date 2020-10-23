@@ -5,3 +5,4 @@ main: de.sw.main.Main
 commands:
     setup:
     leave:
+    start:

@@ -8,9 +8,6 @@ public class Lobby_State extends Game_State {
 
     private LobbyCountdown countdown;
 
-    public static final int MIN_PLAYERS = 1,
-                            MAX_PLAYERS = 2;
-
     public Lobby_State(GameState_Manager gameStateManager) {
         countdown = new LobbyCountdown(gameStateManager);
     }

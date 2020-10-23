@@ -16,7 +16,7 @@ public class LobbyCountdown extends Countdown{
 
     private GameState_Manager gameStateManager;
 
-    private int seconds = 60;
+    public static int seconds = 60;
     private boolean isRunning;
     private int idleID;
     private boolean isIdling;
@@ -33,11 +33,13 @@ public class LobbyCountdown extends Countdown{
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(gameStateManager.getInstance(), new Runnable() {
             public void run() {
                 for (Player all : Main.instance.players) {
-                    all.setLevel(seconds);
-                    String float_String = "0." + seconds;
-                    float xp = Float.valueOf(float_String).floatValue();
-                    xp *= 1.7F;
-                    all.setExp(xp);
+                    try {
+                        all.setLevel(seconds);
+                        String float_String = "0." + seconds;
+                        float xp = Float.valueOf(float_String).floatValue();
+                        xp *= 1.7F;
+                        all.setExp(xp);
+                    }catch (NumberFormatException e){}
                 }
                 switch (seconds) {
                     case 60: case 50: case 40: case 30: case 20: case 10:
@@ -65,6 +67,8 @@ public class LobbyCountdown extends Countdown{
                             all.playSound(all.getLocation(), Sound.NOTE_BASS, 1, 1);
                         break;
                     case 0:
+                        for (Player all : Bukkit.getOnlinePlayers())
+                            all.playSound(all.getLocation(), Sound.LEVEL_UP, 1, 1);
                         gameStateManager.setGameState(Game_State.INGAME_STATE);
                         Ingame_State ingameState = new Ingame_State();
                         ingameState.start();

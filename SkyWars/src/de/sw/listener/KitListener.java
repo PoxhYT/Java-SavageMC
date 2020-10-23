@@ -17,61 +17,64 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class KitListener implements Listener {
 
     private MainService service;
 
+    public Map<UUID, KitManager> kitMap = new HashMap<>();
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         try {
-            if(event.getItem().getType() == Material.CHEST) {
+            if(event.getItem().getItemMeta().getDisplayName().equals("§8» §eKits")) {
                 openKitInventory(player);
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        } catch (NullPointerException e) {}
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        try{
-            KitManager[] kits = getKits();
-
-            for (int i = 0; i < kits.length; i++)
-            {
-                if(event.getCurrentItem().getType() == kits[i].getKitIcon()) {
-                    player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKit() + " §eKit §7ausgewählt!");
         KitManager[] kits = getKits(player);
 
-        for (int i = 0; i < kits.length; i++)
-        {
+        for (int i = 0; i < kits.length; i++) {
             Inventory inventory = Bukkit.createInventory(null, 9, "§e" + kits[i].getKitName());
             inventory.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName("§e" + kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
             inventory.setItem(0, new ItemBuilderAPI(Material.BARRIER).setDisplayName("§cZurück").build());
             inventory.setItem(8, new ItemBuilderAPI(Material.EMERALD).setDisplayName("§aKit auswählen").build());
 
-            if(event.getCurrentItem().getType() == Material.BARRIER) {
-                openKitInventory(player);
-                player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+
+            if (event.getInventory().getTitle().equals("§eKits")) {
+                if (event.getCurrentItem().getType() == kits[i].getKitIcon()) {
+                    if (kits[i].getHasKit()) {
+                        Inventory inventory1 = Bukkit.createInventory(null, 9, kits[i].getKitNameLiteralStringColored());
+                        inventory1.setItem(8, new ItemBuilderAPI(Material.WOOL, (short)5).setDisplayName("§aAuswählen").setLore("§aKlicke, um das Kit zu wählen").build());
+                        inventory1.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).setLore(kits[i].getKitDescription()).build());
+                        inventory1.setItem(0, new ItemBuilderAPI(Material.WOOL, (short)14).setDisplayName("§cZürück").setLore("§cKlicke, um die Auswahl zu beenden.").build());
+                        player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+                        player.openInventory(inventory1);
+                    } else {
+                        if (event.getInventory().getTitle().equals("§eKits")) {
+                            if (event.getCurrentItem().getType() == kits[i].getKitIcon()) {
+                                Inventory inventory2 = Bukkit.createInventory(null, 9, "§e" + kits[i].getKitNameLiteralString());
+                                inventory2.setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName("§aKaufen").setLore("§cKlicke, um das Kit zu kaufen.").build());
+                                inventory2.setItem(4, new ItemBuilderAPI(Material.GOLD_INGOT).setDisplayName("§cPreis: " + Integer.toString(kits[i].getKitPrice()) + " §cCoins").build());
+                                inventory2.setItem(0, new ItemBuilderAPI(Material.WOOL, (short) 14).setDisplayName("§cAbbrechen").setLore("§cKlicke, um den Kauf zu beenden.").build());
+                                player.openInventory(inventory2);
+                            }
+                        }
+                    }
+                }
             }
-
-            if (event.getCurrentItem().getType() == kits[i].getKitIcon()) {
-                if (kits[i].getHasKit()) {
-                    player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " §eKit §7ausgewählt!");
-                    player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
-                    player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).build());
-                } else {
-                    // TODO: Open Chest with the option to buy the kit
-//                    player.sendMessage(Main.prefix + ChatColor.RED + "Du hast das " + kits[i].getKitNameLiteralStringColored() + ChatColor.RED + " Kit nicht gekauft!");
-//                    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-
-                    // But for now we use this (just temporary)
+            
+            if(event.getInventory().getTitle().equals("§e" + kits[i].getKitNameLiteralString())) {
+                if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§aKaufen")) {
                     String uuid = player.getUniqueId().toString();
                     int amount = kits[i].getKitPrice();
                     Pair<Integer, Boolean> result = service.getCoinService().removeCoins(uuid, amount);
@@ -81,13 +84,59 @@ public class KitListener implements Listener {
                         service.getSkywarsService().buyKit(uuid, kits[i].getKitNameLiteralString());
                         player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " gekauft!");
                         player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
+                        player.closeInventory();
                     } else {
                         // Player does not have enough coins to by this kit
                         player.sendMessage(Main.prefix + ChatColor.RED + "Du hast nicht genügend coins um dir das " + kits[i].getKitNameLiteralStringColored() + ChatColor.RED + " kit zu kaufen!");
                         player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                     }
                 }
-                player.closeInventory();
+            }
+
+            if(event.getInventory().getTitle().equals(kits[i].getKitNameLiteralStringColored())) {
+                if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§aAuswählen")) {
+                    kitMap.put(player.getUniqueId(), kits[i]);
+                    player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " §eKit §7ausgewählt!");
+                    player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).build());
+                    player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
+                    player.closeInventory();
+                } else {
+                    if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§cAbbrechen")) {
+                        openSelectInventory(player);
+
+                    }
+                }
+            }
+        }
+    }
+
+    private void openBuyInventory(Player player) {
+        KitManager[] kits = getKits(player);
+        for (int i = 0; i < kits.length; i++)
+        {
+            try {
+                Inventory inventory = Bukkit.createInventory(null, 9, "§e" + kits[i].getKitNameLiteralString());
+                inventory.setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName("§aKaufen").setLore("§cKlicke, um das Kit zu kaufen.").build());
+                inventory.setItem(0, new ItemBuilderAPI(Material.WOOL, (short)14).setDisplayName("§cAbbrechen").setLore("§cKlicke, um den Kauf zu beenden.").build());
+                player.openInventory(inventory);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void openSelectInventory(Player player) {
+        KitManager[] kits = getKits(player);
+        for (int i = 0; i < kits.length; i++)
+        {
+            try {
+                Inventory inventory = Bukkit.createInventory(null, 9, "§e" + kits[i].getKitNameLiteralStringColored());
+                inventory.setItem(8, new ItemBuilderAPI(Material.WOOL, (short)5).setDisplayName("§aAuswählen").setLore("§cKlicke, um das Kit .").build());
+                inventory.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralString()).setLore(kits[i].getKitDescription()).build());
+                inventory.setItem(0, new ItemBuilderAPI(Material.WOOL, (short)14).setDisplayName("§cZürück").setLore("§cKlicke, um die Auswahl zu beenden.").build());
+                player.openInventory(inventory);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -107,26 +156,6 @@ public class KitListener implements Listener {
         player.openInventory(inventory);
     }
 
-    private static KitManager[] getKits() {
-
-        arr[0] = (new KitManager("Standard §8[§aGekauft§8]", new String[]{"§7Du startest mit §e1 Eisenschwert§7,", "§e1 Eisenspitzhacke§7, §e1 Eisenaxt"}, Material.IRON_PICKAXE, 0, "Standart",
-                "Standard §8[§cNicht gekauft§8]")
-        );
-        arr[1] = (new KitManager("Maurer §8[§aGekauft§8]",
-                new String[] {"§8✘ §eAusrüstung",
-                        "§8✘ §764 Ziegelsteine",
-                        "§8✘ §7Goldhelm mit Schutz III",
-                        "§8✘ §7Goldspitzhacke mit Effizienz III und Haltbarkeit II"},
-                Material.BRICK, 10000, "Maurer", "Maurer §8[§cNicht gekauft§8]")
-        );
-        arr[2] = (new KitManager("Healer §8[§aGekauft§8]",
-                new String[] {"§8✘ §eAusrüstung",
-                        "§8✘ §73x Heilungstränke mit Heilung II",
-                        "§8✘ §71 Regenerationstrank für 1:30 Minuten"},
-                Material.GHAST_TEAR, 5000, "Healer", "Heiler §8[§cNicht gekauft§8]")
-        );
-        return arr;
-    }
     private KitManager[] getKits(Player player) {
         service = MainService.getService(service);
         List<KitManager> kits = service.getSkywarsService().getDefaultKits();
