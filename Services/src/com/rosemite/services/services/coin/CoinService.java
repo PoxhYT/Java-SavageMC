@@ -1,21 +1,12 @@
 package com.rosemite.services.services.coin;
 
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.rosemite.services.helper.Converters;
-import com.rosemite.services.helper.Log;
+import com.rosemite.services.helper.Convert;
 import com.rosemite.services.main.MainService;
-import com.rosemite.services.models.common.Path;
 import com.rosemite.services.models.common.Paths;
-import com.rosemite.services.models.player.PlayerInfo;
 import org.bson.Document;
 import javafx.util.Pair;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
@@ -33,7 +24,7 @@ public class CoinService {
     public int getCoinAmount(String uuid) {
         Document doc = db.getCollection(Paths.PlayerInfo.toString()).find(eq("uuid", uuid)).first();
 
-        return Converters.c(doc.get("coins"));
+        return Convert.c(doc.get("coins"));
     }
 
     public int addCoins(String uuid, int amount) {

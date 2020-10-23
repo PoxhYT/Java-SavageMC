@@ -3,16 +3,13 @@ package com.rosemite.services.services.player;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.rosemite.services.helper.Log;
 import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.player.PlayerInfo;
 import com.rosemite.services.models.player.PlayerSkywarsKits;
 import org.bson.Document;
 import org.bukkit.entity.Player;
-
-import static com.mongodb.client.model.Filters.eq;
-
 import java.util.Map;
+import static com.mongodb.client.model.Filters.eq;
 
 public class PlayerService {
     private MongoDatabase db;

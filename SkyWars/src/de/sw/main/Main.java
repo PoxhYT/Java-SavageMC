@@ -50,6 +50,7 @@ public class Main extends JavaPlugin {
     public String allKitsPerm;
 
     private GameState_Manager gameStateManager;
+    private Listener kitListener;
 
     public SBManager sbManager = new SBManager();
 
@@ -80,9 +81,11 @@ public class Main extends JavaPlugin {
     }
 
     public void registerEvents() {
+        kitListener = new KitListener();
+
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents((Listener) new PlayerConnectionEvent(), this);
-        pluginManager.registerEvents((Listener) new KitListener(), this);
+        pluginManager.registerEvents((Listener) kitListener, this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
     }
 
@@ -105,6 +108,10 @@ public class Main extends JavaPlugin {
         }catch (IOException exception) {
             exception.printStackTrace();
         }
+    }
+
+    public KitListener getKitListener() {
+        return (KitListener) kitListener;
     }
 
     public static Main getInstance() {

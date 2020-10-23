@@ -48,14 +48,10 @@ public class SoupCommand implements CommandExecutor {
     private final String hart = "§7Der §eSchwierigkeitsgrad §7wurde auf §eHart §7angepasst!";
     private final String legende = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLegende §7angepasst!";
 
-    // Declare Server
-    private MainService service;
+    private MainService service = MainService.getService(null);
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Get Service
-        service = MainService.getService(service);
-
         if (command.getName().equals("soup"))
             if (sender instanceof Player) {
                 Player player = (Player) sender;
@@ -89,6 +85,7 @@ public class SoupCommand implements CommandExecutor {
                                 player.sendMessage(Main.prefix + "§cDu trainierst nicht!");
                                 return true;
                             }
+
                             player.setHealth(20.0D);
                             player.setFoodLevel(20);
                             player.getInventory().clear();

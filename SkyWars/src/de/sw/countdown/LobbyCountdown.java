@@ -39,7 +39,7 @@ public class LobbyCountdown extends Countdown{
                         float xp = Float.valueOf(float_String).floatValue();
                         xp *= 1.7F;
                         all.setExp(xp);
-                    }catch (NumberFormatException e){}
+                    } catch (NumberFormatException e) { }
                 }
                 switch (seconds) {
                     case 60: case 50: case 40: case 30: case 20: case 10:
@@ -106,7 +106,6 @@ public class LobbyCountdown extends Countdown{
         if(isIdling) {
             Bukkit.getScheduler().cancelTask(idleID);
         }
-
     }
 
     public boolean isRunning() {
