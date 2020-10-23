@@ -40,6 +40,8 @@ public class Main extends JavaPlugin {
     public int maxPlayers = yamlConfiguration.getInt("maxPlayers");
     public static InventoryManager inventoryManager = new InventoryManager();
     private GameState_Manager gameStateManager;
+    private Listener kitListener;
+
     public SBManager sbManager = new SBManager();
     public static List<Player> build = new ArrayList<>();
 
@@ -69,9 +71,13 @@ public class Main extends JavaPlugin {
     }
 
     public void registerEvents() {
+        kitListener = new KitListener();
+
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents((Listener) new PlayerConnectionEvent(this, this.luckPerms), this);
         pluginManager.registerEvents((Listener) new KitListener(), this);
+        pluginManager.registerEvents((Listener) new PlayerConnectionEvent(), this);
+        pluginManager.registerEvents((Listener) kitListener, this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
     }
 
@@ -94,6 +100,10 @@ public class Main extends JavaPlugin {
         }catch (IOException exception) {
             exception.printStackTrace();
         }
+    }
+
+    public KitListener getKitListener() {
+        return (KitListener) kitListener;
     }
 
     public static Main getInstance() {

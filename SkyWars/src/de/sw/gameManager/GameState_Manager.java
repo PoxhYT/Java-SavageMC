@@ -21,7 +21,6 @@ public class GameState_Manager {
         if(currentGame_State != null)
             currentGame_State.stop();
         currentGame_State = game_states[gameStateID];
-        currentGame_State.start();
     }
 
     public void stopCurrentGameState() {

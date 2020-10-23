@@ -1,6 +1,6 @@
 package com.rosemite.services.helper;
 
-public class Converters {
+public class Convert {
     public static int c(Object number) {
         if (number.getClass() == Integer.class) {
             return (int)number;

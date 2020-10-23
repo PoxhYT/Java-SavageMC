@@ -5,8 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.rosemite.services.helper.Converters;
-import com.rosemite.services.helper.Log;
+import com.rosemite.services.helper.Convert;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.player.PlayerInfo;
@@ -47,7 +46,7 @@ public class SoupTrainingService {
 
         // Add Coins
         Document document = db.getCollection(Paths.PlayerInfo.toString()).find(Filters.eq("uuid", player.getUniqueId().toString())).first();
-        coins += Converters.c(document.get("coins"));
+        coins += Convert.c(document.get("coins"));
 
         db.getCollection(Paths.PlayerInfo.toString()).updateOne(Filters.eq("uuid", player.getUniqueId().toString()),
             combine(
@@ -55,7 +54,7 @@ public class SoupTrainingService {
         ));
 
         // Update Score
-        if (doc != null && Converters.c(doc.get(type.toString())) > droppedSoups) {
+        if (doc != null && Convert.c(doc.get(type.toString())) > droppedSoups) {
             return;
         }
 
