@@ -1,5 +1,6 @@
 package de.sw.commands;
 
+import de.sw.api.LocationAPI;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -69,8 +70,12 @@ public class Command_setup implements CommandExecutor {
                             }
                         }
                     }
-                }
 
+                    if(args[0].equalsIgnoreCase("setlobby")) {
+                        LocationAPI.setSpawn("Lobby", player.getLocation());
+                        player.sendMessage(Main.prefix + "GUT");
+                    }
+                }
             }
         }
 

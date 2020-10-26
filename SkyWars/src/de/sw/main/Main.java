@@ -1,15 +1,13 @@
 package de.sw.main;
 
-import de.anweisung.premiumkickapi.PremiumKick;
-import de.sw.commands.Command_leave;
-import de.sw.commands.Command_setup;
-import de.sw.commands.Command_start;
+import de.sw.commands.*;
 import de.sw.gameManager.GameState_Manager;
 import de.sw.gameManager.Game_State;
 import de.sw.listener.KitListener;
 import de.sw.listener.PlayerConnectionEvent;
 import de.sw.listener.ProtectionListener;
 import de.sw.manager.InventoryManager;
+import de.sw.manager.NMS;
 import de.sw.manager.SBManager;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
@@ -18,7 +16,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -30,12 +27,13 @@ public class Main extends JavaPlugin {
 
     public static Main instance;
     public static LuckPerms luckPerms;
+    private NMS nmsHandler;
 
     public static String prefix = "§bSkyWars §8❘ §7";
     public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
     public ArrayList<Player> players;
     private File file = new File("plugins/SkyWars", "Config.yml");
-    private YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+    public YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
     public int playersInTeam;
     public int maxPlayers = yamlConfiguration.getInt("maxPlayers");
     public static InventoryManager inventoryManager = new InventoryManager();
@@ -44,6 +42,11 @@ public class Main extends JavaPlugin {
 
     public SBManager sbManager = new SBManager();
     public static List<Player> build = new ArrayList<>();
+
+    private int maxDoubleChest;
+    public int getMaxDoubleChest() {
+        return this.maxDoubleChest;
+    }
 
     public void onEnable() {
         luckPerms = getServer().getServicesManager().load(LuckPerms.class);
@@ -76,9 +79,8 @@ public class Main extends JavaPlugin {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents((Listener) new PlayerConnectionEvent(this, this.luckPerms), this);
         pluginManager.registerEvents((Listener) new KitListener(), this);
-        pluginManager.registerEvents((Listener) new PlayerConnectionEvent(), this);
-        pluginManager.registerEvents((Listener) kitListener, this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
+
     }
 
     public void loadConfig() {
@@ -87,12 +89,16 @@ public class Main extends JavaPlugin {
             return;
         }
         if(!file.exists()) {
-            yamlConfiguration.set("minplayers", 1);
-            yamlConfiguration.set("maxPlayers", 3);
-            yamlConfiguration.set("teams", 8);
-            yamlConfiguration.set("playersInTeam", 1);
-            yamlConfiguration.set("gameSize", "8x1");
-            yamlConfiguration.set("MapName", "Forest");
+            List<String> values = yamlConfiguration.getStringList("ChestItems");
+            values.add("264:0, 1, 1");
+            values.add("263:0, 1, 1");
+            values.add("262:0, 1, 1");
+            values.add("261:0, 1, 1");
+            values.add("260:0, 1, 1");
+            values.add("265:0, 1, 1");
+            values.add("266:0, 1, 1");
+
+            yamlConfiguration.set("ChestItems", values);
         }
         try {
             yamlConfiguration.save(file);
@@ -120,5 +126,13 @@ public class Main extends JavaPlugin {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public static NMS getNMS() {
+        return instance.nmsHandler;
+    }
+
+    public YamlConfiguration getYamlConfiguration() {
+        return yamlConfiguration;
     }
 }
