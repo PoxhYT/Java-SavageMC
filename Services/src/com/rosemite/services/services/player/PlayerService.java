@@ -22,6 +22,7 @@ public class PlayerService {
         PlayerInfo playerInfo = new PlayerInfo(
             false,
             player.getDisplayName(),
+            "Standard",
             player.getUniqueId().toString(),
             500
         );

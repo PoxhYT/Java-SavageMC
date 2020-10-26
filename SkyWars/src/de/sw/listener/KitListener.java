@@ -49,7 +49,6 @@ public class KitListener implements Listener {
             inventory.setItem(0, new ItemBuilderAPI(Material.BARRIER).setDisplayName("§cZurück").build());
             inventory.setItem(8, new ItemBuilderAPI(Material.EMERALD).setDisplayName("§aKit auswählen").build());
 
-
             if (event.getInventory().getTitle().equals("§eKits")) {
                 if (event.getCurrentItem().getType() == kits[i].getKitIcon()) {
                     if (kits[i].getHasKit()) {
@@ -93,17 +92,18 @@ public class KitListener implements Listener {
                 }
             }
 
-            if(event.getInventory().getTitle().equals(kits[i].getKitNameLiteralStringColored())) {
+            if (event.getInventory().getTitle().equals(kits[i].getKitNameLiteralStringColored())) {
                 if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§aAuswählen")) {
                     kitMap.put(player.getUniqueId(), kits[i]);
                     player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " §eKit §7ausgewählt!");
                     player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).build());
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
                     player.closeInventory();
+
+                    service.getSkywarsService().updateLatestSelectedKit(player.getUniqueId().toString(), kits[i].getKitNameLiteralString());
                 } else {
                     if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§cAbbrechen")) {
                         openSelectInventory(player);
-
                     }
                 }
             }

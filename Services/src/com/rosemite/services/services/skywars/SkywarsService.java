@@ -39,6 +39,19 @@ public class SkywarsService {
         return db.getCollection(Paths.PlayerSkywarsKits.toString()).insertOne(new Document(data));
     }
 
+    public UpdateResult updateLatestSelectedKit(String uuid, String kitName) {
+        UpdateResult result = db.getCollection(Paths.PlayerInfo.toString()).updateOne(
+                Filters.eq("uuid", uuid),
+                combine(set("updateLatestSelectedKit", kitName))
+        );
+
+        return result;
+    }
+
+    public String getLatestSelectedKit(String uuid) {
+        return service.getPlayerService().getPlayerInfo(uuid).getLatestSelectedKit();
+    }
+
     public UpdateResult buyKit(String uuid, String kitName) {
         UpdateResult result = db.getCollection(Paths.PlayerSkywarsKits.toString()).updateOne(
                 Filters.eq("uuid", uuid),
