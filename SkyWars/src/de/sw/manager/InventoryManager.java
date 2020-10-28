@@ -33,5 +33,4 @@ public class InventoryManager {
 
         return teamManagers;
     }
-
 }

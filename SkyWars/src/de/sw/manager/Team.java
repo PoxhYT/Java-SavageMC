@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class Team {
-
     private List<Player> players;
     private String teamName;
 

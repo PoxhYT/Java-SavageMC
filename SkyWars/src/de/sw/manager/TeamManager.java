@@ -11,14 +11,12 @@ public class TeamManager {
 
     private String teamName;
     private String teamPrefix;
-    private int maxPlayers;
     public ArrayList<Player> players;
     public Material material;
 
-    public TeamManager(String teamName, String teamPrefix, int teamSize, Material material) {
+    public TeamManager(String teamName, String teamPrefix, Material material) {
         this.teamName = teamName;
         this.teamPrefix = teamPrefix;
-        this.maxPlayers = teamSize;
         this.players = new ArrayList<>();
         this.material = material;
     }
@@ -49,14 +47,6 @@ public class TeamManager {
 
     public void setTeamPrefix(String teamPrefix) {
         this.teamPrefix = teamPrefix;
-    }
-
-    public void setMaxPlayers(int maxPlayers) {
-        this.maxPlayers = maxPlayers;
-    }
-
-    public int getMaxPlayers() {
-        return maxPlayers;
     }
 
     public boolean isInTeam(Player player) {

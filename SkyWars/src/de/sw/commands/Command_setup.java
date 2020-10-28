@@ -75,6 +75,11 @@ public class Command_setup implements CommandExecutor {
                         LocationAPI.setSpawn("Lobby", player.getLocation());
                         player.sendMessage(Main.prefix + "GUT");
                     }
+
+                    if(args[0].equalsIgnoreCase("setTEST")) {
+                        LocationAPI.setSpawn("TEST", player.getLocation());
+                        player.sendMessage(Main.prefix + "GUT");
+                    }
                 }
             }
         }
