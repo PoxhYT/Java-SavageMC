@@ -5,13 +5,17 @@ import de.sw.gameManager.GameState_Manager;
 import de.sw.gameManager.Game_State;
 import de.sw.listener.KitListener;
 import de.sw.listener.PlayerConnectionEvent;
+import de.sw.listener.PlayerTeleportListener;
 import de.sw.listener.ProtectionListener;
+import de.sw.manager.ChestManager;
 import de.sw.manager.InventoryManager;
 import de.sw.manager.NMS;
 import de.sw.manager.SBManager;
+import lombok.Getter;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -28,8 +32,9 @@ public class Main extends JavaPlugin {
     public static Main instance;
     public static LuckPerms luckPerms;
     private NMS nmsHandler;
-
+    private int maxChest;
     public static String prefix = "§bSkyWars §8❘ §7";
+    public static String Fehler = "§cFehler §8❘ §7";
     public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
     public ArrayList<Player> players;
     private File file = new File("plugins/SkyWars", "Config.yml");
@@ -39,11 +44,18 @@ public class Main extends JavaPlugin {
     public static InventoryManager inventoryManager = new InventoryManager();
     private GameState_Manager gameStateManager;
     private Listener kitListener;
+    private ChestManager chestManager;
+
+
+    private String wrong = "§cWrong usage...";
 
     public SBManager sbManager = new SBManager();
     public static List<Player> build = new ArrayList<>();
 
     private int maxDoubleChest;
+
+
+
     public int getMaxDoubleChest() {
         return this.maxDoubleChest;
     }
@@ -52,6 +64,7 @@ public class Main extends JavaPlugin {
         luckPerms = getServer().getServicesManager().load(LuckPerms.class);
         this.instance = this;
         init();
+        this.chestManager = new ChestManager();
     }
 
     public void init() {
@@ -70,6 +83,7 @@ public class Main extends JavaPlugin {
         new Command_setup("setup");
         getCommand("leave").setExecutor((CommandExecutor)new Command_leave(this));
         getCommand("start").setExecutor((CommandExecutor) new Command_start());
+        getCommand("skywars").setExecutor((CommandExecutor)new CmdManager());
 
     }
 
@@ -79,7 +93,7 @@ public class Main extends JavaPlugin {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents((Listener) new PlayerConnectionEvent(this, this.luckPerms), this);
         pluginManager.registerEvents((Listener) new KitListener(), this);
-        pluginManager.registerEvents((Listener) new ProtectionListener(), this);
+        pluginManager.registerEvents((Listener) new PlayerTeleportListener(), this);
 
     }
 
@@ -108,6 +122,27 @@ public class Main extends JavaPlugin {
         }
     }
 
+    public boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public boolean hp(String t, CommandSender sender, String s) {
+        if (t.equalsIgnoreCase("sw"))
+            return sender.hasPermission("sw." + s);
+        if (t.equalsIgnoreCase("kit"))
+            return sender.hasPermission("sw.kit." + s);
+        if (t.equalsIgnoreCase("map"))
+            return sender.hasPermission("sw.map." + s);
+        if (t.equalsIgnoreCase("party"))
+            return sender.hasPermission("sw.party." + s);
+        return false;
+    }
+
     public KitListener getKitListener() {
         return (KitListener) kitListener;
     }
@@ -134,5 +169,13 @@ public class Main extends JavaPlugin {
 
     public YamlConfiguration getYamlConfiguration() {
         return yamlConfiguration;
+    }
+
+    public int getMaxChest() {
+        return maxChest;
+    }
+
+    public static ChestManager getChestManager() {
+        return instance.chestManager;
     }
 }
