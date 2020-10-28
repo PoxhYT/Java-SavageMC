@@ -1,63 +1,57 @@
 package de.sw.listener;
 
 import com.rosemite.services.helper.Log;
-import com.rosemite.services.main.MainService;
-import de.sw.manager.ItemBuilderAPI;
-import de.sw.manager.KitManager;
-import de.sw.manager.TeamManager;
+import de.sw.main.Main;
+import de.sw.manager.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TeamListener implements Listener {
 
     private static File file = new File("plugins/SkyWars", "Map.yml");
     private static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
 
-    public List<TeamManager> teams;
+    public TeamManager[] teams;
 
     public TeamListener() {
-        // TODO: Create new SkywarsMapData
-    }
+        SkyWarsMapData data = new SkyWarsMapData(yamlConfiguration, "1");
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-
-        for (int i = 0; i < teams.size(); i++) {
-            if (teams.get(i).) {
-                boolean isInTeam = teams.get(i).isInTeam(player);
-
-                if (isInTeam) {
-                    Log.d("Du bist schon in dem Team");
-                } else {
-                    // Todo: Add player to team & check if team is full
-                }
-                break;
-            }
+        teams = new TeamManager[data.maxTeamCount];
+        for (int i = 0; i < teams.length; i++) {
+            teams[i] = new TeamManager("Team" + i, "§cTeam"+i, Material.WOOL, data.maxPlayersInTeam);
         }
     }
 
-    public void onPlayerChangeTeam(Player player, String teamName) {
-        for (int i = 0; i < teams.size(); i++) {
-            if (teams.get(i).getTeamName().equals(teamName)) {
-                boolean isInTeam = teams.get(i).isInTeam(player);
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
 
-                if (isInTeam) {
-                    Log.d("Du bist schon in dem Team");
-                } else {
-                    // Todo: Add player to team & check if team is full
+        for (int i = 0; i < teams.length; i++) {
+            if(event.getInventory().getTitle().equals("§eTeamauswahl")) {
+                if (event.getCurrentItem().getItemMeta().getDisplayName() == teams[i].getTeamName()) {
+                    if (teams[i].getTeamName().equals(event.getCurrentItem().getItemMeta().getDisplayName())) {
+                        boolean isInTeam = teams[i].isInTeam(player);
+                        player.sendMessage(Main.prefix + "Du hast das §e" + teams[i].getTeamName() + " §7beigetreten!");
+
+                        if (isInTeam) {
+                            Log.d("Du bist schon in dem Team");
+                        } else {
+                            if (!teams[i].isFull()) {
+                                teams[i].addPlayer(player);
+                                Log.d("Du hast das Team: " + teams[i].getTeamName() + " idk...");
+                            }
+                        }
+                        break;
+                    }
                 }
-                break;
             }
         }
     }

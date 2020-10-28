@@ -103,16 +103,9 @@ public class Main extends JavaPlugin {
             return;
         }
         if(!file.exists()) {
-            List<String> values = yamlConfiguration.getStringList("ChestItems");
-            values.add("264:0, 1, 1");
-            values.add("263:0, 1, 1");
-            values.add("262:0, 1, 1");
-            values.add("261:0, 1, 1");
-            values.add("260:0, 1, 1");
-            values.add("265:0, 1, 1");
-            values.add("266:0, 1, 1");
+            yamlConfiguration.set("MapsData.playersInTeam", 1);
+            yamlConfiguration.set("MapsData.teams", 8);
 
-            yamlConfiguration.set("ChestItems", values);
         }
         try {
             yamlConfiguration.save(file);

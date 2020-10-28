@@ -1,0 +1,9 @@
+mapsIDs:
+    1:
+      mapName: "Berlin"
+      maxTeamCount: 8
+      maxPlayersInTeam: 1
+    2:
+      mapName: "Berlin2"
+      maxTeamCount: 8
+      maxPlayersInTeam: 1

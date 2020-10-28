@@ -14,19 +14,30 @@ public class TeamManager {
     public ArrayList<Player> players;
     public Material material;
 
-    public TeamManager(String teamName, String teamPrefix, Material material) {
+    public final int maxPlayerCount;
+
+    public TeamManager(String teamName, String teamPrefix, Material material, int maxPlayerCount) {
         this.teamName = teamName;
         this.teamPrefix = teamPrefix;
         this.players = new ArrayList<>();
         this.material = material;
+        this.maxPlayerCount = maxPlayerCount;
+    }
+
+    public void addPlayer(Player p) {
+        players.add(p);
+    }
+
+    public boolean isFull() {
+        if (maxPlayerCount == players.size()) {
+            return true;
+        }
+
+        return false;
     }
 
     public Material getMaterial() {
         return material;
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
     }
 
     public ArrayList<Player> getPlayers() {
