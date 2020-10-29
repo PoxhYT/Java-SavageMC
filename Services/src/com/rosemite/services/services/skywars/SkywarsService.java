@@ -10,6 +10,7 @@ import com.mongodb.client.result.UpdateResult;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
+import com.rosemite.services.models.common.Severity;
 import com.rosemite.services.models.player.PlayerSkywarsKits;
 import de.sw.manager.KitManager;
 import org.bson.Document;
@@ -25,8 +26,8 @@ public class SkywarsService {
     private final MainService service;
     private List<KitManager> allKits;
 
-    public SkywarsService(MongoDatabase db) {
-        this.service = MainService.getService(null);
+    public SkywarsService(MongoDatabase db, MainService mainService) {
+        this.service = mainService;
         this.db = db;
         allKits = new ArrayList<>();
     }
@@ -65,8 +66,11 @@ public class SkywarsService {
         PlayerSkywarsKits playerKits = service.getPlayerService().getPlayerSkywarsKits(uuid);
 
         if (playerKits == null) {
-            Log.d("Problem");
-            service.reportError("Player Kits was null but it should not be. Check if this UUID is under players collection: " + uuid.toString());
+            service.getReportService().report(
+                    Severity.High,
+                    "Player Kits was null but it should not be. Check if this UUID is under players collection: " + uuid,
+                    "SkywarsService"
+            );
             return kits;
         }
 

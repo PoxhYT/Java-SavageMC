@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.rosemite.services.listener.PlayerJoinEvent;
 import com.rosemite.services.models.common.Paths;
+import com.rosemite.services.service.report.ReportService;
 import com.rosemite.services.services.coin.CoinService;
 import com.rosemite.services.config.Config;
 import com.rosemite.services.helper.Log;
@@ -28,7 +29,7 @@ public class MainService extends JavaPlugin {
         // Initialize Config data
         Config config = new Config(this);
 
-        // Credentials & Connect to Mongodb
+        // Get Credentials & Connect to Mongodb
         String connectionString = config.getConfiguration("backend.url").toString();
 
         MongoClient mongoClient = MongoClients.create(connectionString);
@@ -41,11 +42,6 @@ public class MainService extends JavaPlugin {
         registerEvents();
 
         Log.d("Loaded Services Successfully");
-    }
-
-    public void reportError(String err) {
-        // Todo: Report error to server
-        Log.w(err);
     }
 
     private void registerEvents() {
@@ -67,6 +63,10 @@ public class MainService extends JavaPlugin {
 
     public CoinService getCoinService() {
         return holder.getCoinService();
+    }
+
+    public ReportService getReportService() {
+        return holder.getReportService();
     }
 
     public PlayerService getPlayerService() {

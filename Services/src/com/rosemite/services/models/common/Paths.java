@@ -4,6 +4,7 @@ public enum Paths {
     SoupTraining("SoupTraining"),
     PlayerSkywarsKits("PlayerSkywarsKits"),
     DefaultSkywarsKits("DefaultSkywarsKits"),
+    Report("ErrorReports"),
     PlayerInfo("Players");
     private final String text;
 

@@ -2,6 +2,7 @@ package com.rosemite.services.main;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.rosemite.services.service.report.ReportService;
 import com.rosemite.services.services.coin.CoinService;
 import com.rosemite.services.services.player.PlayerService;
 import com.rosemite.services.services.skywars.SkywarsService;
@@ -13,12 +14,14 @@ public class ServiceHolder {
     private final SkywarsService skywarsService;
     private final PlayerService playerService;
     private final CoinService coinService;
+    private final ReportService reportService;
 
-    public ServiceHolder(MongoDatabase db,MainService service) {
-        this.soupTrainingService = new SoupTrainingService(db);
-        this.skywarsService = new SkywarsService(db);
-        this.playerService = new PlayerService(db);
+    public ServiceHolder(MongoDatabase db, MainService service) {
+        this.soupTrainingService = new SoupTrainingService(db, service);
+        this.skywarsService = new SkywarsService(db, service);
+        this.playerService = new PlayerService(db, service);
         this.coinService = new CoinService(db, service);
+        this.reportService = new ReportService(db);
     }
 
     public SoupTrainingService getSoupTrainingService() {
@@ -35,5 +38,8 @@ public class ServiceHolder {
 
     public CoinService getCoinService() {
         return coinService;
+    }
+    public ReportService getReportService() {
+        return reportService;
     }
 }

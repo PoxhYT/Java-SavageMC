@@ -1,7 +1,7 @@
 package com.rosemite.services.models.common;
 
 public class Path {
-    private String path = null;
+    private final String path;
 
     public String get() {
         return path;

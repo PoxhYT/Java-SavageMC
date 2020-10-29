@@ -8,6 +8,7 @@ import com.mongodb.client.model.Filters;
 import com.rosemite.services.helper.Convert;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
+import com.rosemite.services.models.common.Severity;
 import com.rosemite.services.models.player.PlayerInfo;
 import com.rosemite.services.models.soup.SoupScoreModel;
 import org.bson.Document;
@@ -27,7 +28,7 @@ public class SoupTrainingService {
 
     private MainService service;
 
-    public SoupTrainingService(MongoDatabase db) {
+    public SoupTrainingService(MongoDatabase db, MainService mainService) {
         this.db = db;
         this.collection = db.getCollection(Paths.SoupTraining.toString());
         service = MainService.getService(null);
@@ -38,7 +39,11 @@ public class SoupTrainingService {
 
         if (doc == null) {
             // Todo: Report
-            MainService.getService(null).reportError("On Save SoupTraining Document was null");
+            MainService.getService(null).getReportService().report(
+                    Severity.Low,
+                    "On Save SoupTraining Document was null",
+                    "SoupTraining"
+            );
 
             // Todo: Create missing Doc
             initializePlayer(player);
@@ -70,7 +75,7 @@ public class SoupTrainingService {
 
         if (doc == null) {
             // Todo: Report
-            service.reportError("On Save SoupTraining Document was null");
+            service.getReportService().report(Severity.Low, "On Save SoupTraining Document was null", "SoupTraining");
 
             // Todo: Create missing Doc
             doc = initializePlayer(service.getPlayerService().getPlayerInfo(uuid));

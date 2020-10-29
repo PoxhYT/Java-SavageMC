@@ -3,6 +3,7 @@ package com.rosemite.services.services.player;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.player.PlayerInfo;
 import com.rosemite.services.models.player.PlayerSkywarsKits;
@@ -14,7 +15,7 @@ import static com.mongodb.client.model.Filters.eq;
 public class PlayerService {
     private MongoDatabase db;
 
-    public PlayerService(MongoDatabase db) {
+    public PlayerService(MongoDatabase db, MainService mainService) {
         this.db = db;
     }
 
