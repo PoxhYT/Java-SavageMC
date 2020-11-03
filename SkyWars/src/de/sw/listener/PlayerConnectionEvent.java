@@ -50,6 +50,8 @@ public class PlayerConnectionEvent implements Listener {
         CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
         String prefix = metaData.getPrefix();
 
+        Main.scoreCD();
+
         event.setJoinMessage(Main.prefix + "§8» §e" + prefix + " §7❘ " + player.getName() + " §7hat das Spiel betreten! §7[§a"
                 + Main.instance.players.size() + "§7/§c" + MAX_PLAYERS + "§7]");
         Main.getInstance().sbManager.setLobbyBoard(player);
@@ -60,6 +62,7 @@ public class PlayerConnectionEvent implements Listener {
         Lobby_State lobbyState = (Lobby_State) Main.instance.getGameStateManager().getCurrentGame_State();
         LobbyCountdown countdown = lobbyState.getCountdown();
         player.setLevel(60);
+        player.setFoodLevel(20);
         if(Main.instance.players.size() >= MIN_PLAYERS) {
             if(!countdown.isRunning()) {
                 countdown.stopIdle();

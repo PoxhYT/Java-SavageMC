@@ -86,9 +86,11 @@ public class TeamListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
         try {
             if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
                 if(event.getItem().getItemMeta().getDisplayName().equals("§8» §bTeams"))
+                    Main.roundKills.put(player.getUniqueId().toString(), )
                 openTeamInventory(event.getPlayer());
             }
         }catch (NullPointerException e) {

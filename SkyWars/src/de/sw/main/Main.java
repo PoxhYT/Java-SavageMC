@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -46,7 +47,7 @@ public class Main extends JavaPlugin {
     private Listener kitListener;
     private ChestManager chestManager;
 
-    public static HashMap<Player, Integer> roundKills = new HashMap<>();
+    public static HashMap<UUID, Integer> roundKills = new HashMap<>();
 
 
     private String wrong = "§cWrong usage...";
@@ -148,25 +149,16 @@ public class Main extends JavaPlugin {
 
     }
 
-    public boolean isInteger(String s) {
-        try {
-            Integer.parseInt(s);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
+    public static void scoreCD() {
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask((Plugin)Main.getInstance(), new Runnable() {
 
-    public boolean hp(String t, CommandSender sender, String s) {
-        if (t.equalsIgnoreCase("sw"))
-            return sender.hasPermission("sw." + s);
-        if (t.equalsIgnoreCase("kit"))
-            return sender.hasPermission("sw.kit." + s);
-        if (t.equalsIgnoreCase("map"))
-            return sender.hasPermission("sw.map." + s);
-        if (t.equalsIgnoreCase("party"))
-            return sender.hasPermission("sw.party." + s);
-        return false;
+            @Override
+            public void run() {
+                for (Player all : Bukkit.getOnlinePlayers()) {
+                    SBManager.updateScoreboard(all);
+                }
+            }
+        }, 0, 1);
     }
 
     public KitListener getKitListener() {

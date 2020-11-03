@@ -22,7 +22,7 @@ public class SBManager {
     private Main instance;
     private static File fileSkywars = new File("plugins/SkyWars", "MapData.yml");
     private static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkywars);
-    private MainService service;
+    private static MainService service;
 
     public void setLobbyBoard(Player player) {
 
@@ -42,6 +42,7 @@ public class SBManager {
         obj.getScore("§3 ").setScore(3);
         obj.getScore("§8• §fKit").setScore(2);
         obj.getScore("§8➥ §e" + service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString())).setScore(1);
+        obj.getScore(updateTeam(board, "Kit", "§8➥ §e" + service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString()), " §4", ChatColor.DARK_GRAY)).setScore(1);
         obj.getScore("§4 ").setScore(0);
         System.out.println(service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString()));
 
@@ -59,7 +60,7 @@ public class SBManager {
         obj.getScore("§8➥ §e" + Main.MapName1.get(Path.MapName.toString())).setScore(7);
         obj.getScore("§2 ").setScore(6);
         obj.getScore("§8• §fKills").setScore(5);
-        obj.getScore("§8➥ §8(§e" + Main.MapName1.get(Path.GameSize.toString()) + "§8)").setScore(4);
+        obj.getScore("§8➥ §8(§e" + Main.roundKills.get(player)).setScore(4);
         obj.getScore("§3 ").setScore(3);
         obj.getScore("§8• §fKit").setScore(2);
         obj.getScore("§8➥ §e" + "§cSOON").setScore(1);
@@ -69,8 +70,10 @@ public class SBManager {
     }
 
     public static void updateScoreboard(Player player) {
+        service = MainService.getService(service);
         Scoreboard board = player.getScoreboard();
         Objective obj = board.getObjective("aaa");
+        obj.getScore(updateTeam(board, "Kit", "§8➥ §e" + service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString()), " §4", ChatColor.DARK_GRAY)).setScore(1);
 
     }
 
