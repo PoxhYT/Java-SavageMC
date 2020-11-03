@@ -49,9 +49,6 @@ public class TeamListener implements Listener {
                 if (event.getInventory().getTitle().equals("§eTeamauswahl")) {
                     String displayName = "§e" + teams[i].getPlayers().size();
                     if (event.getCurrentItem().getItemMeta().getDisplayName().equals(displayName)) {
-                        for (int j = 0; j < teams[i].getPlayers().size(); j++) {
-                            Log.d(teams[i].getPlayers().get(j).getDisplayName());
-                        }
                         boolean team = teams[i].isInTeam(player);
 
                         String t = teamManagerMap.get(player.getUniqueId());
@@ -91,6 +88,7 @@ public class TeamListener implements Listener {
         try {
             if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
                 if(event.getItem().getItemMeta().getDisplayName().equals("§8» §bTeams"))
+
                 {
                     PlayerSkywarsStats stats = Main.roundKills.get(player.getUniqueId());
 
@@ -100,6 +98,7 @@ public class TeamListener implements Listener {
 
                     Main.roundKills.put(player.getUniqueId(), stats);
                 }
+
                 openTeamInventory(event.getPlayer());
             }
         }catch (NullPointerException e) {
