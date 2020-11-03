@@ -21,8 +21,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MainService extends JavaPlugin {
-    public static String prefix = "§8[Service] §7";
-
     private ServiceHolder holder;
 
     public void onEnable() {

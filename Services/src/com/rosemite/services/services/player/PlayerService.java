@@ -6,7 +6,7 @@ import com.mongodb.client.model.Filters;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.player.PlayerInfo;
-import com.rosemite.services.models.player.PlayerSkywarsKits;
+import com.rosemite.services.models.skywars.PlayerSkywarsKits;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 import java.util.Map;

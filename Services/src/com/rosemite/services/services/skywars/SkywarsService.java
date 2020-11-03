@@ -7,11 +7,10 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
-import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.common.Severity;
-import com.rosemite.services.models.player.PlayerSkywarsKits;
+import com.rosemite.services.models.skywars.PlayerSkywarsKits;
 import de.sw.manager.KitManager;
 import org.bson.Document;
 
@@ -81,6 +80,18 @@ public class SkywarsService {
         }
 
         return kits;
+    }
+
+    private void updatePlayerStats() {
+
+    }
+
+    public void getPlayerStats() {
+
+    }
+
+    public void addPlayerStats() {
+        getPlayerStats();
     }
 
     public List<KitManager> getDefaultKits() {

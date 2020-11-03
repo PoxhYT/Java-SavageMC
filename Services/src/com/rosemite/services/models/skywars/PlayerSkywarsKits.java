@@ -1,4 +1,4 @@
-package com.rosemite.services.models.player;
+package com.rosemite.services.models.skywars;
 
 import java.util.HashMap;
 import java.util.Map;
