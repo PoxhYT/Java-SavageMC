@@ -7,6 +7,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
+import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.common.Severity;

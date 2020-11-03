@@ -1,6 +1,7 @@
 package de.sw.main;
 
 import com.rosemite.services.helper.Log;
+import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.sw.commands.*;
 import de.sw.enums.Path;
 import de.sw.gameManager.GameState_Manager;
@@ -47,7 +48,7 @@ public class Main extends JavaPlugin {
     private Listener kitListener;
     private ChestManager chestManager;
 
-    public static HashMap<UUID, Integer> roundKills = new HashMap<>();
+    public static HashMap<UUID, PlayerSkywarsStats> roundKills = new HashMap<>();
 
 
     private String wrong = "§cWrong usage...";

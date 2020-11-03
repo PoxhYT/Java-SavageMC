@@ -1,6 +1,7 @@
 package de.sw.listener;
 
 import com.rosemite.services.helper.Log;
+import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.sw.enums.Path;
 import de.sw.main.Main;
 import de.sw.manager.*;
@@ -90,7 +91,15 @@ public class TeamListener implements Listener {
         try {
             if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
                 if(event.getItem().getItemMeta().getDisplayName().equals("§8» §bTeams"))
-                    Main.roundKills.put(player.getUniqueId().toString(), )
+                {
+                    PlayerSkywarsStats stats = Main.roundKills.get(player.getUniqueId());
+
+                    if (stats == null) {
+                        stats = new PlayerSkywarsStats(player.getDisplayName(), player.getUniqueId().toString());
+                    }
+
+                    Main.roundKills.put(player.getUniqueId(), stats);
+                }
                 openTeamInventory(event.getPlayer());
             }
         }catch (NullPointerException e) {

@@ -41,10 +41,8 @@ public class SBManager {
         obj.getScore("§8➥ §8(§e" + Main.MapName1.get(Path.GameSize.toString()) + "§8)").setScore(4);
         obj.getScore("§3 ").setScore(3);
         obj.getScore("§8• §fKit").setScore(2);
-        obj.getScore("§8➥ §e" + service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString())).setScore(1);
         obj.getScore(updateTeam(board, "Kit", "§8➥ §e" + service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString()), " §4", ChatColor.DARK_GRAY)).setScore(1);
         obj.getScore("§4 ").setScore(0);
-        System.out.println(service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString()));
 
         player.setScoreboard(board);
     }
