@@ -1,9 +1,17 @@
-mapsIDs:
-    1:
-      mapName: "Berlin"
-      maxTeamCount: 8
-      maxPlayersInTeam: 1
-    2:
-      mapName: "Berlin2"
-      maxTeamCount: 8
-      maxPlayersInTeam: 1
+maps:
+  - id: 1
+    MapName: Winter
+    MaxTeamCount: 8
+    MaxPlayersInTeam: 1
+    GameSize: 8x1
+  - id: 2
+    MapName: Vally
+    MaxTeamCount: 8
+    MaxPlayersInTeam: 1
+    GameSize: 8x1
+  - id: 3
+    MapName: Forrest
+    MaxTeamCount: 8
+    MaxPlayersInTeam: 1
+    GameSize: 8x1
+

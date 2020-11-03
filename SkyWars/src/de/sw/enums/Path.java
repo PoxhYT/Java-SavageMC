@@ -2,9 +2,10 @@ package de.sw.enums;
 
 public enum Path {
     MapName("MapName"),
-    TeamCount("TeamCount"),
+    MaxTeamCount("MaxTeamCount"),
     MapsIDs("MapsIDs"),
-    MaxPlayersInTeam("MaxPlayersInTeam");
+    MaxPlayersInTeam("MaxPlayersInTeam"),
+    GameSize("GameSize");
     private final String text;
 
     @Override

@@ -1,6 +1,7 @@
 package de.sw.listener;
 
 import com.rosemite.services.helper.Log;
+import de.sw.enums.Path;
 import de.sw.main.Main;
 import de.sw.manager.*;
 import org.bukkit.Bukkit;
@@ -9,61 +10,118 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class TeamListener implements Listener {
 
-    private static File file = new File("plugins/SkyWars", "Map.yml");
-    private static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+    private static File fileSkyWars = new File("plugins/SkyWars", "MapData.yml");
+    private static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
+    public static HashMap<String, Integer> kills = new HashMap<>();
+    private static Map<UUID, String> teamManagerMap = new HashMap<>();
 
     public TeamManager[] teams;
+    private final SkyWarsMapData data;
 
-    public TeamListener() {
-        SkyWarsMapData data = new SkyWarsMapData(yamlConfiguration, "1");
-
+    public TeamListener(SkyWarsMapData data) {
+        this.data = data;
         teams = new TeamManager[data.maxTeamCount];
+
         for (int i = 0; i < teams.length; i++) {
-            teams[i] = new TeamManager("Team" + i, "§cTeam"+i, Material.WOOL, data.maxPlayersInTeam);
-        }
+                teams[i] = new TeamManager("§eTeam" + (i+1), "§eTeam", Material.WOOL, data.maxPlayersInTeam);
+            }
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
+        try {
+            Player player = (Player) event.getWhoClicked();
+            for (int i = 0; i < teams.length; i++) {
+                if (event.getInventory().getTitle().equals("§eTeamauswahl")) {
+                    String displayName = "§e" + teams[i].getPlayers().size();
+                    if (event.getCurrentItem().getItemMeta().getDisplayName().equals(displayName)) {
+                        for (int j = 0; j < teams[i].getPlayers().size(); j++) {
+                            Log.d(teams[i].getPlayers().get(j).getDisplayName());
+                        }
+                        boolean team = teams[i].isInTeam(player);
 
-        for (int i = 0; i < teams.length; i++) {
-            if(event.getInventory().getTitle().equals("§eTeamauswahl")) {
-                if (event.getCurrentItem().getItemMeta().getDisplayName() == teams[i].getTeamName()) {
-                    if (teams[i].getTeamName().equals(event.getCurrentItem().getItemMeta().getDisplayName())) {
-                        boolean isInTeam = teams[i].isInTeam(player);
-                        player.sendMessage(Main.prefix + "Du hast das §e" + teams[i].getTeamName() + " §7beigetreten!");
+                        String t = teamManagerMap.get(player.getUniqueId());
 
-                        if (isInTeam) {
+                        if(!team) {
+                            if(t != null) {
+                                removePlayerFromTeam(player, t);
+                                Log.d("Du wurdest entfernt vom " + t);
+                            }
+
+                            Log.d("Du bist im " + teams[i].getTeamName());
+                            player.sendMessage(Main.prefix + "Du bist im " + teams[i].getTeamName());
+                            teams[i].addPlayer(player);
+                            teamManagerMap.put(player.getUniqueId(), teams[i].getTeamName());
+                            player.closeInventory();
+                        }
+
+                        if (team) {
                             Log.d("Du bist schon in dem Team");
+                            player.sendMessage(Main.prefix + "Du bist bereits im " + teams[i].getTeamName());
                         } else {
                             if (!teams[i].isFull()) {
-                                teams[i].addPlayer(player);
                                 Log.d("Du hast das Team: " + teams[i].getTeamName() + " idk...");
+                                break;
                             }
+                            break;
                         }
-                        break;
                     }
                 }
+            }
+        } catch (NullPointerException e) {}
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        try {
+            if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+                if(event.getItem().getItemMeta().getDisplayName().equals("§8» §bTeams"))
+                openTeamInventory(event.getPlayer());
+            }
+        }catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void removePlayerFromTeam(Player player, String teamname) {
+        for (int i = 0; i < teams.length; i++) {
+            if (teams[i].getTeamName() == teamname) {
+                teams[i].removePlayer(player);
             }
         }
     }
 
+
+    // [2/4]
     public void openTeamInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 9, "§eTeamauswahl");
-        String size = yamlConfiguration.getString("maxTeams");
-        Integer teams = yamlConfiguration.getInt("teams");
+
+        String size = data.gameSize;
+        int teams1 = data.maxTeamCount;
+
+        Bukkit.broadcastMessage(size);
         if(size.equals("8x1")) {
-            for (int i = 0; i < teams; i++) {
-                inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + i).build());
+            for (int i = 0; i < teams1; i++) {
+                inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + (i + 1) + "§e" + teams[i].getPlayers().size()).build());
+                player.openInventory(inventory);
             }
         }
+    }
+
+    private void getTeams() {
+
     }
 }

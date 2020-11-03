@@ -51,7 +51,9 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
-        event.setCancelled(true);
+        if(!Main.build.contains(event.getPlayer())) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

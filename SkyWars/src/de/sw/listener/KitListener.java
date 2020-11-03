@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -23,10 +24,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class KitListener implements Listener {
-
-    private MainService service;
-
     public Map<UUID, KitManager> kitMap = new HashMap<>();
+    private MainService service;
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
@@ -36,6 +35,22 @@ public class KitListener implements Listener {
                 openKitInventory(player);
             }
         } catch (NullPointerException e) {}
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        service = MainService.getService(service);
+
+        Player player = event.getPlayer();
+        List<KitManager> kits = defaultKits();
+
+        String latestKit = service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString());
+
+        kits.forEach(kit -> {
+            if (latestKit.equals(kit.getKitNameLiteralString())) {
+                player.getInventory().setItem(8, new ItemBuilderAPI(kit.getKitIcon()).setDisplayName(kit.getKitNameLiteralStringColored()).build());
+            }
+        });
     }
 
     @EventHandler
@@ -99,7 +114,6 @@ public class KitListener implements Listener {
                     player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).build());
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
                     player.closeInventory();
-
                     service.getSkywarsService().updateLatestSelectedKit(player.getUniqueId().toString(), kits[i].getKitNameLiteralString());
                 } else {
                     if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§cAbbrechen")) {
@@ -154,6 +168,10 @@ public class KitListener implements Listener {
             }
         }
         player.openInventory(inventory);
+    }
+
+    private List<KitManager> defaultKits() {
+        return service.getSkywarsService().getDefaultKits();
     }
 
     private KitManager[] getKits(Player player) {

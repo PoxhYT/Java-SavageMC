@@ -60,9 +60,20 @@ public class TeamManager {
         this.teamPrefix = teamPrefix;
     }
 
+    public void removePlayer(Player player) {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getUniqueId() == player.getUniqueId()) {
+                players.remove(i);
+                break;
+            }
+        }
+    }
+
     public boolean isInTeam(Player player) {
-        if (players.contains(player.getName())) {
-            return true;
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getUniqueId() == player.getUniqueId()) {
+                return true;
+            }
         }
         return false;
     }
