@@ -50,10 +50,6 @@ public class SkywarsService {
     }
 
     public String getLatestSelectedKit(String uuid) {
-        Log.d(service.getPlayerService().getPlayerInfo(uuid).hasPremium());
-        Log.d(service.getPlayerService().getPlayerInfo(uuid).getPlayername());
-        Log.d(service.getPlayerService().getPlayerInfo(uuid).getCoins());
-        Log.d(service.getPlayerService().getPlayerInfo(uuid).getLatestSelectedKit());
         return service.getPlayerService().getPlayerInfo(uuid).getLatestSelectedKit();
     }
 
