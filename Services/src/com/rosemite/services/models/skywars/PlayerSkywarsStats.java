@@ -9,7 +9,6 @@ public class PlayerSkywarsStats {
     private int points;
     private int playedGames;
 
-
     public PlayerSkywarsStats(String playername, String uuid) {
         this.playername = playername;
         this.uuid = uuid;

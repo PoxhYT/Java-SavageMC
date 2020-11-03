@@ -21,10 +21,10 @@ public class Ingame_State extends Game_State {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("SkyWars");
         kitListener = ((Main)plugin).getKitListener();
 
-        kitListener.kitMap.forEach((k, v) -> {
-            Log.d(k);
-            Log.d(v);
-        });
+//        kitListener.kitMap.forEach((k, v) -> {
+//            Log.d(k);
+//            Log.d(v);
+//        });
     }
 
     @Override
