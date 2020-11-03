@@ -42,13 +42,17 @@ public class SkywarsService {
     public UpdateResult updateLatestSelectedKit(String uuid, String kitName) {
         UpdateResult result = db.getCollection(Paths.PlayerInfo.toString()).updateOne(
                 Filters.eq("uuid", uuid),
-                combine(set("updateLatestSelectedKit", kitName))
+                combine(set("latestSelectedKit", kitName))
         );
 
         return result;
     }
 
     public String getLatestSelectedKit(String uuid) {
+        Log.d(service.getPlayerService().getPlayerInfo(uuid).hasPremium());
+        Log.d(service.getPlayerService().getPlayerInfo(uuid).getPlayername());
+        Log.d(service.getPlayerService().getPlayerInfo(uuid).getCoins());
+        Log.d(service.getPlayerService().getPlayerInfo(uuid).getLatestSelectedKit());
         return service.getPlayerService().getPlayerInfo(uuid).getLatestSelectedKit();
     }
 

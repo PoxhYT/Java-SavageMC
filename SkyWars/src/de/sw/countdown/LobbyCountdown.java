@@ -1,5 +1,6 @@
 package de.sw.countdown;
 
+import de.sw.enums.Path;
 import de.sw.gameManager.GameState_Manager;
 import de.sw.gameManager.Game_State;
 import de.sw.gameManager.Ingame_State;
@@ -49,10 +50,12 @@ public class LobbyCountdown extends Countdown{
                         }
                         break;
                     case 5:
+                        Bukkit.broadcastMessage(Main.prefix + "Aktuelle Map: §e" + Main.MapName1.get(Path.MapName.toString()));
+                        Bukkit.broadcastMessage(Main.prefix + "Spielvariante: §8(§e" + Main.MapName1.get(Path.GameSize.toString()) + "§8)");
                         Bukkit.broadcastMessage(Main.prefix + "Das Spiel startet in " + seconds + " §eSekunden§7!");
                         for (Player all : Bukkit.getOnlinePlayers()) {
                             all.playSound(all.getLocation(), Sound.NOTE_BASS, 1, 1);
-                            String map = yamlConfiguration.getString("MapName");
+                            String map = (String) Main.MapName1.get(Path.MapName.toString());
                             all.sendTitle("§eSkyWars","§f" + map);
                         }
                         break;

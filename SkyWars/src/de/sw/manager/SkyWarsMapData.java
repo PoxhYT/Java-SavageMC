@@ -5,24 +5,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-public class SkyWarsMapData {
-    private final YamlConfiguration yml;
+import java.io.File;
 
-    public final String query;
+public class SkyWarsMapData {
     public final String mapName;
     public final int maxTeamCount;
     public final int maxPlayersInTeam;
+    public final String gameSize;
 
     private int joinedPlayerCount; // This can be useful when showing it to the join Sign
 
-    public SkyWarsMapData(YamlConfiguration yml, String mapId) {
-        this.yml = yml;
-        this.query = Path.MapsIDs.toString() + "." + mapId + ".";
-
-        this.mapName = (String)get(Path.MapName.toString());
-        this.maxTeamCount = (int)get(Path.TeamCount.toString());
-        this.maxPlayersInTeam = (int)get(Path.MaxPlayersInTeam.toString());
+    public SkyWarsMapData(String mapName, String gameSize, int maxTeamCount, int maxPlayersInTeam) {
+        this.mapName = mapName;
+        this.maxTeamCount = maxTeamCount;
+        this.maxPlayersInTeam = maxPlayersInTeam;
+        this.gameSize = gameSize;
     }
-
-    private Object get(String path) { return yml.get(query + path); }
 }

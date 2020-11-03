@@ -1,11 +1,12 @@
 package de.sw.listener;
 
+import com.rosemite.services.helper.Log;
+import com.rosemite.services.main.MainService;
 import de.sw.countdown.LobbyCountdown;
+import de.sw.enums.Path;
 import de.sw.gameManager.Lobby_State;
 import de.sw.main.Main;
-import de.sw.manager.InventoryManager;
-import de.sw.manager.ItemBuilderAPI;
-import de.sw.manager.UtilsManager;
+import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.Bukkit;
@@ -17,15 +18,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
+import java.util.List;
 
 public class PlayerConnectionEvent implements Listener {
 
     private Main instance;
     private LuckPerms luckPerms;
+    private MainService service;
 
     private static File file = new File("plugins/SkyWars", "Config.yml");
     private static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
     private static InventoryManager inventoryManager;
+    private static boolean joinMessage = false;
 
     public PlayerConnectionEvent(Main instance, LuckPerms luckPerms) {
         this.instance = instance;
@@ -37,24 +41,28 @@ public class PlayerConnectionEvent implements Listener {
         if(!(Main.instance.getGameStateManager().getCurrentGame_State() instanceof Lobby_State)) return;
         Player player = event.getPlayer();
         Main.instance.players.add(player);
+        service = MainService.getService(service);
 
         Integer MAX_PLAYERS = yamlConfiguration.getInt("maxPlayers");
         Integer MIN_PLAYERS = yamlConfiguration.getInt("minplayers");
 
-        player.getInventory().setItem(0, new ItemBuilderAPI(Material.BED).setDisplayName("§8» §bTeams").build());
-        player.getInventory().setItem(3, new ItemBuilderAPI(Material.CHEST).setDisplayName("§8» §eKits").build());
-        player.getInventory().setItem(5, new ItemBuilderAPI(Material.NETHER_STAR).setDisplayName("§8» §dAchievements").build());
-        player.getInventory().setItem(8, new ItemBuilderAPI(Material.MAGMA_CREAM).setDisplayName("§8» §cVerlassen").build());
 
         CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
         String prefix = metaData.getPrefix();
 
+        Main.scoreCD();
+
         event.setJoinMessage(Main.prefix + "§8» §e" + prefix + " §7❘ " + player.getName() + " §7hat das Spiel betreten! §7[§a"
                 + Main.instance.players.size() + "§7/§c" + MAX_PLAYERS + "§7]");
+        Main.getInstance().sbManager.setLobbyBoard(player);
+
+        player.sendMessage(Main.prefix + "§7Aktuelle Map: §e" + Main.MapName1.get(Path.MapName.toString()));
+        player.sendMessage(Main.prefix + "§7Spielvariante: §8(§e" + Main.MapName1.get(Path.GameSize.toString()) + "§8)");
 
         Lobby_State lobbyState = (Lobby_State) Main.instance.getGameStateManager().getCurrentGame_State();
         LobbyCountdown countdown = lobbyState.getCountdown();
         player.setLevel(60);
+        player.setFoodLevel(20);
         if(Main.instance.players.size() >= MIN_PLAYERS) {
             if(!countdown.isRunning()) {
                 countdown.stopIdle();
