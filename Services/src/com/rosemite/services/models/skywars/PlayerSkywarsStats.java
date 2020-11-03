@@ -1,7 +1,5 @@
 package com.rosemite.services.models.skywars;
 
-import org.bukkit.entity.Player;
-
 public class PlayerSkywarsStats {
     private int wins;
     private int kills;
@@ -43,5 +41,25 @@ public class PlayerSkywarsStats {
 
     public int getPlayedGames() {
         return playedGames;
+    }
+
+    public void addKills(int amount) {
+        kills += amount;
+    }
+
+    public void addWins(int amount) {
+        wins += amount;
+    }
+
+    public void addDeaths(int amount) {
+        deaths += amount;
+    }
+
+    public void addPoints(int amount) {
+        points += amount;
+    }
+
+    public void addPlayedGames(int amount) {
+        playedGames += amount;
     }
 }
