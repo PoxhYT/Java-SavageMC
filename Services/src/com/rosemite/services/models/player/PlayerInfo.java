@@ -3,12 +3,12 @@ package com.rosemite.services.models.player;
 public class PlayerInfo {
     private final boolean hasPremium;
     private final String playername;
-    private final String latestSelectedKit;
+    private final String latestSelectedSkywarsKit;
     private final String uuid;
     private final int coins;
 
-    public PlayerInfo(boolean hasPremium, String playername, String latestSelectedKit, String uuid, int coins) {
-        this.latestSelectedKit = latestSelectedKit;
+    public PlayerInfo(boolean hasPremium, String playername, String latestSelectedSkywarsKit, String uuid, int coins) {
+        this.latestSelectedSkywarsKit = latestSelectedSkywarsKit;
         this.hasPremium = hasPremium;
         this.playername = playername;
         this.uuid = uuid;
@@ -20,8 +20,9 @@ public class PlayerInfo {
     }
 
     public String getLatestSelectedKit() {
-        return latestSelectedKit;
+        return latestSelectedSkywarsKit;
     }
+
     public String getPlayername() {
         return playername;
     }

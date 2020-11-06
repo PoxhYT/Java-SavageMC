@@ -1,21 +1,16 @@
 package de.sw.manager;
 
-import de.sw.enums.Path;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-
-import java.io.File;
+import org.bukkit.Location;
 
 public class SkyWarsMapData {
     public final String mapName;
     public final int maxTeamCount;
     public final int maxPlayersInTeam;
     public final String gameSize;
+    public final Location[] location;
 
-    private int joinedPlayerCount; // This can be useful when showing it to the join Sign
-
-    public SkyWarsMapData(String mapName, String gameSize, int maxTeamCount, int maxPlayersInTeam) {
+    public SkyWarsMapData(String mapName, String gameSize, Location[] location, int maxTeamCount, int maxPlayersInTeam) {
+        this.location = location;
         this.mapName = mapName;
         this.maxTeamCount = maxTeamCount;
         this.maxPlayersInTeam = maxPlayersInTeam;
