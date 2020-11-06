@@ -1,5 +1,9 @@
 package com.rosemite.services.models.skywars;
 
+import com.google.gson.Gson;
+
+import java.util.Map;
+
 public class PlayerSkywarsStats {
     private int wins;
     private int kills;
@@ -12,6 +16,19 @@ public class PlayerSkywarsStats {
     public PlayerSkywarsStats(String playername, String uuid) {
         this.playername = playername;
         this.uuid = uuid;
+    }
+
+    public PlayerSkywarsStats addTogether(PlayerSkywarsStats s) {
+        Map<String, Object> data = new Gson().fromJson(new Gson().toJson(s), Map.class);
+        Map<String, Object> me = new Gson().fromJson(new Gson().toJson(this), Map.class);
+
+        data.forEach((k, v) -> {
+            if (v.getClass() == Integer.class) {
+                data.put(k, (Integer)v + (Integer) me.get(k));
+            }
+        });
+
+        return new Gson().fromJson(new Gson().toJson(data), PlayerSkywarsStats.class);
     }
 
     public int getWins() {
