@@ -14,45 +14,45 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class ProtectionListener implements Listener {
 
-    @EventHandler
-    public void onBreak(BlockBreakEvent event) {
-        if(!Main.build.contains(event.getPlayer())) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onPlace(BlockPlaceEvent event) {
-        if(!Main.build.contains(event.getPlayer())) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onClick(InventoryClickEvent event) {
-        if(!Main.build.contains(event.getWhoClicked())) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onPickup(PlayerPickupItemEvent event) {
-        if(!Main.build.contains(event.getPlayer())) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onDrop(PlayerDropItemEvent event) {
-        if(!Main.build.contains(event.getPlayer())) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        event.setCancelled(true);
-    }
+//    @EventHandler
+//    public void onBreak(BlockBreakEvent event) {
+//        if(!Main.build.contains(event.getPlayer())) {
+//            event.setCancelled(true);
+//        }
+//    }
+//
+//    @EventHandler
+//    public void onPlace(BlockPlaceEvent event) {
+//        if(!Main.build.contains(event.getPlayer())) {
+//            event.setCancelled(true);
+//        }
+//    }
+//
+//    @EventHandler
+//    public void onClick(InventoryClickEvent event) {
+//        if(!Main.build.contains(event.getWhoClicked())) {
+//            event.setCancelled(true);
+//        }
+//    }
+//
+//    @EventHandler
+//    public void onPickup(PlayerPickupItemEvent event) {
+//        if(!Main.build.contains(event.getPlayer())) {
+//            event.setCancelled(true);
+//        }
+//    }
+//
+//    @EventHandler
+//    public void onDrop(PlayerDropItemEvent event) {
+//        if(!Main.build.contains(event.getPlayer())) {
+//            event.setCancelled(true);
+//        }
+//    }
+//
+//    @EventHandler
+//    public void onFoodLevelChange(FoodLevelChangeEvent event) {
+//        event.setCancelled(true);
+//    }
 
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent event) {
