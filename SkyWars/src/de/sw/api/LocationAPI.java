@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class LocationAPI {
 
-    private static File file = new File("plugins/Lobby", "Locations.yml");
+    private static File file = new File("plugins/SkyWars", "Locations.yml");
 
     private static FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
 

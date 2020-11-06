@@ -1,7 +1,8 @@
 name: SkyWars
 version: 1.0
-author: PoxhYT
+author: PoxhYT, SolomonJesse
 main: de.sw.main.Main
 commands:
     start:
     build:
+    sw:

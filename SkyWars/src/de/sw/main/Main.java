@@ -94,7 +94,9 @@ public class Main extends JavaPlugin {
 
     public void loadFiles() {
         load("MapData.yml");
+        load("config.yml");
     }
+
 
     public static SkyWarsMapData chooseRandom() {
         Random random = new Random();
@@ -125,6 +127,7 @@ public class Main extends JavaPlugin {
     public void registerCommands() {
         getCommand("start").setExecutor((CommandExecutor) new Command_start());
         getCommand("build").setExecutor((CommandExecutor)new Command_build());
+        getCommand("sw").setExecutor((CommandExecutor)new Command_SkyWars());
 
     }
 

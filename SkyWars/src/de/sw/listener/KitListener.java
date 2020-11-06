@@ -133,9 +133,7 @@ public class KitListener implements Listener {
                 inventory.setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName("§aKaufen").setLore("§cKlicke, um das Kit zu kaufen.").build());
                 inventory.setItem(0, new ItemBuilderAPI(Material.WOOL, (short)14).setDisplayName("§cAbbrechen").setLore("§cKlicke, um den Kauf zu beenden.").build());
                 player.openInventory(inventory);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {}
         }
     }
 
@@ -149,9 +147,7 @@ public class KitListener implements Listener {
                 inventory.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralString()).setLore(kits[i].getKitDescription()).build());
                 inventory.setItem(0, new ItemBuilderAPI(Material.WOOL, (short)14).setDisplayName("§cZürück").setLore("§cKlicke, um die Auswahl zu beenden.").build());
                 player.openInventory(inventory);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {}
         }
     }
 
@@ -163,9 +159,7 @@ public class KitListener implements Listener {
         {
             try {
                 inventory.setItem(i, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitName()).setLore(kits[i].getKitDescription()).build());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {}
         }
         player.openInventory(inventory);
     }

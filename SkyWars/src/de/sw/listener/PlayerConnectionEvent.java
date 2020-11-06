@@ -1,6 +1,5 @@
 package de.sw.listener;
 
-import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import de.sw.countdown.LobbyCountdown;
 import de.sw.enums.Path;
@@ -9,8 +8,6 @@ import de.sw.main.Main;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
-import java.util.List;
 
 public class PlayerConnectionEvent implements Listener {
 
@@ -26,7 +22,7 @@ public class PlayerConnectionEvent implements Listener {
     private LuckPerms luckPerms;
     private MainService service;
 
-    private static File file = new File("plugins/SkyWars", "Config.yml");
+    private static File file = new File("plugins/SkyWars", "config.yml");
     private static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
     private static InventoryManager inventoryManager;
     private static boolean joinMessage = false;
@@ -43,8 +39,8 @@ public class PlayerConnectionEvent implements Listener {
         Main.instance.players.add(player);
         service = MainService.getService(service);
 
-        Integer MAX_PLAYERS = yamlConfiguration.getInt("maxPlayers");
-        Integer MIN_PLAYERS = yamlConfiguration.getInt("minplayers");
+        Integer MAX_PLAYERS = yamlConfiguration.getInt("Settings.MaxPlayers");
+        Integer MIN_PLAYERS = yamlConfiguration.getInt("Settings.MinPlayers");
 
 
         CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
