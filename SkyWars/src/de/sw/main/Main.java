@@ -9,9 +9,9 @@ import de.sw.gameManager.Game_State;
 import de.sw.listener.*;
 import de.sw.manager.*;
 import io.netty.channel.ChannelPipeline;
-import lombok.Getter;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -45,7 +45,6 @@ public class Main extends JavaPlugin {
     public static HashMap<UUID, PlayerSkywarsStats> roundKills = new HashMap<>();
     public static ArrayList<Player> alivePlayers = new ArrayList<>();
 
-    @Getter
     public SBManager sbManager = new SBManager();
     public static List<Player> build = new ArrayList<>();
     public static Map<String, Object> MapName1;
@@ -114,6 +113,7 @@ public class Main extends JavaPlugin {
         SkyWarsMapData data = new SkyWarsMapData(
             (String) finalMap.get(Path.MapName.toString()),
             (String) finalMap.get(Path.GameSize.toString()),
+            (Location[]) finalMap.get(Path.TeamLocations.toString()),
             (int)finalMap.get(Path.MaxTeamCount.toString()),
             (int)finalMap.get(Path.MaxPlayersInTeam.toString())
 

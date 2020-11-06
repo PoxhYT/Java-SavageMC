@@ -96,8 +96,6 @@ public class TeamListener implements Listener {
                     Player damager = (Player) event.getDamager();
                     String TeamDamager = getExactTeam(damager);
                     String TeamPlayer = getExactTeam(player);
-                    Log.d(TeamDamager);
-                    Log.d(TeamPlayer);
                     if (TeamDamager.equalsIgnoreCase(TeamPlayer)) {
                         event.setCancelled(true);
                     } else {

@@ -4,6 +4,7 @@ public enum Path {
     MapName("MapName"),
     MaxTeamCount("MaxTeamCount"),
     MapsIDs("MapsIDs"),
+    TeamLocations("TeamLocations"),
     MaxPlayersInTeam("MaxPlayersInTeam"),
     GameSize("GameSize");
     private final String text;

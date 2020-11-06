@@ -183,4 +183,3 @@ public class KitListener implements Listener {
         return kits.toArray(new KitManager[0]);
     }
 }
-

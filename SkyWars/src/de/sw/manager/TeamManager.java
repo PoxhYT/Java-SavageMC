@@ -29,11 +29,7 @@ public class TeamManager {
     }
 
     public boolean isFull() {
-        if (maxPlayerCount == players.size()) {
-            return true;
-        }
-
-        return false;
+        return maxPlayerCount == players.size();
     }
 
     public Material getMaterial() {
@@ -70,8 +66,8 @@ public class TeamManager {
     }
 
     public boolean isInTeam(Player player) {
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getUniqueId() == player.getUniqueId()) {
+        for (Player value : players) {
+            if (value.getUniqueId() == player.getUniqueId()) {
                 return true;
             }
         }
