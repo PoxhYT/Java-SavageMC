@@ -20,6 +20,7 @@ public class Command_start implements CommandExecutor {
     private static File file = new File("plugins/SkyWars", "Config.yml");
 
     private static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+    private static boolean started = false;
 
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         Player player = (Player) sender;
@@ -30,9 +31,19 @@ public class Command_start implements CommandExecutor {
             Lobby_State lobbyState = (Lobby_State) Main.instance.getGameStateManager().getCurrentGame_State();
             LobbyCountdown countdown = lobbyState.getCountdown();
             if(Main.instance.players.size() >= MIN_PLAYERS) {
-                if (countdown.isRunning()) {
-                    LobbyCountdown.seconds = 15;
-                    Bukkit.broadcastMessage(Main.prefix + "Der §eTimer §7wurde beschleunigt!");
+                if(!started) {
+                    if (countdown.isRunning()) {
+                        LobbyCountdown.seconds = 15;
+                        Bukkit.broadcastMessage(Main.prefix + "Der §eTimer §7wurde beschleunigt!");
+                        started = true;
+                    }
+                }
+            }
+
+            if(started) {
+                if(LobbyCountdown.seconds < 15) {
+                    player.sendMessage(Main.prefix + "§cDas Spiel wurde bereits gestartet!");
+                    player.playSound(player.getLocation(), Sound.VILLAGER_DEATH, 1, 1);
                 }
             }
 

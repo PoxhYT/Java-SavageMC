@@ -68,6 +68,7 @@ public class LobbyCountdown extends Countdown{
                         Bukkit.broadcastMessage(Main.prefix + "Das Spiel startet in 1 §eSekunde§7!");
                         for (Player all : Bukkit.getOnlinePlayers())
                             all.playSound(all.getLocation(), Sound.NOTE_BASS, 1, 1);
+                        Main.build.addAll(Bukkit.getOnlinePlayers());
                         break;
                     case 0:
                         for (Player all : Bukkit.getOnlinePlayers())
@@ -75,6 +76,10 @@ public class LobbyCountdown extends Countdown{
                         gameStateManager.setGameState(Game_State.INGAME_STATE);
                         Ingame_State ingameState = new Ingame_State();
                         ingameState.start();
+                        for (Player player : Bukkit.getOnlinePlayers())
+                            Main.getInstance().sbManager.setIngameBoard(player);
+                        for(Player player : Bukkit.getOnlinePlayers())
+                            player.getInventory().clear();
                         break;
 
                     default:

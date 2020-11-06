@@ -49,8 +49,10 @@ public class PlayerConnectionEvent implements Listener {
 
         CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
         String prefix = metaData.getPrefix();
+        Main.getInstance().getInventoryManager().setLobbyInventory(player);
 
         Main.scoreCD();
+        Main.alivePlayers.add(player);
 
         event.setJoinMessage(Main.prefix + "§8» §e" + prefix + " §7❘ " + player.getName() + " §7hat das Spiel betreten! §7[§a"
                 + Main.instance.players.size() + "§7/§c" + MAX_PLAYERS + "§7]");

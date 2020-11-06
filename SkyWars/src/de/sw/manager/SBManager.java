@@ -1,6 +1,7 @@
 package de.sw.manager;
 
 import com.rosemite.services.main.MainService;
+import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.sw.enums.Path;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
@@ -58,10 +59,14 @@ public class SBManager {
         obj.getScore("§8➥ §e" + Main.MapName1.get(Path.MapName.toString())).setScore(7);
         obj.getScore("§2 ").setScore(6);
         obj.getScore("§8• §fKills").setScore(5);
-        obj.getScore("§8➥ §8(§e" + Main.roundKills.get(player)).setScore(4);
+        if (Main.roundKills.get(player.getUniqueId()) == null) {
+            obj.getScore("§8➥ §e 0").setScore(4);
+        } else {
+            obj.getScore("§8➥ §e" + Main.roundKills.get(player.getUniqueId()).getKills()).setScore(4);
+        }
         obj.getScore("§3 ").setScore(3);
         obj.getScore("§8• §fKit").setScore(2);
-        obj.getScore("§8➥ §e" + "§cSOON").setScore(1);
+        obj.getScore(updateTeam(board, "currentKit", "§8➥ §e" + service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString()), " §4", ChatColor.DARK_GRAY)).setScore(1);
         obj.getScore("§4 ").setScore(0);
 
         player.setScoreboard(board);

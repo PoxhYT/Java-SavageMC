@@ -32,26 +32,18 @@ public class Main extends JavaPlugin {
 
     public static Main instance;
     public static LuckPerms luckPerms;
-    private NMS nmsHandler;
-    private int maxChest;
     public static String prefix = "§bSkyWars §8❘ §7";
-    public static String Fehler = "§cFehler §8❘ §7";
     public  static boolean teams = false;
     public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
     public ArrayList<Player> players;
     private File file = new File("plugins/SkyWars", "Config.yml");
     public YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-    public int playersInTeam;
-    public int maxPlayers = yamlConfiguration.getInt("maxPlayers");
     public static InventoryManager inventoryManager = new InventoryManager();
     private GameState_Manager gameStateManager;
     private Listener kitListener;
-    private ChestManager chestManager;
 
     public static HashMap<UUID, PlayerSkywarsStats> roundKills = new HashMap<>();
-
-
-    private String wrong = "§cWrong usage...";
+    public static ArrayList<Player> alivePlayers = new ArrayList<>();
 
     @Getter
     public SBManager sbManager = new SBManager();
@@ -72,7 +64,6 @@ public class Main extends JavaPlugin {
         luckPerms = getServer().getServicesManager().load(LuckPerms.class);
         this.instance = this;
         init();
-        this.chestManager = new ChestManager();
 
     }
 
@@ -144,7 +135,6 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents((Listener) new PlayerConnectionEvent(this, this.luckPerms), this);
         pluginManager.registerEvents((Listener) new KitListener(), this);
         pluginManager.registerEvents((Listener) new PlayerTeleportListener(), this);
-        pluginManager.registerEvents((Listener) new PlayerDeathListener(), this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
         pluginManager.registerEvents((Listener) new TeamListener(map), this);
 
@@ -182,19 +172,7 @@ public class Main extends JavaPlugin {
         return players;
     }
 
-    public static NMS getNMS() {
-        return instance.nmsHandler;
-    }
-
     public YamlConfiguration getYamlConfiguration() {
         return yamlConfiguration;
-    }
-
-    public int getMaxChest() {
-        return maxChest;
-    }
-
-    public static ChestManager getChestManager() {
-        return instance.chestManager;
     }
 }

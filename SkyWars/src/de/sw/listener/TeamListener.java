@@ -1,24 +1,26 @@
 package de.sw.listener;
 
 import com.rosemite.services.helper.Log;
-import com.rosemite.services.models.skywars.PlayerSkywarsStats;
-import de.sw.enums.Path;
 import de.sw.main.Main;
 import de.sw.manager.*;
+import me.lucko.luckperms.common.api.LuckPermsApiProvider;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,6 +30,7 @@ public class TeamListener implements Listener {
     private static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
     public static HashMap<String, Integer> kills = new HashMap<>();
     private static Map<UUID, String> teamManagerMap = new HashMap<>();
+    private LuckPerms luckPerms;
 
     public TeamManager[] teams;
     private final SkyWarsMapData data;
@@ -47,20 +50,22 @@ public class TeamListener implements Listener {
             Player player = (Player) event.getWhoClicked();
             for (int i = 0; i < teams.length; i++) {
                 if (event.getInventory().getTitle().equals("§eTeamauswahl")) {
-                    String displayName = "§e" + teams[i].getPlayers().size();
+                    String displayName = teams[i].getTeamName();
                     if (event.getCurrentItem().getItemMeta().getDisplayName().equals(displayName)) {
                         boolean team = teams[i].isInTeam(player);
 
                         String t = teamManagerMap.get(player.getUniqueId());
 
-                        if(!team) {
-                            if(t != null) {
+                        if (!team) {
+                            if (t != null) {
                                 removePlayerFromTeam(player, t);
                                 Log.d("Du wurdest entfernt vom " + t);
                             }
 
                             Log.d("Du bist im " + teams[i].getTeamName());
+                            String teamDisplayName = teams[i].getTeamName();
                             player.sendMessage(Main.prefix + "Du bist im " + teams[i].getTeamName());
+                            player.setDisplayName(teamDisplayName);
                             teams[i].addPlayer(player);
                             teamManagerMap.put(player.getUniqueId(), teams[i].getTeamName());
                             player.closeInventory();
@@ -79,31 +84,58 @@ public class TeamListener implements Listener {
                     }
                 }
             }
-        } catch (NullPointerException e) {}
+        }catch (NullPointerException e){}
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent event) {
+        try {
+            if (event.getEntity() instanceof Player) {
+                Player player = (Player) event.getEntity();
+                if (event.getDamager() instanceof Player) {
+                    Player damager = (Player) event.getDamager();
+                    String TeamDamager = getExactTeam(damager);
+                    String TeamPlayer = getExactTeam(player);
+                    Log.d(TeamDamager);
+                    Log.d(TeamPlayer);
+                    if (TeamDamager.equalsIgnoreCase(TeamPlayer)) {
+                        event.setCancelled(true);
+                    } else {
+                        event.setCancelled(false);
+                    }
+                }
+            }
+        }catch (NullPointerException e){}
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        try {
+            Player d = event.getEntity();
+            Player k = d.getKiller();
+            event.setDeathMessage(Main.prefix + d.getDisplayName() + " §7ist gestorben!");
+            Main.alivePlayers.remove(d);
+
+            CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(event.getEntity());
+            String prefix = metaData.getPrefix();
+
+            if (k != null) {
+                event.setDeathMessage(Main.prefix + prefix + " §7❘ " + d.getName() + " §7wurde von " + prefix + " §7❘ " + k.getDisplayName() + " §cgetötet§7!");
+            }
+        }catch (NullPointerException e){}
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         try {
-            if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
-                if(event.getItem().getItemMeta().getDisplayName().equals("§8» §bTeams"))
-
-                {
-                    PlayerSkywarsStats stats = Main.roundKills.get(player.getUniqueId());
-
-                    if (stats == null) {
-                        stats = new PlayerSkywarsStats(player.getDisplayName(), player.getUniqueId().toString());
-                    }
-
-                    Main.roundKills.put(player.getUniqueId(), stats);
-                }
-
+            if(event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase("§8» §bTeams")) {
                 openTeamInventory(event.getPlayer());
+            } else if(event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase("§8» §dAchievements")) {
+                player.sendMessage(Main.prefix + "§cIst noch in bearbeitung!");
+                player.playSound(player.getLocation(), Sound.VILLAGER_DEATH, 1, 1);
             }
-        }catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        }catch (NullPointerException e) {}
     }
 
     private void removePlayerFromTeam(Player player, String teamname) {
@@ -114,6 +146,9 @@ public class TeamListener implements Listener {
         }
     }
 
+    public String getExactTeam(Player player) {
+        return teamManagerMap.get(player.getUniqueId());
+    }
 
     // [2/4]
     public void openTeamInventory(Player player) {
@@ -125,13 +160,15 @@ public class TeamListener implements Listener {
         Bukkit.broadcastMessage(size);
         if(size.equals("8x1")) {
             for (int i = 0; i < teams1; i++) {
-                inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + (i + 1) + "§e" + teams[i].getPlayers().size()).build());
+                inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + (i + 1)).build());
                 player.openInventory(inventory);
             }
         }
     }
 
-    private void getTeams() {
+    private void getTeams(Player player) {
+        for (int i = 0; i < teams.length; i++) {
 
+        }
     }
 }
