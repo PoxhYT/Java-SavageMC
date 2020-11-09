@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class KitListener implements Listener {
     public Map<UUID, KitManager> kitMap = new HashMap<>();
@@ -47,6 +48,7 @@ public class KitListener implements Listener {
         String latestKit = service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString());
 
         kits.forEach(kit -> {
+            Log.d(latestKit);
             if (latestKit.equals(kit.getKitNameLiteralString())) {
                 player.getInventory().setItem(8, new ItemBuilderAPI(kit.getKitIcon()).setDisplayName(kit.getKitNameLiteralStringColored()).build());
             }
@@ -110,11 +112,14 @@ public class KitListener implements Listener {
             if (event.getInventory().getTitle().equals(kits[i].getKitNameLiteralStringColored())) {
                 if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§aAuswählen")) {
                     kitMap.put(player.getUniqueId(), kits[i]);
+
                     player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " §eKit §7ausgewählt!");
+                    service.getSkywarsService().updateLatestSelectedKit(player.getUniqueId().toString(), kits[i].getKitNameLiteralString());
+                    Main.instance.sbManager.setLobbyBoard(player);
+
                     player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).build());
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
                     player.closeInventory();
-                    service.getSkywarsService().updateLatestSelectedKit(player.getUniqueId().toString(), kits[i].getKitNameLiteralString());
                 } else {
                     if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§cAbbrechen")) {
                         openSelectInventory(player);

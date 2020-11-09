@@ -7,7 +7,9 @@ public enum Path {
     Factors("Factors"),
     Locations("Locations"),
     MaxPlayersInTeam("MaxPlayersInTeam"),
-    GameSize("GameSize");
+    GameSize("GameSize"),
+    MaxPlayers("Settings.MaxPlayers"),
+    MinPlayers("Settings.MinPlayers");
     private final String text;
 
     @Override

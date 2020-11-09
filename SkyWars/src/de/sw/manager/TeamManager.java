@@ -2,10 +2,9 @@ package de.sw.manager;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class TeamManager {
 
@@ -13,7 +12,8 @@ public class TeamManager {
     private String teamPrefix;
     public ArrayList<Player> players;
     public Material material;
-
+    private boolean isAlive = true;
+    public ArrayList<UUID> spectators = new ArrayList<>();
     public final int maxPlayerCount;
 
     public TeamManager(String teamName, String teamPrefix, Material material, int maxPlayerCount) {
@@ -54,6 +54,18 @@ public class TeamManager {
 
     public void setTeamPrefix(String teamPrefix) {
         this.teamPrefix = teamPrefix;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public ArrayList<UUID> getSpectators() {
+        return spectators;
+    }
+
+    public boolean getAlive() {
+        return isAlive;
     }
 
     public void removePlayer(Player player) {

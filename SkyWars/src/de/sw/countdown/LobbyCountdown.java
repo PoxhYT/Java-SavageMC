@@ -1,11 +1,8 @@
 package de.sw.countdown;
 
 import de.sw.enums.Path;
-import de.sw.gameManager.GameState_Manager;
-import de.sw.gameManager.Game_State;
-import de.sw.gameManager.Ingame_State;
+import de.sw.gameManager.GameStateManager;
 import de.sw.main.Main;
-import de.sw.manager.UtilsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,8 +12,6 @@ import java.io.File;
 
 public class LobbyCountdown extends Countdown{
 
-    private GameState_Manager gameStateManager;
-
     public static int seconds = 60;
     private boolean isRunning;
     private int idleID;
@@ -25,15 +20,11 @@ public class LobbyCountdown extends Countdown{
     private File file = new File("plugins/SkyWars", "Config.yml");
     private YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
 
-    public LobbyCountdown(GameState_Manager gameStateManager) {
-        this.gameStateManager = gameStateManager;
-    }
-
     public void start() {
         isRunning = true;
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(gameStateManager.getInstance(), new Runnable() {
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
             public void run() {
-                for (Player all : Main.instance.players) {
+                for (Player all : Main.alivePlayers) {
                     try {
                         all.setLevel(seconds);
                         String float_String = "0." + seconds;
@@ -73,16 +64,11 @@ public class LobbyCountdown extends Countdown{
                     case 0:
                         for (Player all : Bukkit.getOnlinePlayers())
                             all.playSound(all.getLocation(), Sound.LEVEL_UP, 1, 1);
-                        gameStateManager.setGameState(Game_State.INGAME_STATE);
-                        Ingame_State ingameState = new Ingame_State();
-                        ingameState.start();
+                        GameStateManager.setState(GameStateManager.INGAME);
                         for (Player player : Bukkit.getOnlinePlayers())
                             Main.getInstance().sbManager.setIngameBoard(player);
                         for(Player player : Bukkit.getOnlinePlayers())
                             player.getInventory().clear();
-                        break;
-
-                    default:
                         break;
                 }
                 seconds--;
@@ -100,7 +86,7 @@ public class LobbyCountdown extends Countdown{
 
     public void startIdle() {
         isIdling = true;
-        idleID = Bukkit.getScheduler().scheduleSyncRepeatingTask(gameStateManager.getInstance(), new Runnable() {
+        idleID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
             @Override
             public void run() {
                 Bukkit.broadcastMessage(Main.prefix + "§cWarten auf weitere Spieler...");

@@ -1,0 +1,9 @@
+name: CityBuildAddon
+version: 1.0
+author: PoxhYT
+main: de.cba.main.Main
+commands:
+   inv:
+     description: Lade, oder speicher dein Inventar!
+
+

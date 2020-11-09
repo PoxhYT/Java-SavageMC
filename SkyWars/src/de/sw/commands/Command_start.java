@@ -1,7 +1,7 @@
 package de.sw.commands;
 
+import com.rosemite.services.helper.Log;
 import de.sw.countdown.LobbyCountdown;
-import de.sw.gameManager.Lobby_State;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -24,15 +24,21 @@ public class Command_start implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         Player player = (Player) sender;
+        Log.d(1);
         if(player.hasPermission("server.owner")) {
 
-            Integer MIN_PLAYERS = yamlConfiguration.getInt("minplayers");
+            Log.d(2);
+            int MIN_PLAYERS = yamlConfiguration.getInt("Settings.MinPlayers");
 
-            Lobby_State lobbyState = (Lobby_State) Main.instance.getGameStateManager().getCurrentGame_State();
-            LobbyCountdown countdown = lobbyState.getCountdown();
-            if(Main.instance.players.size() >= MIN_PLAYERS) {
-                if(!started) {
-                    if (countdown.isRunning()) {
+            Log.d(MIN_PLAYERS);
+            Log.d(Main.alivePlayers.size());
+
+            if(!started) {
+                Log.d(3);
+                if(Main.alivePlayers.size() == MIN_PLAYERS) {
+                    Log.d(4);
+                    if (Main.instance.countdown.isRunning()) {
+                        Log.d(5);
                         LobbyCountdown.seconds = 15;
                         Bukkit.broadcastMessage(Main.prefix + "Der §eTimer §7wurde beschleunigt!");
                         started = true;
@@ -47,11 +53,11 @@ public class Command_start implements CommandExecutor {
                 }
             }
 
-            if(Main.instance.players.size() < MIN_PLAYERS) {
+            if(Main.alivePlayers.size() < MIN_PLAYERS) {
                 sender.sendMessage(Main.prefix + "§cEs sind nicht genügene Spieler im Spiel!");
                 ((Player) sender).playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 1);
             }
-        }else {
+        } else {
             sender.sendMessage(Main.noPerms);
             ((Player) sender).playSound(player.getLocation(), Sound.ANVIL_BREAK, 1,1 );
         }

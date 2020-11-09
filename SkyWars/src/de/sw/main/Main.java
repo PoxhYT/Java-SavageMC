@@ -1,20 +1,15 @@
 package de.sw.main;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.rosemite.services.helper.Log;
-import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.sw.commands.*;
+import de.sw.countdown.LobbyCountdown;
 import de.sw.enums.Path;
-import de.sw.gameManager.GameState_Manager;
-import de.sw.gameManager.Game_State;
+import de.sw.gameManager.GameStateManager;
 import de.sw.listener.*;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -24,59 +19,55 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class Main extends JavaPlugin {
 
+    //Strings
+    public static String prefix = "§bSkyWars §8❘ §7";
+    public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
+
+
+    //Instances
     public static Main instance;
     public static LuckPerms luckPerms;
-    public static String prefix = "§bSkyWars §8❘ §7";
-    public  static boolean teams = false;
-    public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
-    public ArrayList<Player> players;
-    private File file = new File("plugins/SkyWars", "Config.yml");
-    public YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-    public static InventoryManager inventoryManager = new InventoryManager();
-    private GameState_Manager gameStateManager;
     private Listener kitListener;
+    private SkyWarsMapData data;
 
-    public static HashMap<UUID, PlayerSkywarsStats> roundKills = new HashMap<>();
-    public static ArrayList<Player> alivePlayers = new ArrayList<>();
-
+    //Objects
+    public static InventoryManager inventoryManager = new InventoryManager();
     public SBManager sbManager = new SBManager();
+    public LobbyCountdown countdown = new LobbyCountdown();
+
+
+    //HashMap
+    public static HashMap<UUID, PlayerSkywarsStats> stats = new HashMap<>();
+
+
+    //ArrayLists
+    public static ArrayList<Player> alivePlayers = new ArrayList<>();
     public static List<Player> build = new ArrayList<>();
     public static Map<String, Object> MapName1;
-    private SkyWarsMapData data;
-    public SkyWarsMapData getSkyWarsMapData() {
-        return data;
-    }
-
-    private int maxDoubleChest;
+    public TeamManager[] teams;
 
 
-    private static File fileSkywars = new File("plugins/SkyWars", "MapData.yml");
-    private static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkywars);
+    //YamlConfigurations
+    private File file = new File("plugins/SkyWars", "Config.yml");
+    public YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+    private static File fileSkyWars = new File("plugins/SkyWars", "MapData.yml");
+    private static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
 
-    public int getMaxDoubleChest() {
-        return this.maxDoubleChest;
-    }
 
     public void onEnable() {
         luckPerms = getServer().getServicesManager().load(LuckPerms.class);
         this.instance = this;
         init();
-
     }
 
     public void init() {
         SkyWarsMapData map = chooseRandom();
         loadFiles();
-        teams = true;
-
-        gameStateManager = new GameState_Manager(this);
-        gameStateManager.setGameState(Game_State.ONLINE);
-        players = new ArrayList<>();
+        GameStateManager.setState(GameStateManager.LOBBY);
 
         registerEvents(map);
         registerCommands();
@@ -111,8 +102,6 @@ public class Main extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§eThe current Map is: " + finalMap.get(Path.MapName.toString()));
         Bukkit.getConsoleSender().sendMessage("§eThe current Size is: " + finalMap.get(Path.GameSize.toString()));
-        Bukkit.getConsoleSender().sendMessage("§eLOL: " + MapName1.get(Path.MapName.toString()));
-        String TEST = (String) finalMap.get(Path.GameSize.toString());
 
         // Calculate Factors
         Map<String, Double> f = (Map<String, Double>)finalMap.get(Path.Factors.toString());
@@ -132,10 +121,6 @@ public class Main extends JavaPlugin {
             );
         }
 
-        try {
-            yamlConfigurationSkyWars.set("currentMap", TEST);
-            yamlConfigurationSkyWars.save(fileSkywars);
-        } catch (IOException e){}
         this.data = new SkyWarsMapData(
             (String) finalMap.get(Path.MapName.toString()),
             (String) finalMap.get(Path.GameSize.toString()),
@@ -162,22 +147,9 @@ public class Main extends JavaPlugin {
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents((Listener) new PlayerConnectionEvent(this, this.luckPerms), this);
         pluginManager.registerEvents((Listener) new KitListener(), this);
-        pluginManager.registerEvents((Listener) new PlayerTeleportListener(), this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
-        pluginManager.registerEvents((Listener) new TeamListener(map), this);
+        pluginManager.registerEvents((Listener) new TeamListener(map, luckPerms), this);
 
-    }
-
-    public static void scoreCD() {
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask((Plugin)Main.getInstance(), new Runnable() {
-
-            @Override
-            public void run() {
-                for (Player all : Bukkit.getOnlinePlayers()) {
-                    SBManager.updateScoreboard(all);
-                }
-            }
-        }, 0, 1);
     }
 
     public KitListener getKitListener() {
@@ -192,15 +164,11 @@ public class Main extends JavaPlugin {
         return inventoryManager;
     }
 
-    public GameState_Manager getGameStateManager() {
-        return gameStateManager;
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
     public YamlConfiguration getYamlConfiguration() {
         return yamlConfiguration;
+    }
+
+    public SkyWarsMapData getSkyWarsMapData() {
+        return data;
     }
 }

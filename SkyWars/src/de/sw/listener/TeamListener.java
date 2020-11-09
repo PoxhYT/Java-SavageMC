@@ -1,9 +1,12 @@
 package de.sw.listener;
 
 import com.rosemite.services.helper.Log;
+import com.rosemite.services.main.MainService;
+import com.rosemite.services.models.skywars.PlayerSkywarsStats;
+import de.sw.api.LocationAPI;
+import de.sw.countdown.EndingCountdown;
 import de.sw.main.Main;
 import de.sw.manager.*;
-import me.lucko.luckperms.common.api.LuckPermsApiProvider;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.Bukkit;
@@ -17,6 +20,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.io.File;
@@ -28,31 +32,52 @@ public class TeamListener implements Listener {
 
     private static File fileSkyWars = new File("plugins/SkyWars", "MapData.yml");
     private static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
-    public static HashMap<String, Integer> kills = new HashMap<>();
     private static Map<UUID, String> teamManagerMap = new HashMap<>();
+    private HashMap<UUID, PlayerSkywarsStats> stats = new HashMap<>();
     private LuckPerms luckPerms;
+    private EndingCountdown endingCountdown = new EndingCountdown();
+    private Main instance;
+    private MainService services;
 
-    public TeamManager[] teams;
     private final SkyWarsMapData data;
 
-    public TeamListener(SkyWarsMapData data) {
+    public TeamListener(SkyWarsMapData data, LuckPerms luckPerms) {
         this.data = data;
-        teams = new TeamManager[data.maxTeamCount];
+        this.luckPerms = luckPerms;
+        Main.instance.teams = new TeamManager[data.maxTeamCount];
+        this.services = MainService.getService(services);
 
-        for (int i = 0; i < teams.length; i++) {
-                teams[i] = new TeamManager("§eTeam" + (i+1), "§eTeam", Material.WOOL, data.maxPlayersInTeam);
+        for (int i = 0; i < Main.instance.teams.length; i++) {
+            Main.instance.teams[i] = new TeamManager("§eTeam" + (i+1), "§eTeam", Material.WOOL, data.maxPlayersInTeam);
             }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        Player p = event.getPlayer();
+
+        for (int i = 0; i < Main.instance.teams.length; i++) {
+            if (!Main.instance.teams[i].isFull()) {
+                Log.d("Du bist im " + Main.instance.teams[i].getTeamName());
+                String teamDisplayName = Main.instance.teams[i].getTeamName();
+                p.sendMessage(Main.prefix + "Du bist im " + Main.instance.teams[i].getTeamName());
+                p.setDisplayName(teamDisplayName);
+                Main.instance.teams[i].addPlayer(p);
+                teamManagerMap.put(p.getUniqueId(), Main.instance.teams[i].getTeamName());
+                break;
+            }
+        }
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         try {
             Player player = (Player) event.getWhoClicked();
-            for (int i = 0; i < teams.length; i++) {
+            for (int i = 0; i < Main.instance.teams.length; i++) {
                 if (event.getInventory().getTitle().equals("§eTeamauswahl")) {
-                    String displayName = teams[i].getTeamName();
+                    String displayName = Main.instance.teams[i].getTeamName();
                     if (event.getCurrentItem().getItemMeta().getDisplayName().equals(displayName)) {
-                        boolean team = teams[i].isInTeam(player);
+                        boolean team = Main.instance.teams[i].isInTeam(player);
 
                         String t = teamManagerMap.get(player.getUniqueId());
 
@@ -62,21 +87,21 @@ public class TeamListener implements Listener {
                                 Log.d("Du wurdest entfernt vom " + t);
                             }
 
-                            Log.d("Du bist im " + teams[i].getTeamName());
-                            String teamDisplayName = teams[i].getTeamName();
-                            player.sendMessage(Main.prefix + "Du bist im " + teams[i].getTeamName());
+                            Log.d("Du bist im " + Main.instance.teams[i].getTeamName());
+                            String teamDisplayName = Main.instance.teams[i].getTeamName();
+                            player.sendMessage(Main.prefix + "Du bist im " + Main.instance.teams[i].getTeamName());
                             player.setDisplayName(teamDisplayName);
-                            teams[i].addPlayer(player);
-                            teamManagerMap.put(player.getUniqueId(), teams[i].getTeamName());
+                            Main.instance.teams[i].addPlayer(player);
+                            teamManagerMap.put(player.getUniqueId(), Main.instance.teams[i].getTeamName());
                             player.closeInventory();
                         }
 
                         if (team) {
                             Log.d("Du bist schon in dem Team");
-                            player.sendMessage(Main.prefix + "Du bist bereits im " + teams[i].getTeamName());
+                            player.sendMessage(Main.prefix + "Du bist bereits im " + Main.instance.teams[i].getTeamName());
                         } else {
-                            if (!teams[i].isFull()) {
-                                Log.d("Du hast das Team: " + teams[i].getTeamName() + " idk...");
+                            if (!Main.instance.teams[i].isFull()) {
+                                Log.d("Du hast das Team: " + Main.instance.teams[i].getTeamName() + " idk...");
                                 break;
                             }
                             break;
@@ -84,7 +109,7 @@ public class TeamListener implements Listener {
                     }
                 }
             }
-        }catch (NullPointerException e){}
+        } catch (NullPointerException e){}
     }
 
     @EventHandler
@@ -103,7 +128,7 @@ public class TeamListener implements Listener {
                     }
                 }
             }
-        }catch (NullPointerException e){}
+        } catch (NullPointerException e){}
     }
 
     @EventHandler
@@ -111,16 +136,96 @@ public class TeamListener implements Listener {
         try {
             Player d = event.getEntity();
             Player k = d.getKiller();
-            event.setDeathMessage(Main.prefix + d.getDisplayName() + " §7ist gestorben!");
-            Main.alivePlayers.remove(d);
-
-            CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(event.getEntity());
-            String prefix = metaData.getPrefix();
 
             if (k != null) {
-                event.setDeathMessage(Main.prefix + prefix + " §7❘ " + d.getName() + " §7wurde von " + prefix + " §7❘ " + k.getDisplayName() + " §cgetötet§7!");
+                event.setDeathMessage(Main.prefix + d.getName() + " §7wurde von " + k.getName() + " §cgetötet§7!");
+                Main.alivePlayers.remove(d);
+                Bukkit.broadcastMessage(Main.prefix + "Es leben noch " + Main.alivePlayers.size() + "§7!");
+
+                PlayerSkywarsStats stats = Main.stats.get(k.getUniqueId());
+
+                if (stats == null) {
+                    stats = new PlayerSkywarsStats(k.getName(), k.getUniqueId().toString());
+                }
+
+                stats.addKills(1);
+                Main.stats.put(k.getUniqueId(), stats);
+
+                Main.instance.sbManager.setIngameBoard(k);
+            } else {
+                event.setDeathMessage(Main.prefix + d.getName() + " §7ist gestorben!");
+                Main.alivePlayers.remove(d);
             }
-        }catch (NullPointerException e){}
+
+
+            for (int i = 0; i < Main.instance.teams.length; i++) {
+                int finalI = i;
+                Main.instance.teams[i].getPlayers().forEach(player -> {
+                    if(player.getUniqueId() == d.getUniqueId()) {
+                        PlayerSkywarsStats stats = Main.stats.get(d.getUniqueId());
+
+                        if (stats == null) {
+                            stats = new PlayerSkywarsStats(d.getName(), d.getUniqueId().toString());
+                        }
+                        stats.addDeaths(1);
+                        stats.addPlayedGames(1);
+
+                        Main.stats.put(UUID.fromString(stats.getUuid()), stats);
+                        Main.instance.teams[finalI].spectators.add(player.getUniqueId());
+                    }
+                });
+            }
+
+            for (int i = 0; i < Main.instance.teams.length; i++) {
+                if(Main.instance.teams[i].getSpectators().size() == Main.instance.teams[i].getPlayers().size()) {
+                    Main.instance.teams[i].setAlive(false);
+                }
+            }
+
+            int aliveTeams = 0;
+            int winnerTeam = -1;
+            for (int i = 0; i < Main.instance.teams.length; i++) {
+                if(Main.instance.teams[i].getAlive()) {
+                    winnerTeam = i;
+                    ++aliveTeams;
+                }
+            }
+
+            if(aliveTeams == 1) {
+                for (Player all : Bukkit.getOnlinePlayers()) {
+                    CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(all);
+                    String prefix = metaData.getPrefix();
+
+                    if (k != null) {
+                        all.sendTitle(prefix + " §7❘ " + all.getName(), "§ahat das Spiel gewonnen");
+                    } else {
+                        all.sendTitle(Main.alivePlayers.get(0).getDisplayName(), "§ahat das Spiel gewonnen");
+                    }
+
+                    Main.instance.teams[winnerTeam].players.forEach(p -> {
+                        PlayerSkywarsStats stats = Main.stats.get(p.getUniqueId());
+
+                        if (stats == null) {
+                            stats = new PlayerSkywarsStats(p.getName(), p.getUniqueId().toString());
+                            stats.addWins(1);
+                            if (stats.getPlayedGames() != 1) {
+                                stats.addPlayedGames(1);
+                            }
+                            stats.addPoints(100);
+                        }
+
+                        Main.stats.put(UUID.fromString(stats.getUuid()), stats);
+                    });
+                }
+
+                if(!endingCountdown.isRunning()) {
+                    endingCountdown.start();
+                    Log.d("Game Ended");
+
+                    Main.stats.forEach((uuid, playerSkywarsStats) -> services.getSkywarsService().addPlayerStats(uuid.toString(), playerSkywarsStats));
+                }
+            }
+        } catch (NullPointerException e) { }
     }
 
     @EventHandler
@@ -133,13 +238,13 @@ public class TeamListener implements Listener {
                 player.sendMessage(Main.prefix + "§cIst noch in bearbeitung!");
                 player.playSound(player.getLocation(), Sound.VILLAGER_DEATH, 1, 1);
             }
-        }catch (NullPointerException e) {}
+        } catch (NullPointerException e) { }
     }
 
     private void removePlayerFromTeam(Player player, String teamname) {
-        for (int i = 0; i < teams.length; i++) {
-            if (teams[i].getTeamName() == teamname) {
-                teams[i].removePlayer(player);
+        for (int i = 0; i < Main.instance.teams.length; i++) {
+            if (Main.instance.teams[i].getTeamName() == teamname) {
+                Main.instance.teams[i].removePlayer(player);
             }
         }
     }
@@ -161,12 +266,6 @@ public class TeamListener implements Listener {
                 inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + (i + 1)).build());
                 player.openInventory(inventory);
             }
-        }
-    }
-
-    private void getTeams(Player player) {
-        for (int i = 0; i < teams.length; i++) {
-
         }
     }
 }

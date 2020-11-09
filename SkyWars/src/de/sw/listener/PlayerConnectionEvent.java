@@ -1,9 +1,9 @@
 package de.sw.listener;
 
+import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import de.sw.countdown.LobbyCountdown;
 import de.sw.enums.Path;
-import de.sw.gameManager.Lobby_State;
 import de.sw.main.Main;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
@@ -28,64 +28,55 @@ public class PlayerConnectionEvent implements Listener {
     private static boolean joinMessage = false;
 
     public PlayerConnectionEvent(Main instance, LuckPerms luckPerms) {
+        service = MainService.getService(service);
         this.instance = instance;
         this.luckPerms = luckPerms;
     }
 
     @EventHandler
     public void onJoin(org.bukkit.event.player.PlayerJoinEvent event) {
-        if(!(Main.instance.getGameStateManager().getCurrentGame_State() instanceof Lobby_State)) return;
         Player player = event.getPlayer();
-        Main.instance.players.add(player);
-        service = MainService.getService(service);
 
-        Integer MAX_PLAYERS = yamlConfiguration.getInt("Settings.MaxPlayers");
-        Integer MIN_PLAYERS = yamlConfiguration.getInt("Settings.MinPlayers");
+        int MAX_PLAYERS = yamlConfiguration.getInt(Path.MaxPlayers.toString());
+        int MIN_PLAYERS = yamlConfiguration.getInt(Path.MinPlayers.toString());
 
         CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
         String prefix = metaData.getPrefix();
         Main.getInstance().getInventoryManager().setLobbyInventory(player);
 
-        Main.scoreCD();
         Main.alivePlayers.add(player);
 
         event.setJoinMessage(Main.prefix + "§8» §e" + prefix + " §7❘ " + player.getName() + " §7hat das Spiel betreten! §7[§a"
-                + Main.instance.players.size() + "§7/§c" + MAX_PLAYERS + "§7]");
+                + Main.alivePlayers.size() + "§7/§c" + MAX_PLAYERS + "§7]");
         Main.getInstance().sbManager.setLobbyBoard(player);
 
         player.sendMessage(Main.prefix + "§7Aktuelle Map: §e" + Main.MapName1.get(Path.MapName.toString()));
         player.sendMessage(Main.prefix + "§7Spielvariante: §8(§e" + Main.MapName1.get(Path.GameSize.toString()) + "§8)");
 
-        Lobby_State lobbyState = (Lobby_State) Main.instance.getGameStateManager().getCurrentGame_State();
-        LobbyCountdown countdown = lobbyState.getCountdown();
         player.setLevel(60);
         player.setFoodLevel(20);
-        if(Main.instance.players.size() >= MIN_PLAYERS) {
-            if(!countdown.isRunning()) {
-                countdown.stopIdle();
-                countdown.start();
+        if (Main.alivePlayers.size() >= MIN_PLAYERS) {
+            if(!Main.instance.countdown.isRunning()) {
+                Main.instance.countdown.stopIdle();
+                Main.instance.countdown.start();
             }
         }
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        if(!(Main.instance.getGameStateManager().getCurrentGame_State() instanceof Lobby_State)) return;
         Player player = event.getPlayer();
-        Main.instance.players.remove(player);
+        Main.alivePlayers.remove(player);
 
-        Integer MAX_PLAYERS = yamlConfiguration.getInt("maxPlayers");
-        Integer MIN_PLAYERS = yamlConfiguration.getInt("minplayers");
+        Integer MAX_PLAYERS = yamlConfiguration.getInt(Path.MaxPlayers.toString());
+        Integer MIN_PLAYERS = yamlConfiguration.getInt(Path.MinPlayers.toString());
 
         event.setQuitMessage(Main.prefix + "§8» §e" + player.getDisplayName() + " §7hat das Spiel verlassen! §7[§a"
-                + Main.instance.players.size()+ "§7/§c" + MAX_PLAYERS + "§7]");
-
-        Lobby_State lobbyState = (Lobby_State) Main.instance.getGameStateManager().getCurrentGame_State();
-        LobbyCountdown countdown = lobbyState.getCountdown();
-        if(Main.instance.players.size() < MIN_PLAYERS) {
-            if(countdown.isRunning()) {
-                countdown.stop();
-                countdown.startIdle();
+                + Main.alivePlayers.size()+ "§7/§c" + MAX_PLAYERS + "§7]");
+        if(Main.alivePlayers.size() < MIN_PLAYERS) {
+            if(Main.instance.countdown.isRunning()) {
+                Main.instance.countdown.stop();
+                Main.instance.countdown.startIdle();
             }
         }
     }
