@@ -50,6 +50,7 @@ public class Command_SkyWars implements CommandExecutor {
             if (player.hasPermission("server.owner")) {
                 if (args.length == 0) {
                     player.sendMessage("§8➥ §f/sw setloc <name>");
+
                 } else {
                     if (args[1].equals("setloc")) {
                         if (args.length == 1) {
