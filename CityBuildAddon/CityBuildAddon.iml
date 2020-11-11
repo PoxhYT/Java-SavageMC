@@ -18,5 +18,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="server1" level="project" />
     <orderEntry type="library" name="bson-4.1.1" level="project" />
+    <orderEntry type="module" module-name="Services" />
   </component>
 </module>
