@@ -5,5 +5,8 @@ main: de.cba.main.Main
 commands:
    inv:
      description: Lade, oder speicher dein Inventar!
+   invsee:
+   tpa:
+   tpaccept:
 
 
