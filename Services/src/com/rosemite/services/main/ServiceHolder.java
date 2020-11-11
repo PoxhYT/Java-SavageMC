@@ -39,6 +39,7 @@ public class ServiceHolder {
     public CoinService getCoinService() {
         return coinService;
     }
+
     public ReportService getReportService() {
         return reportService;
     }

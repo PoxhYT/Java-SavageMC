@@ -8,6 +8,7 @@ import de.sw.main.Main;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
+import java.util.Random;
 
 public class PlayerConnectionEvent implements Listener {
 
@@ -49,6 +51,21 @@ public class PlayerConnectionEvent implements Listener {
         event.setJoinMessage(Main.prefix + "§8» §e" + prefix + " §7❘ " + player.getName() + " §7hat das Spiel betreten! §7[§a"
                 + Main.alivePlayers.size() + "§7/§c" + MAX_PLAYERS + "§7]");
         Main.getInstance().sbManager.setLobbyBoard(player);
+
+        Random chance = new Random();
+        int chanceNumber = 100;
+        int randomChance = chance.nextInt(chanceNumber);
+
+        //Creates a random int between 1 - 100
+
+        Random coins = new Random();
+        int coinsNumber = 100;
+        int randomCoins = chance.nextInt(coinsNumber);
+
+        if(randomChance < 50) {
+            Bukkit.broadcastMessage(Main.prefix + "Du hast §e" + randomCoins + " Coins §7gefunden!");
+            Log.d(randomCoins);
+        }
 
         player.sendMessage(Main.prefix + "§7Aktuelle Map: §e" + Main.MapName1.get(Path.MapName.toString()));
         player.sendMessage(Main.prefix + "§7Spielvariante: §8(§e" + Main.MapName1.get(Path.GameSize.toString()) + "§8)");

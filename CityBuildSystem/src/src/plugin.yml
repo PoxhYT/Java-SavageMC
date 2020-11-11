@@ -1,7 +1,7 @@
 name: CityBuildAddon
 version: 1.0
 author: PoxhYT
-main: de.cba.main.Main
+main: src.de.cba.main.Main
 commands:
    inv:
      description: Lade, oder speicher dein Inventar.
@@ -9,6 +9,7 @@ commands:
      description: Gucke das Inventar anderer Spieler an.
    coins:
      description: Zeigt die Coins von dir, und andere Spieler an.
+   pay:
 
 
 

@@ -1,15 +1,14 @@
-package de.cba.commands;
+package src.de.cba.commands;
 
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.services.coin.CoinService;
-import de.cba.main.Main;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import src.de.cba.main.Main;
 
 import java.util.HashMap;
 import java.util.UUID;

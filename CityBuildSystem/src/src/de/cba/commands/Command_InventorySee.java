@@ -1,12 +1,12 @@
-package de.cba.commands;
+package src.de.cba.commands;
 
-import de.cba.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import src.de.cba.main.Main;
 
 public class Command_InventorySee implements CommandExecutor {
 
