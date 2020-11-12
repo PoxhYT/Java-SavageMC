@@ -1,5 +1,6 @@
 package src.de.cba.listener;
 
+import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.services.coin.CoinService;
 import org.bukkit.Material;
@@ -24,7 +25,8 @@ public class BlockBreakListener implements Listener {
         Player player = event.getPlayer();
         String uuid = player.getUniqueId().toString();
 
-        if(event.getBlock().getType() == Material.DIAMOND_ORE) {
+        if(event.getBlock().getType() == Material.SAND) {
+            Log.d("OKAY");
             //Creates a random chance between 1 - 100
 
             Random chance = new Random();
