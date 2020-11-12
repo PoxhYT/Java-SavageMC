@@ -7,10 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import src.de.cba.commands.Command_InventorySee;
-import src.de.cba.commands.Command_Pay;
-import src.de.cba.commands.Command_coins;
-import src.de.cba.commands.Command_inventory;
+import src.de.cba.commands.*;
 import src.de.cba.listener.BlockBreakListener;
 
 import java.util.HashMap;
@@ -55,6 +52,8 @@ public class Main extends JavaPlugin {
         getCommand("invsee").setExecutor(new Command_InventorySee());
         getCommand("coins").setExecutor(new Command_coins(services, mongoDatabase));
         getCommand("pay").setExecutor(new Command_Pay());
+        getCommand("createWorld").setExecutor(new Command_WorldCreate());
+        getCommand("tp").setExecutor(new Command_tp());
     }
 
 

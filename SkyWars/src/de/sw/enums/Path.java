@@ -4,7 +4,7 @@ public enum Path {
     MapName("MapName"),
     MaxTeamCount("MaxTeamCount"),
     MapsIDs("MapsIDs"),
-    Factors("Factors"),
+    StillUnderDevelopment("StillUnderDevelopment"),
     Locations("Locations"),
     MaxPlayersInTeam("MaxPlayersInTeam"),
     GameSize("GameSize"),

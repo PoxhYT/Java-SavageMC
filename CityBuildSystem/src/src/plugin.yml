@@ -10,6 +10,8 @@ commands:
    coins:
      description: Zeigt die Coins von dir, und andere Spieler an.
    pay:
+   createWorld:
+   tp:
 
 
 

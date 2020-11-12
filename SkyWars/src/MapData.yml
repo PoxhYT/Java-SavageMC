@@ -4,14 +4,46 @@ maps:
     MaxTeamCount: 8
     MaxPlayersInTeam: 1
     GameSize: 8x1
+    StillUnderDevelopment: false
   - id: 2
-    MapName: Vally
+    MapName: Valley
     MaxTeamCount: 8
     MaxPlayersInTeam: 1
     GameSize: 8x1
+    StillUnderDevelopment: false
+    Factors:
+      x: 41.6
+      z: -43.6
+    Locations:
+      - world: world
+        x: 354.69999998807907
+        y: 80.0
+        z: 1435.300000011921
+        yaw: 236.88974
+        pitch: 11.246533
+      - world: world
+        x: 374.69999998807907
+        y: 79.0
+        z: 1449.300000011921
+        yaw: 236.68417
+        pitch: 12.847707
+      - world: world
+        x: 397.30000001192093
+        y: 80.0
+        z: 1434.300000011921
+        yaw: 147.82991
+        pitch: 12.108659
+      - world: world
+        x: 411.30000001192093
+        y: 79.0
+        z: 1414.300000011921
+        yaw: 147.17328
+        pitch: 11.944317
   - id: 3
     MapName: Forrest
     MaxTeamCount: 8
     MaxPlayersInTeam: 1
     GameSize: 8x1
+    StillUnderDevelopment: false
+currentMap: 8x1
 

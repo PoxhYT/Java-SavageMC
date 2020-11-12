@@ -54,8 +54,8 @@ public class Main extends JavaPlugin {
     //YamlConfigurations
     private File file = new File("plugins/SkyWars", "Config.yml");
     public YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-    private static File fileSkyWars = new File("plugins/SkyWars", "MapData.yml");
-    private static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
+    public static File fileSkyWars = new File("plugins/SkyWars", "MapData.yml");
+    public static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
 
 
     public void onEnable() {
@@ -103,10 +103,6 @@ public class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§eThe current Map is: " + finalMap.get(Path.MapName.toString()));
         Bukkit.getConsoleSender().sendMessage("§eThe current Size is: " + finalMap.get(Path.GameSize.toString()));
 
-        // Calculate Factors
-        Map<String, Double> f = (Map<String, Double>)finalMap.get(Path.Factors.toString());
-        Factors factors = new Factors(f.get("x"), f.get("z"));
-
         // Calculate Locations
         ArrayList<Map<String, Object>> ls = (ArrayList<Map<String, Object>>)finalMap.get(Path.Locations.toString());
 
@@ -124,10 +120,10 @@ public class Main extends JavaPlugin {
         this.data = new SkyWarsMapData(
             (String) finalMap.get(Path.MapName.toString()),
             (String) finalMap.get(Path.GameSize.toString()),
-            factors,
             locations,
             (int)finalMap.get(Path.MaxTeamCount.toString()),
-            (int)finalMap.get(Path.MaxPlayersInTeam.toString())
+            (int)finalMap.get(Path.MaxPlayersInTeam.toString()),
+            (boolean)finalMap.get(Path.StillUnderDevelopment.toString())
         );
 
         return this.data;
@@ -138,6 +134,7 @@ public class Main extends JavaPlugin {
         getCommand("start").setExecutor((CommandExecutor) new Command_start());
         getCommand("build").setExecutor((CommandExecutor)new Command_build());
         getCommand("sw").setExecutor((CommandExecutor)new Command_SkyWars());
+        getCommand("create").setExecutor(new Command_create(Main.getInstance()));
 
     }
 
