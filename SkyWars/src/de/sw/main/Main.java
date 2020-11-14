@@ -3,18 +3,18 @@ package de.sw.main;
 import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.sw.commands.*;
 import de.sw.countdown.LobbyCountdown;
+import de.sw.countdown.MoveCountdown;
+import de.sw.countdown.ProtectionCountdown;
 import de.sw.enums.Path;
 import de.sw.gameManager.GameStateManager;
 import de.sw.listener.*;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -38,17 +38,13 @@ public class Main extends JavaPlugin {
     public static InventoryManager inventoryManager = new InventoryManager();
     public SBManager sbManager = new SBManager();
     public LobbyCountdown countdown = new LobbyCountdown();
+    public static ProtectionCountdown protectionCountdown = new ProtectionCountdown();
+    public static MoveCountdown moveCountdown = new MoveCountdown();
+
 
 
     //HashMap
     public static HashMap<UUID, PlayerSkywarsStats> stats = new HashMap<>();
-
-
-    //ArrayLists
-    public static ArrayList<Player> alivePlayers = new ArrayList<>();
-    public static List<Player> build = new ArrayList<>();
-    public static Map<String, Object> MapName1;
-    public TeamManager[] teams;
 
 
     //YamlConfigurations
@@ -56,6 +52,16 @@ public class Main extends JavaPlugin {
     public YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
     public static File fileSkyWars = new File("plugins/SkyWars", "MapData.yml");
     public static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
+
+
+    //ArrayLists
+    public static ArrayList<Player> alivePlayers = new ArrayList<>();
+    public static List<Player> build = new ArrayList<>();
+    public static Map<String, Object> MapName1;
+    public TeamManager[] teams;
+    public static List<Map<String, Object>> maps = (List<Map<String, Object>>) yamlConfigurationSkyWars.getList("maps");
+    public static ArrayList<Player> moveMap = new ArrayList<>();
+
 
 
     public void onEnable() {
@@ -93,10 +99,9 @@ public class Main extends JavaPlugin {
 
     public SkyWarsMapData chooseRandom() {
         Random random = new Random();
-        List<Map<String, Object>> maps = (List<Map<String, Object>>) yamlConfigurationSkyWars.getList("maps");
         int mapsSize = random.nextInt(maps.size());
-//         Map<String, Object> finalMap = maps.get(mapsSize);
-         Map<String, Object> finalMap = maps.get(1); // Remove me
+        Map<String, Object> finalMap = maps.get(mapsSize);
+
 
         MapName1 = finalMap;
 
@@ -104,24 +109,23 @@ public class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§eThe current Size is: " + finalMap.get(Path.GameSize.toString()));
 
         // Calculate Locations
-        ArrayList<Map<String, Object>> ls = (ArrayList<Map<String, Object>>)finalMap.get(Path.Locations.toString());
+        //ArrayList<Map<String, Object>> ls = (ArrayList<Map<String, Object>>)finalMap.get(Path.Locations.toString());
 
-        Location[] locations = new Location[ls.size()];
-        for (int i = 0; i < locations.length; i++) {
-            locations[i] = new Location(getServer().getWorld(ls.get(i).get("world").toString()),
-            (double) ls.get(i).get("x"),
-                (double) ls.get(i).get("y"),
-                (double) ls.get(i).get("z"),
-                ((Double) ls.get(i).get("yaw")).floatValue(),
-                ((Double) ls.get(i).get("pitch")).floatValue()
-            );
-        }
+        //Location[] locations = new Location[ls.size()];
+        //for (int i = 0; i < locations.length; i++) {
+        //    locations[i] = new Location(getServer().getWorld(ls.get(i).get("world").toString()),
+        //   (double) ls.get(i).get("x"),
+        //        (double) ls.get(i).get("y"),
+        //        (double) ls.get(i).get("z"),
+        //        ((Double) ls.get(i).get("yaw")).floatValue(),
+        //        ((Double) ls.get(i).get("pitch")).floatValue()
+        //    );
+        //}
 
         this.data = new SkyWarsMapData(
             (String) finalMap.get(Path.MapName.toString()),
             (String) finalMap.get(Path.GameSize.toString()),
-            locations,
-            (int)finalMap.get(Path.MaxTeamCount.toString()),
+                null, (int)finalMap.get(Path.MaxTeamCount.toString()),
             (int)finalMap.get(Path.MaxPlayersInTeam.toString()),
             (boolean)finalMap.get(Path.StillUnderDevelopment.toString())
         );

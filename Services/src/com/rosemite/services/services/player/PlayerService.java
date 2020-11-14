@@ -25,7 +25,8 @@ public class PlayerService {
             player.getDisplayName(),
             "Standard",
             player.getUniqueId().toString(),
-            500
+            500,
+            5
         );
 
         String json = new Gson().toJson(playerInfo, PlayerInfo.class);

@@ -14,10 +14,12 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     private void onInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        if(event.getItem().getType() == Material.COMPASS) {
-            instance.inventoryManager.openNavigatorInventory(player);
-            player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-        }
+        try {
+            Player player = event.getPlayer();
+            if (event.getItem().getType() == Material.COMPASS) {
+                instance.inventoryManager.openNavigatorInventory(player);
+                player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+            }
+        }catch (NullPointerException e){}
     }
 }

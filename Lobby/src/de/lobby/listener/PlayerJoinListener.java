@@ -16,7 +16,6 @@ public class PlayerJoinListener implements Listener {
 
     private Main instance;
     private LuckPerms luckPerms;
-    private ScoreboardAPI scoreboardAPI;
 
     public PlayerJoinListener(Main instance, LuckPerms luckPerms) {
         this.instance = instance;
@@ -27,13 +26,6 @@ public class PlayerJoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         try {
-            String UUID = player.getUniqueId().toString();
-            CoinsAPI.createPlayer(UUID);
-            player.teleport(LocationAPI.getSpawn("spawn"));
-
-            ScoreboardAPI scoreboardAPI = new ScoreboardAPI(instance, luckPerms);
-            scoreboardAPI.setScoreboard(player);
-            Main.instance.scoreCD();
 
             CachedMetaData metaData = this.luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
             String prefix = metaData.getPrefix();

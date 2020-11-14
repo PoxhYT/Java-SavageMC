@@ -39,22 +39,16 @@ public class Command_create implements CommandExecutor {
 
             for (int i = 0; i < maps.size(); i++) {
                 // Check if map name already exists. If so we exit & return. Else we save the map
-                if (maps.get(i).get(Path.MapName.toString()) == name) {
+                if(name.equalsIgnoreCase((String) maps.get(i).get(Path.MapName.toString()))) {
                     player.sendMessage(Main.prefix + "§cDie Map wurde bereits erstellt!");
                     return false;
                 }
                 Log.d(maps.get(i).get(Path.MapName.toString()));
             }
 
+
             // Save map
-            SkyWarsMapData data = new SkyWarsMapData(
-                    name,
-                    "8x1",
-                    null,
-                    1,
-                    1,
-                    true
-            );
+            SkyWarsMapData data = new SkyWarsMapData(name, "8x1", null, 8, 1, true);
 
             // Convert SkyWarsMapData into Map
             Gson g = new Gson();
@@ -80,19 +74,10 @@ public class Command_create implements CommandExecutor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            GameManager.games.add(name);
+
             player.sendMessage(Main.prefix + "Du hast die Map §e" + name + " erfolgreich erstellt!");
         }
         return false;
-    }
-
-    private void createWorlds() {
-        WorldCreator wc = new WorldCreator("TEST");
-
-        wc.environment(World.Environment.NORMAL);
-        wc.type(WorldType.FLAT);
-        wc.generatorSettings("0;0;0;");
-        wc.createWorld();
     }
 }
 

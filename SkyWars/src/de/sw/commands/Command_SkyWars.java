@@ -26,25 +26,6 @@ public class Command_SkyWars implements CommandExecutor {
         Player player = (Player) sender;
 
         // Note: Just a test
-        try {
-            Log.d("Spawning Player to Location");
-            Plugin p = Bukkit.getPluginManager().getPlugin("SkyWars");
-            Log.d(1);
-            Main sw = (Main)p;
-            Log.d(2);
-
-            Log.d(sw);
-
-            SkyWarsMapData md = sw.getSkyWarsMapData();
-            Log.d(3);
-
-            for (int i = 0; i < md.location.length; i++) {
-                Log.d(md.location[i]);
-            }
-            Log.d(4);
-            return true;
-        } catch (Exception ignore) {
-        }
 
         if(sender instanceof Player) {
             if (player.hasPermission("server.owner")) {

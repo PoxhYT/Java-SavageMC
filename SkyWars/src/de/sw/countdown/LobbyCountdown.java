@@ -62,13 +62,13 @@ public class LobbyCountdown extends Countdown{
                         Main.build.addAll(Bukkit.getOnlinePlayers());
                         break;
                     case 0:
-                        for (Player all : Bukkit.getOnlinePlayers())
+                        for (Player all : Bukkit.getOnlinePlayers()) {
                             all.playSound(all.getLocation(), Sound.LEVEL_UP, 1, 1);
+                            Main.getInstance().sbManager.setIngameBoard(all);
+                            all.getInventory().clear();
+                            Main.moveCountdown.start();
+                        }
                         GameStateManager.setState(GameStateManager.INGAME);
-                        for (Player player : Bukkit.getOnlinePlayers())
-                            Main.getInstance().sbManager.setIngameBoard(player);
-                        for(Player player : Bukkit.getOnlinePlayers())
-                            player.getInventory().clear();
                         break;
                 }
                 seconds--;

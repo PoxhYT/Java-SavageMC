@@ -4,4 +4,5 @@ author: PoxhYT
 main: de.lobby.main.Main
 commands:
     setup:
-    prefix:
+    tickets:
+    coins:

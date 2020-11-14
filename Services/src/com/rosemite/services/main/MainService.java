@@ -2,11 +2,8 @@ package com.rosemite.services.main;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
 import com.rosemite.services.listener.PlayerJoinEvent;
-import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.service.report.ReportService;
 import com.rosemite.services.services.coin.CoinService;
 import com.rosemite.services.config.Config;
@@ -14,7 +11,7 @@ import com.rosemite.services.helper.Log;
 import com.rosemite.services.services.player.PlayerService;
 import com.rosemite.services.services.skywars.SkywarsService;
 import com.rosemite.services.services.souptraining.SoupTrainingService;
-import org.bson.Document;
+import com.rosemite.services.services.ticket.TicketService;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -69,6 +66,10 @@ public class MainService extends JavaPlugin {
 
     public PlayerService getPlayerService() {
         return holder.getPlayerService();
+    }
+
+    public TicketService getTicketService() {
+        return holder.getTicketService();
     }
 
     public static MainService getService(MainService service) {
