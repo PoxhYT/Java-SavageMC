@@ -1,6 +1,7 @@
 package de.sw.listener;
 
 import de.sw.main.Main;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -10,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
@@ -59,4 +61,15 @@ public class ProtectionListener implements Listener {
     public void onWeatherChange(WeatherChangeEvent event) {
         event.setCancelled(true);
     }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        if(Main.moveMap.contains(player)) {
+            event.setCancelled(false);
+        } else if(!Main.moveMap.contains(player)){
+            event.setCancelled(true);
+        }
+    }
+
 }

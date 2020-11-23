@@ -40,7 +40,7 @@ public class Command_start implements CommandExecutor {
                     Log.d(4);
                     if (Main.instance.countdown.isRunning()) {
                         Log.d(5);
-                        LobbyCountdown.seconds = 15;
+                        Main.countdown.seconds = 15;
                         Bukkit.broadcastMessage(Main.prefix + "Der §eTimer §7wurde beschleunigt!");
                         started = true;
                     }

@@ -44,7 +44,7 @@ public class Main extends JavaPlugin {
     //Objects
     public static InventoryManager inventoryManager = new InventoryManager();
     public SBManager sbManager = new SBManager();
-    public LobbyCountdown countdown = new LobbyCountdown();
+    public static LobbyCountdown countdown = new LobbyCountdown();
     public static ProtectionCountdown protectionCountdown = new ProtectionCountdown();
     public static MoveCountdown moveCountdown = new MoveCountdown();
     public static Map<Player, KitManager> kitMap = new HashMap<>();

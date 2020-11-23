@@ -78,18 +78,6 @@ public class LobbyCountdown extends Countdown{
                             for (int i = 0; i < Main.instance.teams.length; i++) {
                                 Main.instance.teams[i].teleportPlayers();
                             }
-
-                            //
-
-                            // Give Player their kits
-                            Main.kitMap.forEach((player, kit) -> {
-                                ItemStack i;
-                                i.addEnchantment(Enchantment.getById(kit.someId), kit.enchantmentLevel);
-//                                Enchantmet
-                                String.valueOf(i.get)
-//                                kit.
-//                                player.
-                            });
                         }
                         GameStateAPIManager.setState(GameStateAPIManager.INGAME);
                         break;
@@ -106,8 +94,6 @@ public class LobbyCountdown extends Countdown{
             seconds = 60;
         }
     }
-
-    public String
 
     public void startIdle() {
         isIdling = true;
