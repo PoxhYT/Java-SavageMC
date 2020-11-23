@@ -34,7 +34,6 @@ public class Main extends JavaPlugin {
     public static String prefix = "§bSkyWars §8❘ §7";
     public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
 
-
     //Instances
     public static Main instance;
     public static LuckPerms luckPerms;
@@ -52,13 +51,11 @@ public class Main extends JavaPlugin {
     //HashMap
     public static HashMap<UUID, PlayerSkywarsStats> stats = new HashMap<>();
 
-
     //YamlConfigurations
     private File file = new File("plugins/SkyWars", "Config.yml");
     public YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
     public static File fileSkyWars = new File("plugins/SkyWars", "MapData.yml");
     public static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
-
 
     //ArrayLists
     public static ArrayList<Player> alivePlayers = new ArrayList<>();
