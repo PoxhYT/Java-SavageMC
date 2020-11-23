@@ -2,6 +2,7 @@ package de.sw.commands;
 
 import com.rosemite.services.helper.Log;
 import de.sw.countdown.LobbyCountdown;
+import de.sw.enums.Path;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -28,7 +29,7 @@ public class Command_start implements CommandExecutor {
         if(player.hasPermission("server.owner")) {
 
             Log.d(2);
-            int MIN_PLAYERS = yamlConfiguration.getInt("Settings.MinPlayers");
+            int MIN_PLAYERS = (int) Main.MapName1.get(Path.MaxPlayersInTeam.toString());
 
             Log.d(MIN_PLAYERS);
             Log.d(Main.alivePlayers.size());

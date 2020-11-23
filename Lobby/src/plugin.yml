@@ -6,3 +6,4 @@ commands:
     setup:
     tickets:
     coins:
+    build:

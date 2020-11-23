@@ -5,6 +5,8 @@ import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.player.PlayerInfo;
 import com.rosemite.services.services.player.PlayerService;
 import com.rosemite.services.services.skywars.SkywarsService;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,7 +34,7 @@ public class PlayerJoinEvent implements Listener {
         }
     }
 
-    public PlayerInfo createNewPlayer(Player player) {
+    private PlayerInfo createNewPlayer(Player player) {
         // Add new Player to Database
         PlayerInfo playerInfo =  playerService.createNewPlayer(player);
 

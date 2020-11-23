@@ -46,6 +46,15 @@ public class PlayerService {
         return new Gson().fromJson(doc.toJson(), PlayerInfo.class);
     }
 
+    public PlayerInfo getPlayerInfoByName(String name) {
+        Document doc = db.getCollection(Paths.PlayerInfo.toString()).find(Filters.eq("playername", name)).first();
+        if (doc == null) {
+            return null;
+        }
+
+        return new Gson().fromJson(doc.toJson(), PlayerInfo.class);
+    }
+
     public PlayerSkywarsKits getPlayerSkywarsKits(String uuid) {
         Document doc = db.getCollection(Paths.PlayerSkywarsKits.toString()).find( eq("uuid", uuid)).first();
 

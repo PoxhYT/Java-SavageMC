@@ -1,0 +1,5 @@
+name: SignSystem
+version: 1.0
+main: de.signsystem.main.Main
+commands:
+   addsign:

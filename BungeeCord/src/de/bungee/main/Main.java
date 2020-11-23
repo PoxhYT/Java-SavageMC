@@ -1,5 +1,6 @@
 package de.bungee.main;
 
+import de.bungee.commands.Command_getPlayerIP;
 import de.bungee.commands.Command_leave;
 import de.bungee.commands.Command_ping;
 import org.bukkit.Bukkit;
@@ -30,6 +31,5 @@ public class Main extends JavaPlugin {
     public void registerCommands() {
         getCommand("leave").setExecutor((CommandExecutor)new Command_leave(this));
         getCommand("ping").setExecutor((CommandExecutor)new Command_ping());
-
     }
 }

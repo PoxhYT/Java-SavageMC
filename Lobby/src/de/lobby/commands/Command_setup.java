@@ -23,23 +23,26 @@ public class Command_setup implements CommandExecutor {
                     player.sendMessage(Main.prefix + "§cBitte benutze§7: /§esetup setlocation §7<§eSPAWN, SKYWARS, BEDWARS, MLGRUSH, UHC, SPEEDUHC, COMMUNITY§7>");
                     player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 1);
                 } else {
-                    if(args[0].equalsIgnoreCase("setlocation")) {
-                        if(args.length == 2) {
-                            String[] args1 = getArgs();
-                            for (int i = 0; i < args1.length; i++)
-                            {
-                                if(args[1].equalsIgnoreCase(args1[i])) {
-                                    player.sendMessage(Main.prefix + "Du hast die §eLocation §7für §e" + args[1] + " §7gesetzt.");
-                                    LocationAPI.setSpawn(args[1], player.getLocation());
-                                    player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
-                                }
-                            }
-                        } else {
-                            player.sendMessage(Main.prefix + "§cBitte benutze§7: /§fsetup setlocation SPAWN, SKYWARS, ");
-                            player.sendMessage(Main.prefix + "§fBEDWARS, MLGRUSH, UHC, SPEEDUHC, COMMUNITY");
-                            player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 1);
-                        }
+                    if(args.length == 1) {
+                        player.sendMessage(Main.prefix + "§cBitte benutze§7: /§fsetup setlocation SPAWN, SKYWARS, ");
+                        player.sendMessage(Main.prefix + "§fBEDWARS, MLGRUSH, UHC, SPEEDUHC, COMMUNITY");
+                        player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 1);
                     }
+
+                    if(args.length == 2) {
+                        String[] args1 = getArgs();
+                        for (int i = 0; i < args1.length; i++) {
+                            if(args[1].equalsIgnoreCase(args1[i])) {
+                                player.sendMessage(Main.prefix + "Du hast die §eLocation §7für §e" + args[1] + " §7gesetzt.");
+                                LocationAPI.setSpawn(args[1], player.getLocation());
+                                player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
+
+                            }
+                        }
+                    } else
+                        player.sendMessage(Main.prefix + "§cBitte benutze§7: /§fsetup setlocation SPAWN, SKYWARS, ");
+                    player.sendMessage(Main.prefix + "§fBEDWARS, MLGRUSH, UHC, SPEEDUHC, COMMUNITY");
+                    player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 1);
                 }
             }
         }

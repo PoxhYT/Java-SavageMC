@@ -1,6 +1,7 @@
 package de.sw.enums;
 
 public enum Path {
+    Id("Id"),
     MapName("MapName"),
     MaxTeamCount("MaxTeamCount"),
     MapsIDs("MapsIDs"),

@@ -25,7 +25,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class KitListener implements Listener {
-    public Map<UUID, KitManager> kitMap = new HashMap<>();
     private MainService service;
 
     @EventHandler
@@ -111,7 +110,7 @@ public class KitListener implements Listener {
 
             if (event.getInventory().getTitle().equals(kits[i].getKitNameLiteralStringColored())) {
                 if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§aAuswählen")) {
-                    kitMap.put(player.getUniqueId(), kits[i]);
+                    Main.kitMap.put(player, kits[i]);
 
                     player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " §eKit §7ausgewählt!");
                     service.getSkywarsService().updateLatestSelectedKit(player.getUniqueId().toString(), kits[i].getKitNameLiteralString());
@@ -152,7 +151,7 @@ public class KitListener implements Listener {
                 inventory.setItem(4, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralString()).setLore(kits[i].getKitDescription()).build());
                 inventory.setItem(0, new ItemBuilderAPI(Material.WOOL, (short)14).setDisplayName("§cZürück").setLore("§cKlicke, um die Auswahl zu beenden.").build());
                 player.openInventory(inventory);
-            } catch (Exception e) {}
+            } catch (Exception e) { }
         }
     }
 

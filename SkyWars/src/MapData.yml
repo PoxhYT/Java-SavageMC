@@ -1,21 +1,72 @@
 maps:
-  - id: 1
+  - Id: 1
     MapName: Winter
     MaxTeamCount: 8
-    MaxPlayersInTeam: 1
-    GameSize: 8x1
+    MaxPlayersInTeam: 2
+    GameSize: 8x2
     StillUnderDevelopment: false
-  - id: 2
-    MapName: Valley
-    MaxTeamCount: 8
-    MaxPlayersInTeam: 1
-    GameSize: 8x1
+  - MaxTeamCount: 8
+    MaxPlayersInTeam: 2
+    MapName: L1
+    GameSize: 8x2
     StillUnderDevelopment: false
-  - id: 3
-    MapName: Forrest
-    MaxTeamCount: 8
-    MaxPlayersInTeam: 1
-    GameSize: 8x1
-    StillUnderDevelopment: false
-currentMap: 8x1
+    Id: 2
+    Locations:
+      - world: world
+        x: -166.06206892717745
+        y: 64.0
+        z: 185.4178430551094
+        pitch: 20.734789
+        yaw: -266.9721
+      - world: world
+        x: -167.35203929617572
+        y: 64.0
+        z: 185.38911860048088
+        pitch: 25.529161
+        yaw: -272.36584
+      - world: world
+        x: -169.61032778233712
+        y: 64.0
+        z: 185.40943784460674
+        pitch: 25.529161
+        yaw: -272.36584
+      - world: world
+        x: -169.6785628759944
+        y: 64.0
+        z: 183.52119587912287
+        pitch: 25.529161
+        yaw: -272.36584
+      - world: world
+        x: -167.1868675606772
+        y: 64.0
+        z: 183.4634497324651
+        pitch: 25.529161
+        yaw: -272.36584
+      - world: world
+        x: -165.0866887160953
+        y: 64.0
+        z: 183.44625652576275
+        pitch: 25.529161
+        yaw: -272.36584
+      - world: world
+        x: -166.66418127026463
+        y: 64.0
+        z: 181.50674494429663
+        pitch: 25.529161
+        yaw: -272.36584
+      - world: world
+        x: -168.64361828298945
+        y: 64.0
+        z: 181.51977463779915
+        pitch: 25.529161
+        yaw: -272.36584
+  - MaxTeamCount: 2
+    MapName: Forest
+    MaxPlayersInTeam: 4
+    GameSize: 2x4
+    StillUnderDevelopment: true
+    Id: 3
+
+
+
 

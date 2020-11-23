@@ -1,5 +1,7 @@
 package de.sw.manager;
 
+import de.sw.main.Main;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -15,8 +17,10 @@ public class TeamManager {
     private boolean isAlive = true;
     public ArrayList<UUID> spectators = new ArrayList<>();
     public final int maxPlayerCount;
+    public final Location location;
 
-    public TeamManager(String teamName, String teamPrefix, Material material, int maxPlayerCount) {
+    public TeamManager(String teamName, String teamPrefix, Location location, Material material, int maxPlayerCount) {
+        this.location = location;
         this.teamName = teamName;
         this.teamPrefix = teamPrefix;
         this.players = new ArrayList<>();
@@ -84,5 +88,9 @@ public class TeamManager {
             }
         }
         return false;
+    }
+
+    public void teleportPlayers() {
+        players.forEach(player -> player.teleport(this.location));
     }
 }

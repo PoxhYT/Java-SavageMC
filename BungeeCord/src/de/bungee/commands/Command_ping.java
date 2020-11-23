@@ -18,7 +18,7 @@ public class Command_ping implements CommandExecutor {
         if(sender instanceof Player) {
             if(args.length == 0) {
                 Player player = (Player) sender;
-                player.sendMessage(Main.prefix + "Dein aktueller Ping lautet: §e" + getPing(player) + "ms");
+                player.sendMessage(Main.prefix + "Dein aktueller Ping lautet: §e" + player.getAddress() + "ms");
             }else if(args.length == 1) {
                 if(Bukkit.getPlayer(args[0]) != null) {
                     sender.sendMessage(Main.prefix + "Der Ping von §e" + args[0] + " §7lautet: §e" + getPing(Bukkit.getPlayer(args[0])) + "ms");
@@ -41,4 +41,6 @@ public class Command_ping implements CommandExecutor {
         EntityPlayer ping = craftPlayer.getHandle();
         return ping.ping;
     }
+
+    //getPing(player)
 }

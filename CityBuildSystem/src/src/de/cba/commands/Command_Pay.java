@@ -1,5 +1,6 @@
 package src.de.cba.commands;
 
+import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
@@ -40,24 +41,42 @@ public class Command_Pay implements CommandExecutor {
                 }
 
                 if(args.length == 2) {
+                    String name = args[0];
 
-                    Player target =  Bukkit.getPlayerExact(args[0]);
+                    if (name == null) {
+                        return false;
+                    } else if(name.equalsIgnoreCase(player.getName())) {
+                        player.sendMessage(Main.prefix + "§cDu kannst dir selber keine Coins schenken!");
+                        return false;
+                    }
+
+                    PlayerInfo targetInfo = services.getPlayerService().getPlayerInfoByName(name);
+
+                    if (targetInfo == null) {
+                        player.sendMessage(Main.prefix + "§cDieser Spieler ist nicht in der Datenbank registriert!");
+
+                        return false;
+                    }
+
+                    Log.d(args[1]);
+
                     int amount = Integer.parseInt(args[1]);
-                    Pair<Integer, Boolean> res = coinService.removeCoins(player.getUniqueId().toString(), amount);
-                    PlayerInfo targetInfo = services.getPlayerService().getPlayerInfo(target.getUniqueId().toString());
+                    Log.d(amount);
 
-                    if(targetInfo != null) {
-                        if (!res.getValue()) {
-                            player.sendMessage(Main.prefix + "§cDu hast nicht genügende Coins!");
-                        } else {
-                            coinService.addCoins(target.getUniqueId().toString(), amount);
-                            player.sendMessage(Main.prefix + "Du hast " + target.getDisplayName() + " §e" +
-                                    coinService.getCoinAmount(target.getUniqueId().toString()) + " Coins §7geschenkt!");
+                    Pair<Integer, Boolean> res = coinService.removeCoins(player.getUniqueId().toString(), amount);
+
+                    if (!res.getValue()) {
+                        player.sendMessage(Main.prefix + "§cDu hast nicht genügende Coins!");
+                    } else {
+                        coinService.addCoins(targetInfo.getUuid(), amount);
+                        player.sendMessage(Main.prefix + "Du hast " + targetInfo.getPlayername() + " §e" + amount + " Coins §7geschenkt!");
+
+                        Player target = Bukkit.getPlayer(UUID.fromString(targetInfo.getUuid()));
+
+                        if (target != null && target.isOnline()) {
                             target.sendMessage(Main.prefix + player.getDisplayName() + " §7hat dir §e" + amount + " Coins §7geschenkt!");
                         }
-                        Log.d("WELL");
-                    } else
-                        player.sendMessage(Main.prefix + "§cDieser Spieler ist nicht in der Datenbank registriert!");
+                    }
                 }
             }
         } else

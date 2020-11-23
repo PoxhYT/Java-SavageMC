@@ -1,16 +1,21 @@
 package de.sw.main;
 
+import com.google.gson.Gson;
+import com.rosemite.services.helper.Log;
 import com.rosemite.services.models.skywars.PlayerSkywarsStats;
+import de.gamestateapi.main.GameStateAPIManager;
 import de.sw.commands.*;
 import de.sw.countdown.LobbyCountdown;
 import de.sw.countdown.MoveCountdown;
 import de.sw.countdown.ProtectionCountdown;
 import de.sw.enums.Path;
-import de.sw.gameManager.GameStateManager;
 import de.sw.listener.*;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
+import org.apache.logging.log4j.core.net.DatagramOutputStream;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -20,6 +25,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.*;
+import java.util.function.ObjDoubleConsumer;
+import java.util.stream.Collectors;
 
 public class Main extends JavaPlugin {
 
@@ -40,8 +47,7 @@ public class Main extends JavaPlugin {
     public LobbyCountdown countdown = new LobbyCountdown();
     public static ProtectionCountdown protectionCountdown = new ProtectionCountdown();
     public static MoveCountdown moveCountdown = new MoveCountdown();
-
-
+    public static Map<Player, KitManager> kitMap = new HashMap<>();
 
     //HashMap
     public static HashMap<UUID, PlayerSkywarsStats> stats = new HashMap<>();
@@ -73,7 +79,7 @@ public class Main extends JavaPlugin {
     public void init() {
         SkyWarsMapData map = chooseRandom();
         loadFiles();
-        GameStateManager.setState(GameStateManager.LOBBY);
+        GameStateAPIManager.setState(GameStateAPIManager.LOBBY);
 
         registerEvents(map);
         registerCommands();
@@ -96,36 +102,41 @@ public class Main extends JavaPlugin {
         load("config.yml");
     }
 
-
     public SkyWarsMapData chooseRandom() {
-        Random random = new Random();
-        int mapsSize = random.nextInt(maps.size());
-        Map<String, Object> finalMap = maps.get(mapsSize);
+        List<Map<String, Object>> result = maps.stream().filter(map -> !(boolean) map.get(Path.StillUnderDevelopment.toString())).collect(Collectors.toList());
 
+        loadFiles();
+        Random random = new Random();
+        Log.d(new Gson().toJson(result));
+        Log.d(result.size());
+        int mapsSize = random.nextInt(result.size());
+//        Map<String, Object> finalMap = result.get(mapsSize);
+        Map<String, Object> finalMap = result.get(1);
+        Log.d(finalMap.get(Path.MapName.toString()));
+        Log.d(finalMap.get(Path.MapName.toString()));
+        Log.d(finalMap.get(Path.MapName.toString()));
 
         MapName1 = finalMap;
 
         Bukkit.getConsoleSender().sendMessage("§eThe current Map is: " + finalMap.get(Path.MapName.toString()));
         Bukkit.getConsoleSender().sendMessage("§eThe current Size is: " + finalMap.get(Path.GameSize.toString()));
 
-        // Calculate Locations
-        //ArrayList<Map<String, Object>> ls = (ArrayList<Map<String, Object>>)finalMap.get(Path.Locations.toString());
+        int teamCount = (int)finalMap.get(Path.MaxTeamCount.toString());
+        Location[] locations = new Location[teamCount];
+        List<Map<String, Object>> locs = (List<Map<String, Object>>) finalMap.get(Path.Locations.toString());
 
-        //Location[] locations = new Location[ls.size()];
-        //for (int i = 0; i < locations.length; i++) {
-        //    locations[i] = new Location(getServer().getWorld(ls.get(i).get("world").toString()),
-        //   (double) ls.get(i).get("x"),
-        //        (double) ls.get(i).get("y"),
-        //        (double) ls.get(i).get("z"),
-        //        ((Double) ls.get(i).get("yaw")).floatValue(),
-        //        ((Double) ls.get(i).get("pitch")).floatValue()
-        //    );
-        //}
+        for (int i = 0; i < teamCount; i++) {
+            Map<String, Object> m = locs.get(i);
+
+            locations[i] = new Location(Bukkit.getServer().getWorld((String) m.get("world")), (double)m.get("x"), (double)m.get("y"), (double) m.get("z"), (float) (double)m.get("pitch"), (float) (double) m.get("yaw") );
+        }
 
         this.data = new SkyWarsMapData(
+            (int) finalMap.get(Path.Id.toString()),
             (String) finalMap.get(Path.MapName.toString()),
             (String) finalMap.get(Path.GameSize.toString()),
-                null, (int)finalMap.get(Path.MaxTeamCount.toString()),
+            locations,
+            (int)finalMap.get(Path.MaxTeamCount.toString()),
             (int)finalMap.get(Path.MaxPlayersInTeam.toString()),
             (boolean)finalMap.get(Path.StillUnderDevelopment.toString())
         );
@@ -139,6 +150,8 @@ public class Main extends JavaPlugin {
         getCommand("build").setExecutor((CommandExecutor)new Command_build());
         getCommand("sw").setExecutor((CommandExecutor)new Command_SkyWars());
         getCommand("create").setExecutor(new Command_create(Main.getInstance()));
+        getCommand("setmotd").setExecutor(new Command_setMotd());
+        getCommand("location").setExecutor(new Command_location());
 
     }
 
@@ -150,6 +163,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents((Listener) new KitListener(), this);
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
         pluginManager.registerEvents((Listener) new TeamListener(map, luckPerms), this);
+        pluginManager.registerEvents(new ServerPingListener(), this);
 
     }
 

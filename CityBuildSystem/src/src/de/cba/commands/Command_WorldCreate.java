@@ -38,16 +38,16 @@ public class Command_WorldCreate implements CommandExecutor {
             wc.createWorld();
 
             World world = player.getWorld();
-            world.setBlock
 
-            if(Bukkit.getWorld(args[0]).)
+
+
 
             player.sendMessage(Main.prefix + "Du hast die Welt §e" + args[0] + " §7erfolgreich erstellt!");
 
             //Teleports the player to the current world.
 
-            Location world = player.getServer().getWorld(args[0]).getSpawnLocation();
-            player.teleport(world);
+
+
         }
         return false;
     }

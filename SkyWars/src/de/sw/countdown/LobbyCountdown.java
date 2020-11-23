@@ -1,11 +1,17 @@
 package de.sw.countdown;
 
+import de.gamestateapi.main.GameStateAPIManager;
 import de.sw.enums.Path;
-import de.sw.gameManager.GameStateManager;
 import de.sw.main.Main;
+import de.sw.manager.TeamManager;
+import net.minecraft.server.v1_8_R3.Enchantment;
+import net.minecraft.server.v1_8_R3.ItemStack;
+import net.minecraft.server.v1_8_R3.Items;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -67,8 +73,25 @@ public class LobbyCountdown extends Countdown{
                             Main.getInstance().sbManager.setIngameBoard(all);
                             all.getInventory().clear();
                             Main.moveCountdown.start();
+
+                            // Teleport Player
+                            for (int i = 0; i < Main.instance.teams.length; i++) {
+                                Main.instance.teams[i].teleportPlayers();
+                            }
+
+                            //
+
+                            // Give Player their kits
+                            Main.kitMap.forEach((player, kit) -> {
+                                ItemStack i;
+                                i.addEnchantment(Enchantment.getById(kit.someId), kit.enchantmentLevel);
+//                                Enchantmet
+                                String.valueOf(i.get)
+//                                kit.
+//                                player.
+                            });
                         }
-                        GameStateManager.setState(GameStateManager.INGAME);
+                        GameStateAPIManager.setState(GameStateAPIManager.INGAME);
                         break;
                 }
                 seconds--;
@@ -83,6 +106,8 @@ public class LobbyCountdown extends Countdown{
             seconds = 60;
         }
     }
+
+    public String
 
     public void startIdle() {
         isIdling = true;

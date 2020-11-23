@@ -52,4 +52,8 @@ public class KitManager {
         }
         return "§e" + kitName + "§8[Nicht §cGekauft§8]";
     }
+
+    public void setKitItems() {
+
+    }
 }

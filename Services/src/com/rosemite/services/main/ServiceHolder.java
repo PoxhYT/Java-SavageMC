@@ -23,7 +23,6 @@ public class ServiceHolder {
         this.coinService = new CoinService(db, service);
         this.reportService = new ReportService(db);
         this.ticketService = new TicketService(db, service);
-
     }
 
     public SoupTrainingService getSoupTrainingService() {

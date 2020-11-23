@@ -1,6 +1,5 @@
 package de.sw.countdown;
 
-import de.sw.gameManager.GameStateManager;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;

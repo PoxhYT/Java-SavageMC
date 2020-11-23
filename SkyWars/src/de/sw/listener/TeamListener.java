@@ -5,6 +5,7 @@ import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.sw.api.LocationAPI;
 import de.sw.countdown.EndingCountdown;
+import de.sw.enums.Path;
 import de.sw.main.Main;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
@@ -25,6 +26,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -38,7 +40,6 @@ public class TeamListener implements Listener {
     private EndingCountdown endingCountdown = new EndingCountdown();
     private Main instance;
     private MainService services;
-
     private final SkyWarsMapData data;
 
     public TeamListener(SkyWarsMapData data, LuckPerms luckPerms) {
@@ -48,9 +49,14 @@ public class TeamListener implements Listener {
         this.services = MainService.getService(services);
 
         for (int i = 0; i < Main.instance.teams.length; i++) {
-            Main.instance.teams[i] = new TeamManager("§eTeam" + (i+1), "§eTeam", Material.WOOL, data.maxPlayersInTeam);
+            if (data.locations == null) {
+                Log.d("Locations are null");
             }
+            Main.instance.teams[i] = new TeamManager("§eTeam" + (i+1), "§eTeam", data.locations[i], Material.WOOL, data.maxPlayersInTeam);
+        }
     }
+
+//    private String teamItemDisplayName = "§8[§a" + Main.instance.teams.length + "§7/§c" + (data != null).maxTeamCount;
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -75,7 +81,8 @@ public class TeamListener implements Listener {
             Player player = (Player) event.getWhoClicked();
             for (int i = 0; i < Main.instance.teams.length; i++) {
                 if (event.getInventory().getTitle().equals("§eTeamauswahl")) {
-                    String displayName = Main.instance.teams[i].getTeamName();
+                    String displayName = Main.instance.teams[i].getTeamName() + " §8[§a" + Main.instance.teams[i].getPlayers().size() + "§7/§c"
+                            + Main.instance.teams[i].maxPlayerCount + "§8]";
                     if (event.getCurrentItem().getItemMeta().getDisplayName().equals(displayName)) {
                         boolean team = Main.instance.teams[i].isInTeam(player);
 
@@ -128,7 +135,7 @@ public class TeamListener implements Listener {
                     }
                 }
             }
-        } catch (NullPointerException e){}
+        } catch (NullPointerException e) {}
     }
 
     @EventHandler
@@ -248,7 +255,6 @@ public class TeamListener implements Listener {
             }
         }
     }
-
     public String getExactTeam(Player player) {
         return teamManagerMap.get(player.getUniqueId());
     }
@@ -257,13 +263,22 @@ public class TeamListener implements Listener {
     public void openTeamInventory(Player player) {
         Inventory inventory = Bukkit.createInventory(null, 9, "§eTeamauswahl");
 
-        String size = data.gameSize;
-        int teams1 = data.maxTeamCount;
+        String size = (String) Main.MapName1.get(Path.GameSize.toString());
+        Integer maxTeams = (Integer) Main.MapName1.get(Path.MaxTeamCount.toString());
+        Integer maxPlayersInTeam = (Integer) Main.MapName1.get(Path.MaxPlayersInTeam.toString());
 
-        Bukkit.broadcastMessage(size);
-        if(size.equals("8x1")) {
-            for (int i = 0; i < teams1; i++) {
-                inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + (i + 1)).build());
+
+        if (size.equals(size)) {
+            for (int i = 0; i < maxTeams; i++) {
+                List<Player> players = Main.instance.teams[i].getPlayers();
+                String[] names = new String[players.size()];
+
+                for (int j = 0; j < names.length; j++) {
+                    names[j] = players.get(j).getName();
+                }
+
+                inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + (i + 1) + " §8[§a" + Main.instance.teams[i].getPlayers().size() + "§7/§c"
+                        + maxPlayersInTeam + "§8]").setLore("§7- " + "§f" + names).build());
                 player.openInventory(inventory);
             }
         }

@@ -1,12 +1,9 @@
 package de.lobby.listener;
 
-import de.lobby.api.LocationAPI;
-import de.lobby.api.ScoreboardAPI;
+
 import de.lobby.main.Main;
-import de.magnus.coinsapi.util.CoinsAPI;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
-import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,6 +26,11 @@ public class PlayerJoinListener implements Listener {
 
             CachedMetaData metaData = this.luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
             String prefix = metaData.getPrefix();
+
+            Main.getInstance().scoreboardAPI.setScoreboard(player);
+            Main.scoreCD();
+
+            Main.onlinePlayers.add(player);
 
             event.setJoinMessage(prefix + " §7❘ " + player.getName());
             instance.inventoryManager.setLobbyInventory(player);

@@ -1,6 +1,7 @@
 package de.lobby.listener;
 
 import de.lobby.main.Main;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -44,7 +45,8 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if(!Main.build.contains(event.getEntity())) {
+        Player player = (Player) event.getEntity();
+        if(!Main.build.contains(player)) {
             event.setCancelled(true);
         }
     }

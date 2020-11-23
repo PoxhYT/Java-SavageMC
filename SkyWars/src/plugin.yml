@@ -7,3 +7,5 @@ commands:
     build:
     sw:
     create:
+    setmotd:
+    location:

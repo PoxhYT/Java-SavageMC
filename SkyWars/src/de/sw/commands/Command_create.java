@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,45 +31,34 @@ public class Command_create implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
         if(args.length == 0) {
-            player.sendMessage(Main.prefix + "Bitte benutze den Befehl /createwolrd <name>");
-        } else if(args.length == 1) {
+            player.sendMessage(Main.prefix + "Bitte benutze den Befehl /create <name> <maxPlayersInTeam> <maxTeamCount> <Builder>");
+        } else if(args.length == 4) {
             String name = args[0];
+            int maxPlayersInTeam = Integer.parseInt(args[1]);
+            int maxTeamCount = Integer.parseInt(args[2]);
+            String builder = args[3];
 
             // Get Maps
             List<Map<String, Object>> maps = (List<Map<String, Object>>) Main.yamlConfigurationSkyWars.getList("maps");
 
             for (int i = 0; i < maps.size(); i++) {
                 // Check if map name already exists. If so we exit & return. Else we save the map
-                if(name.equalsIgnoreCase((String) maps.get(i).get(Path.MapName.toString()))) {
+                if (name.equalsIgnoreCase((String) maps.get(i).get(Path.MapName.toString()))) {
                     player.sendMessage(Main.prefix + "§cDie Map wurde bereits erstellt!");
                     return false;
                 }
+
                 Log.d(maps.get(i).get(Path.MapName.toString()));
             }
 
+            String gameSize = maxTeamCount + "x" + maxPlayersInTeam;
 
             // Save map
-            SkyWarsMapData data = new SkyWarsMapData(name, "8x1", null, 8, 1, true);
+            SkyWarsMapData data = new SkyWarsMapData(maps.size() +1 , name, gameSize, new Location[0], maxTeamCount, maxPlayersInTeam, true);
 
-            // Convert SkyWarsMapData into Map
-            Gson g = new Gson();
-            Map<String, Object> tempMap = g.fromJson(g.toJson(data), Map.class);
-            Map<String, Object> skywarsMpData = new HashMap<>();
-            Map<String, Object> mapData = new HashMap<>();
+            maps.add(SkyWarsMapData.toMap(data));
 
-            tempMap.forEach((k, v) -> {
-                Log.d(k);
-                String key = k.substring(0, 1).toUpperCase() + k.substring(1);
-                skywarsMpData.put(key, v);
-            });
-
-            for (Map.Entry<String, Object> entry : skywarsMpData.entrySet()) {
-                mapData.put(entry.getKey(), entry.getValue());
-            }
-
-            // Add Map to list
-            maps.add(mapData);
-            Main.yamlConfigurationSkyWars.addDefault("maps", maps);
+            Main.yamlConfigurationSkyWars.set("maps", maps);
             try {
                 Main.yamlConfigurationSkyWars.save(Main.fileSkyWars);
             } catch (IOException e) {
@@ -76,7 +66,8 @@ public class Command_create implements CommandExecutor {
             }
 
             player.sendMessage(Main.prefix + "Du hast die Map §e" + name + " erfolgreich erstellt!");
-        }
+        } else
+            player.sendMessage(Main.prefix + "Bitte benutze den Befehl /create <name> <maxPlayersInTeam> <maxTeamCount> <Builder>");
         return false;
     }
 }

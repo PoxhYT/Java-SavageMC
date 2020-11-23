@@ -32,6 +32,7 @@ public class Command_tickets implements CommandExecutor {
             services = MainService.getService(services);
             if(args.length == 0) {
                 TicketService ticketService = services.getTicketService();
+
                 if(ticketService == null) {
                     ticketService = new TicketService(mongoDatabase, services);
                     Log.d("NICE");
@@ -39,7 +40,7 @@ public class Command_tickets implements CommandExecutor {
 
                 ticketServiceMap.put(ticketService, player.getUniqueId());
                 Log.d("WELL");
-                player.sendMessage(Main.prefix + "Du besitzt aktuell §e" + ticketService.getTicketAmount(player.getUniqueId().toString()) + " Coins");
+                player.sendMessage(Main.prefix + "Du besitzt aktuell §e" + ticketService.getTicketAmount(player.getUniqueId().toString()) + " Tickets");
 
             } else
                 player.sendMessage(Main.prefix + "Bitte benutze den Befehl /§ecoins");
