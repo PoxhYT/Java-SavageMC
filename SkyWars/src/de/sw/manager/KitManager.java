@@ -8,7 +8,7 @@ public class KitManager {
     private final String kitDescription;
     private final int kitIcon;
     private final int kitPrice;
-    private final KitItem kitItem;
+    private KitItem kitItem;
 
     private boolean hasKit = false;
 
@@ -58,5 +58,8 @@ public class KitManager {
 
     public KitItem getKitItem() {
         return kitItem;
+    }
+    public void setKitItem(KitItem kitItem) {
+         this.kitItem = kitItem;
     }
 }
