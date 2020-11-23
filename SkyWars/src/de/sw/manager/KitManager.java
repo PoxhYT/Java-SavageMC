@@ -1,5 +1,6 @@
 package de.sw.manager;
 
+import de.sw.listener.KitItem;
 import org.bukkit.Material;
 
 public class KitManager {
@@ -7,12 +8,14 @@ public class KitManager {
     private final String kitDescription;
     private final int kitIcon;
     private final int kitPrice;
+    private KitItem kitItem;
 
     private boolean hasKit = false;
 
-    public KitManager(String kitName, String kitDescription, double kitIcon, double kitPrice) {
+    public KitManager(String kitName, String kitDescription, KitItem kitItem, double kitIcon, double kitPrice) {
         this.kitIcon = (int)Math.round(kitIcon);
 
+        this.kitItem = kitItem;
         this.kitName = kitName;
         this.kitDescription = kitDescription;
         this.kitPrice = (int)Math.round(kitPrice);
@@ -53,7 +56,10 @@ public class KitManager {
         return "§e" + kitName + "§8[Nicht §cGekauft§8]";
     }
 
-    public void setKitItems() {
-
+    public KitItem getKitItem() {
+        return kitItem;
+    }
+    public void setKitItem(KitItem kitItem) {
+         this.kitItem = kitItem;
     }
 }

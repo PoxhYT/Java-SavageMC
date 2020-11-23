@@ -13,6 +13,8 @@ import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.common.Severity;
 import com.rosemite.services.models.skywars.PlayerSkywarsKits;
 import com.rosemite.services.models.skywars.PlayerSkywarsStats;
+import de.sw.listener.KitEnchantments;
+import de.sw.listener.KitItem;
 import de.sw.manager.KitManager;
 import org.bson.Document;
 
@@ -41,26 +43,22 @@ public class SkywarsService {
         return db.getCollection(Paths.PlayerSkywarsKits.toString()).insertOne(new Document(data));
     }
 
-    public UpdateResult updateLatestSelectedKit(String uuid, String kitName) {
+    public void updateLatestSelectedKit(String uuid, String kitName) {
         UpdateResult result = db.getCollection(Paths.PlayerInfo.toString()).updateOne(
                 Filters.eq("uuid", uuid),
                 combine(set("latestSelectedKit", kitName))
         );
-
-        return result;
     }
 
     public String getLatestSelectedKit(String uuid) {
         return service.getPlayerService().getPlayerInfo(uuid).getLatestSelectedKit();
     }
 
-    public UpdateResult buyKit(String uuid, String kitName) {
+    public void buyKit(String uuid, String kitName) {
         UpdateResult result = db.getCollection(Paths.PlayerSkywarsKits.toString()).updateOne(
                 Filters.eq("uuid", uuid),
                 combine(set(kitName, true))
         );
-
-        return result;
     }
 
     public List<KitManager> verifyKits(List<KitManager> kits, String uuid) {
@@ -114,6 +112,15 @@ public class SkywarsService {
 
         Type listType = new TypeToken<ArrayList<KitManager>>(){}.getType();
         List<KitManager> list = new Gson().fromJson(json, listType);
+
+        // Add KitEnchantments to Kit.
+        for (KitManager kitManager : list) {
+            List<KitEnchantments> enchs = new ArrayList<>();
+            enchs.add(new KitEnchantments("efficiency", 1));
+
+            KitItem kitItem = new KitItem("Some Cool Item", enchs, kitManager.getKitIcon().name(), 1);
+            kitManager.setKitItem(kitItem);
+        }
 
         list.sort(Comparator.comparingInt(KitManager::getKitPrice));
         return list;

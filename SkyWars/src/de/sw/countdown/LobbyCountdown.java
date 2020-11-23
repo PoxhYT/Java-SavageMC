@@ -1,7 +1,9 @@
 package de.sw.countdown;
 
+import com.rosemite.services.helper.Log;
 import de.gamestateapi.main.GameStateAPIManager;
 import de.sw.enums.Path;
+import de.sw.listener.KitItem;
 import de.sw.main.Main;
 import de.sw.manager.TeamManager;
 import net.minecraft.server.v1_8_R3.Enchantment;
@@ -78,6 +80,14 @@ public class LobbyCountdown extends Countdown{
                             for (int i = 0; i < Main.instance.teams.length; i++) {
                                 Main.instance.teams[i].teleportPlayers();
                             }
+
+
+                            // Give Player their kits
+                            Main.kitMap.forEach((player, kit) -> {
+                                KitItem kitItem = kit.getKitItem();
+                                Log.d("The Player: " + player.getName() +" has the kits...");
+                                Log.d(kitItem.getItem());
+                            });
                         }
                         GameStateAPIManager.setState(GameStateAPIManager.INGAME);
                         break;
