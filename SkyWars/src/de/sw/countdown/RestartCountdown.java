@@ -4,13 +4,10 @@ import de.sw.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 
-public class MoveCountdown extends Countdown{
+public class RestartCountdown extends Countdown{
 
-    private int timer = 5;
+    private int timer = 10;
     private static boolean isRunning;
     private int idleID;
     private boolean isIdling;
@@ -21,23 +18,23 @@ public class MoveCountdown extends Countdown{
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
             public void run() {
                 switch (timer) {
-                    case 5: case 4: case 3: case 2:
+                    case 10: case 5: case 4: case 3: case 2:
                         for (Player all : Bukkit.getOnlinePlayers()) {
                             all.playSound(all.getLocation(), Sound.NOTE_BASS, 1, 1);
-                            all.sendTitle("§e" + timer, "§4");
+                            Bukkit.broadcastMessage(Main.prefix + "§cDer Server startet in " + timer + " Sekunden neu!");
                         }
                         break;
                     case 1:
                         for (Player all : Bukkit.getOnlinePlayers()) {
                             all.playSound(all.getLocation(), Sound.NOTE_BASS, 1, 1);
-                            all.sendTitle("§e" + timer, "§8");
+                            Bukkit.broadcastMessage(Main.prefix + "§cDer Server startet in 1 Sekunde neu!");
                         }
                         break;
                     case 0:
                         for (Player all : Bukkit.getOnlinePlayers()) {
                             all.playSound(all.getLocation(), Sound.LEVEL_UP, 1, 1);
-                            Main.moveMap.remove(all);
-                            Main.protectionCountdown.start();
+                            all.kickPlayer(all.getName());
+                            Bukkit.shutdown();
                         }
                         break;
                 }

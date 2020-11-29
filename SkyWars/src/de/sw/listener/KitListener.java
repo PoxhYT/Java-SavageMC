@@ -50,6 +50,7 @@ public class KitListener implements Listener {
             Log.d(latestKit);
             if (latestKit.equals(kit.getKitNameLiteralString())) {
                 player.getInventory().setItem(8, new ItemBuilderAPI(kit.getKitIcon()).setDisplayName(kit.getKitNameLiteralStringColored()).build());
+                Main.kitMap.put(player, kit);
             }
         });
     }

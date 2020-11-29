@@ -34,10 +34,8 @@ public class TeamListener implements Listener {
 
     private static File fileSkyWars = new File("plugins/SkyWars", "MapData.yml");
     private static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
-    private static Map<UUID, String> teamManagerMap = new HashMap<>();
     private HashMap<UUID, PlayerSkywarsStats> stats = new HashMap<>();
     private LuckPerms luckPerms;
-    private EndingCountdown endingCountdown = new EndingCountdown();
     private Main instance;
     private MainService services;
     private final SkyWarsMapData data;
@@ -69,7 +67,7 @@ public class TeamListener implements Listener {
                 p.sendMessage(Main.prefix + "Du bist im " + Main.instance.teams[i].getTeamName());
                 p.setDisplayName(teamDisplayName);
                 Main.instance.teams[i].addPlayer(p);
-                teamManagerMap.put(p.getUniqueId(), Main.instance.teams[i].getTeamName());
+                Main.teamManagerMap.put(p.getUniqueId(), Main.instance.teams[i].getTeamName());
                 break;
             }
         }
@@ -86,29 +84,25 @@ public class TeamListener implements Listener {
                     if (event.getCurrentItem().getItemMeta().getDisplayName().equals(displayName)) {
                         boolean team = Main.instance.teams[i].isInTeam(player);
 
-                        String t = teamManagerMap.get(player.getUniqueId());
+                        String t = Main.teamManagerMap.get(player.getUniqueId());
 
                         if (!team) {
                             if (t != null) {
                                 removePlayerFromTeam(player, t);
-                                Log.d("Du wurdest entfernt vom " + t);
                             }
 
-                            Log.d("Du bist im " + Main.instance.teams[i].getTeamName());
                             String teamDisplayName = Main.instance.teams[i].getTeamName();
                             player.sendMessage(Main.prefix + "Du bist im " + Main.instance.teams[i].getTeamName());
                             player.setDisplayName(teamDisplayName);
                             Main.instance.teams[i].addPlayer(player);
-                            teamManagerMap.put(player.getUniqueId(), Main.instance.teams[i].getTeamName());
+                            Main.teamManagerMap.put(player.getUniqueId(), Main.instance.teams[i].getTeamName());
                             player.closeInventory();
                         }
 
                         if (team) {
-                            Log.d("Du bist schon in dem Team");
                             player.sendMessage(Main.prefix + "Du bist bereits im " + Main.instance.teams[i].getTeamName());
                         } else {
                             if (!Main.instance.teams[i].isFull()) {
-                                Log.d("Du hast das Team: " + Main.instance.teams[i].getTeamName() + " idk...");
                                 break;
                             }
                             break;
@@ -117,25 +111,6 @@ public class TeamListener implements Listener {
                 }
             }
         } catch (NullPointerException e){}
-    }
-
-    @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
-        try {
-            if (event.getEntity() instanceof Player) {
-                Player player = (Player) event.getEntity();
-                if (event.getDamager() instanceof Player) {
-                    Player damager = (Player) event.getDamager();
-                    String TeamDamager = getExactTeam(damager);
-                    String TeamPlayer = getExactTeam(player);
-                    if (TeamDamager.equalsIgnoreCase(TeamPlayer)) {
-                        event.setCancelled(true);
-                    } else {
-                        event.setCancelled(false);
-                    }
-                }
-            }
-        } catch (NullPointerException e) {}
     }
 
     @EventHandler
@@ -225,8 +200,8 @@ public class TeamListener implements Listener {
                     });
                 }
 
-                if(!endingCountdown.isRunning()) {
-                    endingCountdown.start();
+                if(!Main.endingCountdown.isRunning()) {
+                    Main.endingCountdown.start();
                     Log.d("Game Ended");
 
                     Main.stats.forEach((uuid, playerSkywarsStats) -> services.getSkywarsService().addPlayerStats(uuid.toString(), playerSkywarsStats));
@@ -255,9 +230,7 @@ public class TeamListener implements Listener {
             }
         }
     }
-    public String getExactTeam(Player player) {
-        return teamManagerMap.get(player.getUniqueId());
-    }
+
 
     // [2/4]
     public void openTeamInventory(Player player) {
@@ -273,12 +246,19 @@ public class TeamListener implements Listener {
                 List<Player> players = Main.instance.teams[i].getPlayers();
                 String[] names = new String[players.size()];
 
+                // Set names
                 for (int j = 0; j < names.length; j++) {
                     names[j] = players.get(j).getName();
                 }
 
+                // Add Players to TeamList
+                String[] playersInTeam = new String[players.size()];
+                for (int j = 0; j < names.length; j++) {
+                    playersInTeam[j] = "§7- §f" + names[j];
+                }
+
                 inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + (i + 1) + " §8[§a" + Main.instance.teams[i].getPlayers().size() + "§7/§c"
-                        + maxPlayersInTeam + "§8]").setLore("§7- " + "§f" + names).build());
+                        + maxPlayersInTeam + "§8]").setLore(playersInTeam).build());
                 player.openInventory(inventory);
             }
         }

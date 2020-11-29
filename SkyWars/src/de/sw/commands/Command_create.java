@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.rosemite.services.helper.Log;
 import de.sw.enums.Path;
 import de.sw.main.Main;
-import de.sw.manager.GameManager;
 import de.sw.manager.SkyWarsMapData;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -66,6 +65,20 @@ public class Command_create implements CommandExecutor {
             }
 
             player.sendMessage(Main.prefix + "Du hast die Map §e" + name + " erfolgreich erstellt!");
+
+
+            //Creates the new world.
+            WorldCreator worldCreator = new WorldCreator(name);
+            worldCreator.type(WorldType.FLAT);
+            worldCreator.generatorSettings("0;0;1;");
+            worldCreator.createWorld();
+
+            Location blockLoc = new Location(Bukkit.getServer().getWorld(name), (double) 0, (double) 70, (double) 0);
+            Location playerOnBlock = new Location(Bukkit.getServer().getWorld(name), (double) 0, (double) 71, (double) 0);
+            blockLoc.getBlock().setType(Material.STONE);
+
+            player.teleport(playerOnBlock);
+
         } else
             player.sendMessage(Main.prefix + "Bitte benutze den Befehl /create <name> <maxPlayersInTeam> <maxTeamCount> <Builder>");
         return false;

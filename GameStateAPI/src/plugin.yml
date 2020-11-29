@@ -1,4 +1,4 @@
 name: GameStateAPI
 version: 1.0
 author: PoxhYT
-main: de.gamestateapi.main.GameStateAPIManager
+main: de.gamestateapi.main.Main

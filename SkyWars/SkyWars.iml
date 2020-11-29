@@ -20,6 +20,6 @@
     <orderEntry type="library" name="server1" level="project" />
     <orderEntry type="module" module-name="Services" />
     <orderEntry type="library" name="LuckPerms-Bukkit-5.1.93" level="project" />
-    <orderEntry type="module" module-name="SignSystem" exported="" />
+    <orderEntry type="module" module-name="GameStateAPI" />
   </component>
 </module>

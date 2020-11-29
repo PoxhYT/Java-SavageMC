@@ -37,11 +37,9 @@ public class Command_coins implements CommandExecutor {
                 CoinService coinService = services.getCoinService();
                 if(coinService == null) {
                     coinService = new CoinService(mongoDatabase, services);
-                    Log.d("NICE");
                 }
 
                 coinServiceMap.put(coinService, player.getUniqueId());
-                Log.d("WELL");
                 player.sendMessage(Main.prefix + "Du besitzt aktuell §e" + coinService.getCoinAmount(player.getUniqueId().toString()) + " Coins");
             }
 
@@ -63,8 +61,6 @@ public class Command_coins implements CommandExecutor {
                         player.sendMessage(Main.prefix + "§cDieser Spieler ist nicht in der Datenbank registriert!");
                         return false;
                     }
-
-                    Log.d(targetInfo.getPlayername());
 
                     Integer amount = Integer.valueOf(args[2]);
                     coinService.addCoins(targetInfo.getUuid(), amount);

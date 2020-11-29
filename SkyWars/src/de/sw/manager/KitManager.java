@@ -1,24 +1,34 @@
 package de.sw.manager;
 
+import com.rosemite.services.helper.Log;
 import de.sw.listener.KitItem;
 import org.bukkit.Material;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KitManager {
     private final String kitName;
     private final String kitDescription;
     private final int kitIcon;
     private final int kitPrice;
-    private KitItem kitItem;
+    private List<KitItem> kitItems;
+    private List<ItemDocument> Items;
 
     private boolean hasKit = false;
 
-    public KitManager(String kitName, String kitDescription, KitItem kitItem, double kitIcon, double kitPrice) {
+    public KitManager(String kitName, String kitDescription, List<KitItem> kitItems, double kitIcon, double kitPrice) {
         this.kitIcon = (int)Math.round(kitIcon);
 
-        this.kitItem = kitItem;
+        this.kitItems = kitItems;
         this.kitName = kitName;
         this.kitDescription = kitDescription;
         this.kitPrice = (int)Math.round(kitPrice);
+    }
+
+    public List<ItemDocument> getItems() {
+        return Items;
     }
 
     public String getKitNameLiteralString() {
@@ -56,10 +66,15 @@ public class KitManager {
         return "§e" + kitName + "§8[Nicht §cGekauft§8]";
     }
 
-    public KitItem getKitItem() {
-        return kitItem;
+    public List<KitItem> getKitItem() {
+        return kitItems;
     }
-    public void setKitItem(KitItem kitItem) {
-         this.kitItem = kitItem;
+
+    public void addKitItem(KitItem kitItem) {
+        if (kitItems == null) {
+            kitItems = new ArrayList<>();
+        }
+
+        this.kitItems.add(kitItem);
     }
 }

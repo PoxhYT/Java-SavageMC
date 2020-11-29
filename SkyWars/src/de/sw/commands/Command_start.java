@@ -25,21 +25,16 @@ public class Command_start implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         Player player = (Player) sender;
-        Log.d(1);
         if(player.hasPermission("server.owner")) {
 
-            Log.d(2);
             int MIN_PLAYERS = (int) Main.MapName1.get(Path.MaxPlayersInTeam.toString());
 
             Log.d(MIN_PLAYERS);
             Log.d(Main.alivePlayers.size());
 
             if(!started) {
-                Log.d(3);
                 if(Main.alivePlayers.size() == MIN_PLAYERS) {
-                    Log.d(4);
                     if (Main.instance.countdown.isRunning()) {
-                        Log.d(5);
                         Main.countdown.seconds = 15;
                         Bukkit.broadcastMessage(Main.prefix + "Der §eTimer §7wurde beschleunigt!");
                         started = true;

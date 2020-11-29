@@ -1,5 +1,6 @@
 package de.sw.countdown;
 
+import de.sw.api.LocationAPI;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -29,6 +30,7 @@ public class EndingCountdown extends Countdown{
                 switch (timer) {
                     case 20: case 15: case 10: case 5: case 4: case 3: case 2:
                         for (Player all : Bukkit.getOnlinePlayers()) {
+                            all.teleport(LocationAPI.getSpawn("Lobby"));
                             all.sendMessage(Main.prefix + "§cDer Server startet in " + timer + " §cSekunden neu!");
                             all.playSound(all.getLocation(), Sound.NOTE_BASS, 1, 1);
                         }

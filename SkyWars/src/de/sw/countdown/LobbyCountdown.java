@@ -17,6 +17,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.List;
 
 public class LobbyCountdown extends Countdown{
 
@@ -74,6 +75,7 @@ public class LobbyCountdown extends Countdown{
                             all.playSound(all.getLocation(), Sound.LEVEL_UP, 1, 1);
                             Main.getInstance().sbManager.setIngameBoard(all);
                             all.getInventory().clear();
+                            Main.moveMap.add(all);
                             Main.moveCountdown.start();
 
                             // Teleport Player
@@ -81,12 +83,13 @@ public class LobbyCountdown extends Countdown{
                                 Main.instance.teams[i].teleportPlayers();
                             }
 
-
                             // Give Player their kits
                             Main.kitMap.forEach((player, kit) -> {
-                                KitItem kitItem = kit.getKitItem();
-                                Log.d("The Player: " + player.getName() +" has the kits...");
-                                Log.d(kitItem.getItem());
+                                List<KitItem> kitItems = kit.getKitItem();
+                                Log.d("The Player: " + player.getName() + " has the kits...");
+                                for (int i = 0; i < kitItems.size(); i++) {
+                                    player.getInventory().addItem(kitItems.get(i).getItem());
+                                }
                             });
                         }
                         GameStateAPIManager.setState(GameStateAPIManager.INGAME);

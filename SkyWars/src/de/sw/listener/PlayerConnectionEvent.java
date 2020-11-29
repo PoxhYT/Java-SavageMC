@@ -2,6 +2,7 @@ package de.sw.listener;
 
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
+import de.sw.api.LocationAPI;
 import de.sw.countdown.LobbyCountdown;
 import de.sw.enums.Path;
 import de.sw.main.Main;
@@ -42,15 +43,19 @@ public class PlayerConnectionEvent implements Listener {
         int MAX_PLAYERS = yamlConfiguration.getInt(Path.MaxPlayers.toString());
         int MIN_PLAYERS = yamlConfiguration.getInt(Path.MaxPlayersInTeam.toString());
 
-        CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
-        String prefix = metaData.getPrefix();
+        //CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
+        //String prefix = metaData.getPrefix();
         Main.getInstance().getInventoryManager().setLobbyInventory(player);
 
         Main.alivePlayers.add(player);
 
-        event.setJoinMessage(Main.prefix + "§8» §e" + prefix + " §7❘ " + player.getName() + " §7hat das Spiel betreten! §7[§a"
+        player.teleport(LocationAPI.getSpawn("Lobby"));
+
+        event.setJoinMessage(Main.prefix + "§8» §e" + player.getName() + " §7hat das Spiel betreten! §7[§a"
                 + Main.alivePlayers.size() + "§7/§c" + MAX_PLAYERS + "§7]");
         Main.getInstance().sbManager.setLobbyBoard(player);
+
+        Log.d(Main.moveMap.size());
 
 
         Random chance = new Random();

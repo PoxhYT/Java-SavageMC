@@ -33,11 +33,9 @@ public class Command_coins implements CommandExecutor {
                 CoinService coinService = services.getCoinService();
                 if(coinService == null) {
                     coinService = new CoinService(mongoDatabase, services);
-                    Log.d("NICE");
                 }
 
                 coinServiceMap.put(coinService, player.getUniqueId());
-                Log.d("WELL");
                 player.sendMessage(Main.prefix + "Du besitzt aktuell §e" + coinService.getCoinAmount(player.getUniqueId().toString()) + " Coins");
 
             } else

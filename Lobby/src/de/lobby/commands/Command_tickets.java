@@ -35,11 +35,9 @@ public class Command_tickets implements CommandExecutor {
 
                 if(ticketService == null) {
                     ticketService = new TicketService(mongoDatabase, services);
-                    Log.d("NICE");
                 }
 
                 ticketServiceMap.put(ticketService, player.getUniqueId());
-                Log.d("WELL");
                 player.sendMessage(Main.prefix + "Du besitzt aktuell §e" + ticketService.getTicketAmount(player.getUniqueId().toString()) + " Tickets");
 
             } else

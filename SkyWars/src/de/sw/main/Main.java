@@ -5,9 +5,7 @@ import com.rosemite.services.helper.Log;
 import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.gamestateapi.main.GameStateAPIManager;
 import de.sw.commands.*;
-import de.sw.countdown.LobbyCountdown;
-import de.sw.countdown.MoveCountdown;
-import de.sw.countdown.ProtectionCountdown;
+import de.sw.countdown.*;
 import de.sw.enums.Path;
 import de.sw.listener.*;
 import de.sw.manager.*;
@@ -20,6 +18,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,7 +28,6 @@ import java.util.function.ObjDoubleConsumer;
 import java.util.stream.Collectors;
 
 public class Main extends JavaPlugin {
-
     //Strings
     public static String prefix = "§bSkyWars §8❘ §7";
     public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
@@ -46,10 +44,15 @@ public class Main extends JavaPlugin {
     public static LobbyCountdown countdown = new LobbyCountdown();
     public static ProtectionCountdown protectionCountdown = new ProtectionCountdown();
     public static MoveCountdown moveCountdown = new MoveCountdown();
+    public static RestartCountdown restartCountdown = new RestartCountdown();
+    public static EndingCountdown endingCountdown = new EndingCountdown();
     public static Map<Player, KitManager> kitMap = new HashMap<>();
 
     //HashMap
     public static HashMap<UUID, PlayerSkywarsStats> stats = new HashMap<>();
+    public static Map<UUID, String> teamManagerMap = new HashMap<>();
+
+
 
     //YamlConfigurations
     private File file = new File("plugins/SkyWars", "Config.yml");
@@ -64,19 +67,24 @@ public class Main extends JavaPlugin {
     public TeamManager[] teams;
     public static List<Map<String, Object>> maps = (List<Map<String, Object>>) yamlConfigurationSkyWars.getList("maps");
     public static ArrayList<Player> moveMap = new ArrayList<>();
-
+    public static List<ItemStack> items = new ArrayList<>();
+    private int maxChest;
+    private int maxDoubleChest;
 
 
     public void onEnable() {
         luckPerms = getServer().getServicesManager().load(LuckPerms.class);
         this.instance = this;
         init();
+        Log.d(items.size());
     }
 
     public void init() {
         SkyWarsMapData map = chooseRandom();
         loadFiles();
         GameStateAPIManager.setState(GameStateAPIManager.LOBBY);
+
+        Log.d("ANZAHL DER MAPS:" + maps.size());
 
         registerEvents(map);
         registerCommands();
@@ -104,13 +112,10 @@ public class Main extends JavaPlugin {
 
         loadFiles();
         Random random = new Random();
-        Log.d(new Gson().toJson(result));
         Log.d(result.size());
         int mapsSize = random.nextInt(result.size());
-//        Map<String, Object> finalMap = result.get(mapsSize);
         Map<String, Object> finalMap = result.get(1);
-        Log.d(finalMap.get(Path.MapName.toString()));
-        Log.d(finalMap.get(Path.MapName.toString()));
+//        Map<String, Object> finalMap = result.get(mapsSize);
         Log.d(finalMap.get(Path.MapName.toString()));
 
         MapName1 = finalMap;
@@ -145,10 +150,11 @@ public class Main extends JavaPlugin {
     public void registerCommands() {
         getCommand("start").setExecutor((CommandExecutor) new Command_start());
         getCommand("build").setExecutor((CommandExecutor)new Command_build());
-        getCommand("sw").setExecutor((CommandExecutor)new Command_SkyWars());
         getCommand("create").setExecutor(new Command_create(Main.getInstance()));
-        getCommand("setmotd").setExecutor(new Command_setMotd());
+        getCommand("createBlock").setExecutor(new Command_createBlock());
         getCommand("location").setExecutor(new Command_location());
+        getCommand("setup").setExecutor(new Command_setup());
+        getCommand("addItem").setExecutor(new Command_addItem());
 
     }
 
@@ -161,6 +167,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
         pluginManager.registerEvents((Listener) new TeamListener(map, luckPerms), this);
         pluginManager.registerEvents(new ServerPingListener(), this);
+        pluginManager.registerEvents(new RandomChestItems(), this);
 
     }
 
@@ -182,5 +189,13 @@ public class Main extends JavaPlugin {
 
     public SkyWarsMapData getSkyWarsMapData() {
         return data;
+    }
+
+    public int getMaxChest() {
+        return this.maxChest;
+    }
+
+    public int getMaxDoubleChest() {
+        return this.maxDoubleChest;
     }
 }

@@ -26,7 +26,6 @@ public class BlockBreakListener implements Listener {
         String uuid = player.getUniqueId().toString();
 
         if(event.getBlock().getType() == Material.SAND) {
-            Log.d("OKAY");
             //Creates a random chance between 1 - 100
 
             Random chance = new Random();

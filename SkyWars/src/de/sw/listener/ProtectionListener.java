@@ -1,6 +1,7 @@
 package de.sw.listener;
 
 import de.sw.main.Main;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,12 +64,15 @@ public class ProtectionListener implements Listener {
     }
 
     @EventHandler
-    public void onMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if(Main.moveMap.contains(player)) {
-            event.setCancelled(false);
-        } else if(!Main.moveMap.contains(player)){
-            event.setCancelled(true);
+    public void onMove(PlayerMoveEvent e) {
+        if (e.getFrom().getX() != e.getTo().getX() || e.getFrom().getZ() != e.getTo().getZ()) {
+            if (!Main.moveMap.contains(e.getPlayer())) {
+                e.setCancelled(false);
+            } else {
+                e.getPlayer().teleport(new Location(e.getPlayer().getWorld(), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ()));
+            }
+        } else {
+            e.setCancelled(false);
         }
     }
 

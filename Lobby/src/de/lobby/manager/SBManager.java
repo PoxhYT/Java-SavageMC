@@ -46,7 +46,6 @@ public class SBManager {
 		CoinService coinService = service.getCoinService();
 		if(coinService == null) {
 			coinService = new CoinService(Main.getInstance().mongoDatabase, service);
-			Log.d("NICE");
 		}
 		coinServiceMap.put(coinService, p.getUniqueId());
 
@@ -74,7 +73,6 @@ public class SBManager {
 		CoinService coinService = service.getCoinService();
 		if(coinService == null) {
 			coinService = new CoinService(Main.getInstance().mongoDatabase, service);
-			Log.d("NICE");
 		}
 		coinServiceMap.put(coinService, p.getUniqueId());
 

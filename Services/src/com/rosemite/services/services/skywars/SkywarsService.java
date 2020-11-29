@@ -13,8 +13,8 @@ import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.common.Severity;
 import com.rosemite.services.models.skywars.PlayerSkywarsKits;
 import com.rosemite.services.models.skywars.PlayerSkywarsStats;
-import de.sw.listener.KitEnchantments;
 import de.sw.listener.KitItem;
+import de.sw.manager.ItemDocument;
 import de.sw.manager.KitManager;
 import org.bson.Document;
 
@@ -113,13 +113,14 @@ public class SkywarsService {
         Type listType = new TypeToken<ArrayList<KitManager>>(){}.getType();
         List<KitManager> list = new Gson().fromJson(json, listType);
 
-        // Add KitEnchantments to Kit.
-        for (KitManager kitManager : list) {
-            List<KitEnchantments> enchs = new ArrayList<>();
-            enchs.add(new KitEnchantments("efficiency", 1));
+        // Assign ...
+        for (int i = 0; i < list.size(); i++) {
+            List<ItemDocument> items = list.get(i).getItems();
 
-            KitItem kitItem = new KitItem("Some Cool Item", enchs, kitManager.getKitIcon().name(), 1);
-            kitManager.setKitItem(kitItem);
+            for (int j = 0; j < items.size(); j++) {
+                KitItem kitItem = new KitItem("Some Cool Item", items.get(j).KitEnchantments, items.get(j).ItemId, items.get(j).Amount);
+                list.get(i).addKitItem(kitItem);
+            }
         }
 
         list.sort(Comparator.comparingInt(KitManager::getKitPrice));

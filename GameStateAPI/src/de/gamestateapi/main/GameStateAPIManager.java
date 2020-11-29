@@ -1,7 +1,7 @@
 package de.gamestateapi.main;
 
 public enum GameStateAPIManager {
-    LOBBY, INGAME, Restart, Maintenance, Offline;
+    LOBBY, INGAME, Restart, SETUP;
 
     private static GameStateAPIManager currentstate;
 
@@ -25,10 +25,8 @@ public enum GameStateAPIManager {
             s = "§8»§eIngame";
         } else if (isState(Restart)) {
             s = "§8»§cRestart";
-        } else if(isState(Maintenance)) {
-            s = "§8»§4Maintenance";
-        } else if(isState(Offline)) {
-            s = "§8»§4Offline";
+        } else if(isState(SETUP)) {
+            s = "§8»§bSETUP";
         }
         return s;
     }

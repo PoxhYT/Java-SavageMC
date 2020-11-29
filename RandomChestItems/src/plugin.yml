@@ -1,0 +1,6 @@
+name: RandomChestItems
+version: 1.0
+main: de.loop.main.Main
+commands:
+    addItem:
+    check:

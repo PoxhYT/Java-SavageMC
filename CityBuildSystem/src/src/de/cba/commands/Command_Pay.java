@@ -58,11 +58,7 @@ public class Command_Pay implements CommandExecutor {
                         return false;
                     }
 
-                    Log.d(args[1]);
-
                     int amount = Integer.parseInt(args[1]);
-                    Log.d(amount);
-
                     Pair<Integer, Boolean> res = coinService.removeCoins(player.getUniqueId().toString(), amount);
 
                     if (!res.getValue()) {
