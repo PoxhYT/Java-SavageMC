@@ -1,4 +1,4 @@
-package de.sw.listener;
+package de.sw.manager;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -33,12 +33,6 @@ public class KitItem {
     }
 
     public ItemStack getItem() {
-        ItemStack i = new ItemStack(Material.getMaterial(materialId), amount);
-        ItemMeta meta = i.getItemMeta();
-
-        enchantments.forEach(enchantment -> meta.addEnchant(Enchantment.getById(enchantment.EnchantmentId), enchantment.EnchantmentLevel, true));
-        i.setItemMeta(meta);
-
-        return i;
+        return ItemDocument.getItem(materialId, amount, enchantments);
     }
 }
