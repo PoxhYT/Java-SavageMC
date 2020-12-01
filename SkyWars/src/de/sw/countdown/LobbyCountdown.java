@@ -3,17 +3,11 @@ package de.sw.countdown;
 import com.rosemite.services.helper.Log;
 import de.gamestateapi.main.GameStateAPIManager;
 import de.sw.enums.Path;
-import de.sw.listener.KitItem;
+import de.sw.manager.KitItem;
 import de.sw.main.Main;
-import de.sw.manager.TeamManager;
-import net.minecraft.server.v1_8_R3.Enchantment;
-import net.minecraft.server.v1_8_R3.ItemStack;
-import net.minecraft.server.v1_8_R3.Items;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 import java.io.File;

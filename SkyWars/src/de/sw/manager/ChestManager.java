@@ -1,4 +1,4 @@
-package de.sw.listener;
+package de.sw.manager;
 
 import de.sw.manager.SkyWarsMapData;
 import org.bukkit.Location;
