@@ -1,4 +1,4 @@
-package de.sw.manager;
+package de.sw.listener;
 
 public class KitEnchantments {
     public final int EnchantmentId;
