@@ -1,0 +1,6 @@
+name: LobbySystem
+version: 1.0
+author: PoxhYT
+main: com.poxh.main.Main
+commands:
+    build:

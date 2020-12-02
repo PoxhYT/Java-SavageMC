@@ -98,6 +98,6 @@ public class TeamManager {
             Log.d("bad");
             return;
         }
-        //players.forEach(player -> player.teleport(this.location));
+        players.forEach(player -> player.teleport(this.location));
     }
 }

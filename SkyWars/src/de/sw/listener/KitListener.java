@@ -3,7 +3,7 @@ package de.sw.listener;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import de.sw.main.Main;
-import de.sw.manager.ItemBuilderAPI;
+import de.sw.api.ItemBuilderAPI;
 import de.sw.manager.KitManager;
 import javafx.util.Pair;
 import org.bukkit.Bukkit;
@@ -18,11 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class KitListener implements Listener {
     private MainService service;

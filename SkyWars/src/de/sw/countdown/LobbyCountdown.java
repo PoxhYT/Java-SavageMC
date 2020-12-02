@@ -77,6 +77,7 @@ public class LobbyCountdown extends Countdown{
                                 Main.instance.teams[i].teleportPlayers();
                             }
 
+
                             // Give Player their kits
                             Main.kitMap.forEach((player, kit) -> {
                                 List<KitItem> kitItems = kit.getKitItem();

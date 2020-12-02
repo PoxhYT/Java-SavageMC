@@ -1,6 +1,6 @@
-package de.sw.commands;
+package com.poxh.commands;
 
-import de.sw.main.Main;
+import com.poxh.main.Main;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -21,20 +21,21 @@ public class Command_build implements CommandExecutor {
                         player.playSound(player.getLocation(), Sound.LEVEL_UP,1 ,1);
                         player.getInventory().clear();
                         player.setGameMode(GameMode.CREATIVE);
-                    } else {
+                    } else if(Main.build.contains(player)) {
                         Main.build.remove(player);
                         player.sendMessage(Main.prefix + "Du hast den §aBuildingmodus §cdeaktiviert§7!");
                         player.playSound(player.getLocation(), Sound.VILLAGER_DEATH,1 ,1);
                         player.getInventory().clear();
                         player.setGameMode(GameMode.SURVIVAL);
-                        Main.getInstance().getInventoryManager().setLobbyInventory(player);
+                        Main.inventoryManager.LobbyInventory(player);
                     }
                 }
             } else
                 player.sendMessage(Main.noPerms);
+            player.playSound(player.getLocation(), Sound.VILLAGER_DEATH,1 ,1);
 
         } else
             player.sendMessage(Main.prefix + "§cDu kannst au der Konsole keine Befehle ausführen!");
-            return false;
+        return false;
     }
 }

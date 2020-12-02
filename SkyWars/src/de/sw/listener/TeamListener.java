@@ -3,8 +3,7 @@ package de.sw.listener;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.skywars.PlayerSkywarsStats;
-import de.sw.api.LocationAPI;
-import de.sw.countdown.EndingCountdown;
+import de.sw.api.ItemBuilderAPI;
 import de.sw.enums.Path;
 import de.sw.main.Main;
 import de.sw.manager.*;
@@ -17,7 +16,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -27,7 +25,6 @@ import org.bukkit.inventory.Inventory;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class TeamListener implements Listener {

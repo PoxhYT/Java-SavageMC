@@ -1,10 +1,13 @@
-package de.sw.manager;
+package com.poxh.api;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ItemBuilderAPI {
@@ -26,6 +29,19 @@ public class ItemBuilderAPI {
     public ItemBuilderAPI setDisplayName(String displayName) {
         this.itemMeta.setDisplayName(displayName);
         return this;
+    }
+
+    public static ItemStack getHead(Player player, String displayName, String itemLore) {
+        int lifePlayer = (int) player.getHealth();
+        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta skull = (SkullMeta) item.getItemMeta();
+        skull.setDisplayName(displayName);
+        ArrayList<String> lore = new ArrayList<String>();
+        lore.add(itemLore);
+        skull.setLore(lore);
+        skull.setOwner(player.getName());
+        item.setItemMeta(skull);
+        return item;
     }
 
     public ItemBuilderAPI setSubID(byte subID) {

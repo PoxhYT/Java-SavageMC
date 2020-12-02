@@ -52,8 +52,6 @@ public class Main extends JavaPlugin {
     public static HashMap<UUID, PlayerSkywarsStats> stats = new HashMap<>();
     public static Map<UUID, String> teamManagerMap = new HashMap<>();
 
-
-
     //YamlConfigurations
     private File file = new File("plugins/SkyWars", "Config.yml");
     public YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
