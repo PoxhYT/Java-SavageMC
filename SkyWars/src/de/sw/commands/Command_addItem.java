@@ -1,7 +1,7 @@
 package de.sw.commands;
 
+import com.rosemite.services.helper.Convert;
 import de.sw.enums.ChestType;
-import de.sw.listener.RandomChestItems;
 import de.sw.main.Main;
 import de.sw.manager.ItemDocument;
 import de.sw.manager.KitEnchantments;
@@ -23,45 +23,121 @@ import java.util.Map;
 
 public class Command_addItem implements CommandExecutor {
 
-    private static File file = new File("plugins/SkyWars", "Items.yml");
-
-    private static FileConfiguration cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(file);
-
-    private List<RandomItemInChest> normal = (List<RandomItemInChest>) Main.yamlConfigurationSkyWars.getList("normal");
-    private List<ItemDocument> center = (List<ItemDocument>) Main.yamlConfigurationSkyWars.getList("center");
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
         if(args.length == 4) {
+            List<Map<String, Object>> normal = (List<Map<String, Object>>) Main.itemConfiguration.getList("normal");
+            List<Map<String, Object>> center = (List<Map<String, Object>>) Main.itemConfiguration.getList("center");
 
             int min = Integer.parseInt(args[0]);
             int max = Integer.parseInt(args[1]);
-            String handOrInventory = args[3];
 
             ItemStack playerHandItemItems = player.getItemInHand();
             ItemStack[] playerInventoryItems = player.getInventory().getContents();
 
             if(normal == null) {
-                normal = new ArrayList<>();
+                Main.normal = new ArrayList<>();
             }
 
             if(center == null) {
-                center = new ArrayList<>();
+                Main.center = new ArrayList<>();
             }
 
-
-            ItemDocument document = new ItemDocument(playerHandItemItems.getData().getItemType().getId(), (List<KitEnchantments>) playerHandItemItems.getEnchantments(), 4);
+            List<KitEnchantments> enchantments = new ArrayList<>();
 
             if(args[2].equalsIgnoreCase("normal")) {
                 if (args[3].equalsIgnoreCase("hand")) {
-                    normal.add(document);
+                    playerHandItemItems.getEnchantments().forEach((enchantment, level) -> {
+                        enchantments.add(new KitEnchantments(enchantment.getId(), level));
+                    });
+
+                    RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max);
+
+                    normal.add(Convert.getPropertiesToMap(randomItemInChest));
+
                     try {
-                        cfg.save(file);
+                        Main.itemConfiguration.set("normal", normal);
+                        Main.itemConfiguration.save(Main.itemFile);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
+
+                return true;
+            }
+
+            if(args[2].equalsIgnoreCase("center")) {
+                if (args[3].equalsIgnoreCase("hand")) {
+                    playerHandItemItems.getEnchantments().forEach((enchantment, level) -> {
+                        enchantments.add(new KitEnchantments(enchantment.getId(), level));
+                    });
+
+                    RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max);
+
+                    center.add(Convert.getPropertiesToMap(randomItemInChest));
+                    try {
+                        Main.itemConfiguration.set("center", center);
+                        Main.itemConfiguration.save(Main.itemFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
+            }
+
+            if(args[2].equalsIgnoreCase("normal")) {
+                if (args[3].equalsIgnoreCase("inventory")) {
+                    for (int i = 0; i < playerInventoryItems.length; i++) {
+                        if (playerInventoryItems[i] == null) {
+                            continue;
+                        }
+
+                        playerInventoryItems[i].getEnchantments().forEach((enchantment, level) -> {
+                            enchantments.add(new KitEnchantments(enchantment.getId(), level));
+                        });
+
+                        RandomItemInChest randomItemInChest = new RandomItemInChest(playerInventoryItems[i].getData().getItemType().getId(), enchantments, min, max);
+
+                        normal.add(Convert.getPropertiesToMap(randomItemInChest));
+                        enchantments.clear();
+                    }
+
+                    try {
+                        Main.itemConfiguration.set("normal", normal);
+                        Main.itemConfiguration.save(Main.itemFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
+
+            }
+
+            if(args[2].equalsIgnoreCase("center")) {
+                if (args[3].equalsIgnoreCase("inventory")) {
+                    for (int i = 0; i < playerInventoryItems.length; i++) {
+                        if (playerInventoryItems[i] == null) {
+                            continue;
+                        }
+
+                        playerInventoryItems[i].getEnchantments().forEach((enchantment, level) -> {
+                            enchantments.add(new KitEnchantments(enchantment.getId(), level));
+                        });
+
+                        RandomItemInChest randomItemInChest = new RandomItemInChest(playerInventoryItems[i].getData().getItemType().getId(), enchantments, min, max);
+
+                        center.add(Convert.getPropertiesToMap(randomItemInChest));
+                        enchantments.clear();
+                    }
+                    try {
+                        Main.itemConfiguration.set("center", center);
+                        Main.itemConfiguration.save(Main.itemFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
             }
 
         } else {

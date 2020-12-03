@@ -3,6 +3,7 @@ package de.sw.countdown;
 import com.rosemite.services.helper.Log;
 import de.gamestateapi.main.GameStateAPIManager;
 import de.sw.enums.Path;
+import de.sw.manager.ChestManager;
 import de.sw.manager.KitItem;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class LobbyCountdown extends Countdown{
 
-    public static int seconds = 60;
+    public static int seconds = 5;
     private boolean isRunning;
     private int idleID;
     private boolean isIdling;
@@ -71,6 +72,8 @@ public class LobbyCountdown extends Countdown{
                             all.getInventory().clear();
                             Main.moveMap.add(all);
                             Main.moveCountdown.start();
+
+                            Main.chestManager.onGameStart();
 
                             // Teleport Player
                             for (int i = 0; i < Main.instance.teams.length; i++) {

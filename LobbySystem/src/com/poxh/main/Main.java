@@ -2,7 +2,7 @@ package com.poxh.main;
 
 import com.poxh.api.LocationAPI;
 import com.poxh.commands.Command_build;
-import com.poxh.listener.PlayerChatEvent;
+import com.poxh.listener.PlayerChatListener;
 import com.poxh.listener.PlayerJoinListener;
 import com.poxh.manager.InventoryManager;
 import org.bukkit.Bukkit;
@@ -66,7 +66,7 @@ public class Main extends JavaPlugin {
     //registerListener
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new PlayerChatEvent(), this);
+        pluginManager.registerEvents(new PlayerChatListener(), this);
         pluginManager.registerEvents(new PlayerJoinListener(), this);
     }
 

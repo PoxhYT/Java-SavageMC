@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -37,6 +38,7 @@ public class Main extends JavaPlugin {
     public static LuckPerms luckPerms;
     private Listener kitListener;
     private SkyWarsMapData data;
+    public static ChestManager chestManager;
 
     //Objects
     public static InventoryManager inventoryManager = new InventoryManager();
@@ -57,6 +59,9 @@ public class Main extends JavaPlugin {
     public YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
     public static File fileSkyWars = new File("plugins/SkyWars", "MapData.yml");
     public static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkyWars);
+    //addItemLists
+    public static File itemFile = new File("plugins/SkyWars", "Items.yml");
+    public static FileConfiguration itemConfiguration = (FileConfiguration) YamlConfiguration.loadConfiguration(itemFile);
 
     //ArrayLists
     public static ArrayList<Player> alivePlayers = new ArrayList<>();
@@ -66,8 +71,8 @@ public class Main extends JavaPlugin {
     public static List<Map<String, Object>> maps = (List<Map<String, Object>>) yamlConfigurationSkyWars.getList("maps");
     public static ArrayList<Player> moveMap = new ArrayList<>();
     public static List<ItemStack> items = new ArrayList<>();
-    private int maxChest;
-    private int maxDoubleChest;
+    public static List<Map<String, Object>> normal = (List<Map<String, Object>>) itemConfiguration.getList("normal");
+    public static List<Map<String, Object>> center = (List<Map<String, Object>>) itemConfiguration.getList("center");
 
 
     public void onEnable() {
@@ -79,6 +84,9 @@ public class Main extends JavaPlugin {
 
     public void init() {
         SkyWarsMapData map = chooseRandom();
+
+        chestManager = new ChestManager(map.getLocationOfMiddlePoint(), map);
+
         loadFiles();
         GameStateAPIManager.setState(GameStateAPIManager.LOBBY);
 
@@ -153,7 +161,6 @@ public class Main extends JavaPlugin {
         getCommand("location").setExecutor(new Command_location());
         getCommand("setup").setExecutor(new Command_setup());
         getCommand("addItem").setExecutor(new Command_addItem());
-
     }
 
     public void registerEvents(SkyWarsMapData map) {
@@ -165,7 +172,6 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
         pluginManager.registerEvents((Listener) new TeamListener(map, luckPerms), this);
         pluginManager.registerEvents(new ServerPingListener(), this);
-        pluginManager.registerEvents(new RandomChestItems(), this);
 
     }
 
@@ -189,11 +195,4 @@ public class Main extends JavaPlugin {
         return data;
     }
 
-    public int getMaxChest() {
-        return this.maxChest;
-    }
-
-    public int getMaxDoubleChest() {
-        return this.maxDoubleChest;
-    }
 }
