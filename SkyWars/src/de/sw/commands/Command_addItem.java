@@ -87,17 +87,11 @@ public class Command_addItem implements CommandExecutor {
             }
 
             if(args[2].equalsIgnoreCase("normal")) {
-                Log.d(1);
                 if (args[3].equalsIgnoreCase("inventory")) {
-                    Log.d(2);
                     for (int i = 0; i < playerInventoryItems.length; i++) {
-                        Log.d(3);
                         if (playerInventoryItems[i] == null) {
-                            Log.d("null");
                             continue;
                         }
-
-                        Log.d("Test");
 
                         playerInventoryItems[i].getEnchantments().forEach((enchantment, level) -> {
                             enchantments.add(new KitEnchantments(enchantment.getId(), level));

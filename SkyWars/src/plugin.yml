@@ -10,3 +10,4 @@ commands:
     createBlock:
     setup:
     addItem:
+    enchantAll:

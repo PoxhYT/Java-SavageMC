@@ -1,6 +1,5 @@
 package de.sw.main;
 
-import com.google.gson.Gson;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.gamestateapi.main.GameStateAPIManager;
@@ -10,10 +9,9 @@ import de.sw.enums.Path;
 import de.sw.listener.*;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
-import org.apache.logging.log4j.core.net.DatagramOutputStream;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,7 +23,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.*;
-import java.util.function.ObjDoubleConsumer;
 import java.util.stream.Collectors;
 
 public class Main extends JavaPlugin {
@@ -161,6 +158,7 @@ public class Main extends JavaPlugin {
         getCommand("location").setExecutor(new Command_location());
         getCommand("setup").setExecutor(new Command_setup());
         getCommand("addItem").setExecutor(new Command_addItem());
+        getCommand("enchantAll").setExecutor(new Command_enchantAll());
     }
 
     public void registerEvents(SkyWarsMapData map) {
