@@ -11,7 +11,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class Main extends JavaPlugin {
 
@@ -31,6 +33,10 @@ public class Main extends JavaPlugin {
 
     //ArrayList
     public static List<Player> build = new ArrayList<>();
+
+    //Maps
+    public static HashMap<UUID, Integer> amountOfLogins = new HashMap<>();
+
 
 
     @Override
@@ -69,6 +75,24 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents(new PlayerChatListener(), this);
         pluginManager.registerEvents(new PlayerJoinListener(), this);
     }
+
+    public static int getAmountOfLogins(Player player) {
+        UUID uuid = player.getUniqueId();
+        Integer number = amountOfLogins.get(uuid);
+
+        if(number == null) {
+            amountOfLogins.put(uuid, 0);
+        }
+        return number;
+    }
+
+    public static void addAmountOfLogins(Player player) {
+        UUID uuid = player.getUniqueId();
+        int current = amountOfLogins.remove(uuid);
+        amountOfLogins.put(uuid, current +1);
+    }
+
+
 
 
     private void sendMessage(Object message) {

@@ -31,6 +31,8 @@ public class ChestManager {
     private final List<RandomItemInChest> normal;
     private final List<RandomItemInChest> center;
 
+    private List<Integer> l = new ArrayList<>();
+
     public ChestManager(Location locationOfMiddlePoint, SkyWarsMapData map) {
         this.locationOfMiddlePoint = locationOfMiddlePoint;
         this.map = map;
@@ -39,19 +41,6 @@ public class ChestManager {
 
         this.normal = configureRandomItemInChest(false);
         this.center = configureRandomItemInChest(true);
-
-        Log.d(Convert.isPrimitive("null"));
-        Log.d(Convert.isPrimitive(null));
-
-//        this.center.forEach(item -> {
-//            if (item == null) {
-//                Log.d("Item was null");
-//            }
-//
-//            Log.d("Item is okay");
-//            Log.d(item.ItemId);
-//            Log.d(item.KitEnchantments.size());
-//        });
     }
 
     private List<RandomItemInChest> configureRandomItemInChest(boolean center) {
@@ -60,12 +49,20 @@ public class ChestManager {
             Type listType = new TypeToken<ArrayList<RandomItemInChest>>(){}.getType();
             List<RandomItemInChest> list = new Gson().fromJson(json, listType);
 
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+
             return list;
         }
 
         String json = new Gson().toJson(Main.normal);
         Type listType = new TypeToken<ArrayList<RandomItemInChest>>(){}.getType();
         List<RandomItemInChest> list = new Gson().fromJson(json, listType);
+
+        if (list == null) {
+            list = new ArrayList<>();
+        }
 
         return list;
     }
@@ -79,19 +76,32 @@ public class ChestManager {
 
         // Populate all chests first then override with chestsInMiddle List
         populateChests(allChests, false);
+
+        // Clear All Middle Chests
+        chestsInMiddle.forEach(chest -> chest.getBlockInventory().clear());
+
         populateChests(chestsInMiddle, true);
     }
 
     private void populateChests(List<Chest> chests, boolean center) {
         for (int i = 0; i < chests.size(); i++) {
-            RandomItemInChest item = getRandomItem(center);
-            ItemBuilderAPI builder = new ItemBuilderAPI(Material.getMaterial(item.ItemId));
 
-            item.KitEnchantments.forEach(kitEnchantments -> {
-                builder.addEnchantment(Enchantment.getById(kitEnchantments.EnchantmentId), kitEnchantments.EnchantmentLevel);
-            });
+            //Generate Random number
+            int length = random.nextInt(10 - 6);
 
-            chests.get(i).getBlockInventory().setItem(getRandomNumber(0, 23), builder.build());
+            for (int j = 0; j < length; j++) {
+                RandomItemInChest item = getRandomItem(center);
+                ItemBuilderAPI builder = new ItemBuilderAPI(Material.getMaterial(item.ItemId));
+
+                item.KitEnchantments.forEach(kitEnchantments -> {
+                    builder.addEnchantment(Enchantment.getById(kitEnchantments.EnchantmentId), kitEnchantments.EnchantmentLevel);
+                });
+
+                int index = getRandomNumber(0, 23);
+                Log.d(l.contains(index));
+
+                chests.get(i).getBlockInventory().setItem(index, builder.build());
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package de.sw.commands;
 
 import com.rosemite.services.helper.Convert;
+import com.rosemite.services.helper.Log;
 import de.sw.enums.ChestType;
 import de.sw.main.Main;
 import de.sw.manager.ItemDocument;
@@ -37,61 +38,66 @@ public class Command_addItem implements CommandExecutor {
             ItemStack[] playerInventoryItems = player.getInventory().getContents();
 
             if(normal == null) {
-                Main.normal = new ArrayList<>();
+                normal = new ArrayList<>();
             }
 
             if(center == null) {
-                Main.center = new ArrayList<>();
+                center = new ArrayList<>();
             }
 
             List<KitEnchantments> enchantments = new ArrayList<>();
 
-            if(args[2].equalsIgnoreCase("normal")) {
-                if (args[3].equalsIgnoreCase("hand")) {
-                    playerHandItemItems.getEnchantments().forEach((enchantment, level) -> {
-                        enchantments.add(new KitEnchantments(enchantment.getId(), level));
-                    });
+            if(args[2].equalsIgnoreCase("normal") && args[3].equalsIgnoreCase("hand")) {
+                playerHandItemItems.getEnchantments().forEach((enchantment, level) -> {
+                    enchantments.add(new KitEnchantments(enchantment.getId(), level));
+                });
 
-                    RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max);
+                RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max);
 
-                    normal.add(Convert.getPropertiesToMap(randomItemInChest));
+                Log.d("ACHTUNG:" + randomItemInChest);
+                Log.d("ACHTUNGV2:" + normal);
 
-                    try {
-                        Main.itemConfiguration.set("normal", normal);
-                        Main.itemConfiguration.save(Main.itemFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                normal.add(Convert.getPropertiesToMap(randomItemInChest));
+
+                try {
+                    Main.itemConfiguration.set("normal", normal);
+                    Main.itemConfiguration.save(Main.itemFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
                 return true;
             }
 
-            if(args[2].equalsIgnoreCase("center")) {
-                if (args[3].equalsIgnoreCase("hand")) {
-                    playerHandItemItems.getEnchantments().forEach((enchantment, level) -> {
-                        enchantments.add(new KitEnchantments(enchantment.getId(), level));
-                    });
+            if(args[2].equalsIgnoreCase("center") && args[3].equalsIgnoreCase("hand")) {
+                playerHandItemItems.getEnchantments().forEach((enchantment, level) -> {
+                    enchantments.add(new KitEnchantments(enchantment.getId(), level));
+                });
 
-                    RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max);
+                RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max);
 
-                    center.add(Convert.getPropertiesToMap(randomItemInChest));
-                    try {
-                        Main.itemConfiguration.set("center", center);
-                        Main.itemConfiguration.save(Main.itemFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                center.add(Convert.getPropertiesToMap(randomItemInChest));
+                try {
+                    Main.itemConfiguration.set("center", center);
+                    Main.itemConfiguration.save(Main.itemFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 return true;
             }
 
             if(args[2].equalsIgnoreCase("normal")) {
+                Log.d(1);
                 if (args[3].equalsIgnoreCase("inventory")) {
+                    Log.d(2);
                     for (int i = 0; i < playerInventoryItems.length; i++) {
+                        Log.d(3);
                         if (playerInventoryItems[i] == null) {
+                            Log.d("null");
                             continue;
                         }
+
+                        Log.d("Test");
 
                         playerInventoryItems[i].getEnchantments().forEach((enchantment, level) -> {
                             enchantments.add(new KitEnchantments(enchantment.getId(), level));
