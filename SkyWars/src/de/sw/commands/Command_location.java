@@ -1,7 +1,5 @@
 package de.sw.commands;
 
-import com.google.gson.Gson;
-import com.rosemite.services.helper.Log;
 import de.sw.api.LocationAPI;
 import de.sw.enums.Path;
 import de.sw.main.Main;
@@ -19,7 +17,6 @@ import java.util.Map;
 
 public class Command_location implements CommandExecutor {
     private List<Location> locations = new ArrayList<>();
-    private boolean doneLocs = false;
     public static String name;
 
     @Override
@@ -108,7 +105,7 @@ public class Command_location implements CommandExecutor {
         return false;
     }
 
-    private int mapExists(String mapname, List<Map<String, Object>> maps) {
+    private int mapExists(String name, List<Map<String, Object>> maps) {
         for (int i = 0; i < maps.size(); i++) {
             String map = (String) maps.get(i).get(Path.MapName.toString());
 

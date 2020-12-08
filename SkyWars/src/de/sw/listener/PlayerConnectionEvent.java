@@ -45,6 +45,8 @@ public class PlayerConnectionEvent implements Listener {
 
         //CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
         //String prefix = metaData.getPrefix();
+
+        player.getInventory().clear();
         Main.getInstance().getInventoryManager().setLobbyInventory(player);
 
         Main.alivePlayers.add(player);

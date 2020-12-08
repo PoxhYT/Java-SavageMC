@@ -7,10 +7,12 @@ import org.bukkit.entity.Player;
 
 public class ProtectionCountdown extends Countdown{
 
+    private boolean isRunning;
     private int timer = 30;
 
     @Override
     public void start() {
+        isRunning = true;
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
             public void run() {
                 switch (timer) {
@@ -43,5 +45,9 @@ public class ProtectionCountdown extends Countdown{
     @Override
     public void stop() {
 
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }

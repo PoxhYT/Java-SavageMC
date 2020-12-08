@@ -1,0 +1,8 @@
+name: PartySystem
+version: 1.0
+author: PoxhYT
+main: com.poxh.party.Main
+commands:
+    party:
+    leave:
+

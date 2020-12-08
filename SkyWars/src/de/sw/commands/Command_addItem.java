@@ -27,12 +27,14 @@ public class Command_addItem implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
-        if(args.length == 4) {
+        if(args.length == 5) {
             List<Map<String, Object>> normal = (List<Map<String, Object>>) Main.itemConfiguration.getList("normal");
             List<Map<String, Object>> center = (List<Map<String, Object>>) Main.itemConfiguration.getList("center");
 
-            int min = Integer.parseInt(args[0]);
-            int max = Integer.parseInt(args[1]);
+
+            int chance = Integer.parseInt(args[0]);
+            int min = Integer.parseInt(args[1]);
+            int max = Integer.parseInt(args[2]);
 
             ItemStack playerHandItemItems = player.getItemInHand();
             ItemStack[] playerInventoryItems = player.getInventory().getContents();
@@ -47,12 +49,12 @@ public class Command_addItem implements CommandExecutor {
 
             List<KitEnchantments> enchantments = new ArrayList<>();
 
-            if(args[2].equalsIgnoreCase("normal") && args[3].equalsIgnoreCase("hand")) {
+            if(args[3].equalsIgnoreCase("normal") && args[4].equalsIgnoreCase("hand")) {
                 playerHandItemItems.getEnchantments().forEach((enchantment, level) -> {
                     enchantments.add(new KitEnchantments(enchantment.getId(), level));
                 });
 
-                RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max);
+                RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max, chance);
 
                 Log.d("ACHTUNG:" + randomItemInChest);
                 Log.d("ACHTUNGV2:" + normal);
@@ -62,6 +64,7 @@ public class Command_addItem implements CommandExecutor {
                 try {
                     Main.itemConfiguration.set("normal", normal);
                     Main.itemConfiguration.save(Main.itemFile);
+                    player.sendMessage(Main.prefix + "§eDu hast die Items erfolgreich hinzugefügt!");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -69,25 +72,26 @@ public class Command_addItem implements CommandExecutor {
                 return true;
             }
 
-            if(args[2].equalsIgnoreCase("center") && args[3].equalsIgnoreCase("hand")) {
+            if(args[3].equalsIgnoreCase("center") && args[4].equalsIgnoreCase("hand")) {
                 playerHandItemItems.getEnchantments().forEach((enchantment, level) -> {
                     enchantments.add(new KitEnchantments(enchantment.getId(), level));
                 });
 
-                RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max);
+                RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max, chance);
 
                 center.add(Convert.getPropertiesToMap(randomItemInChest));
                 try {
                     Main.itemConfiguration.set("center", center);
                     Main.itemConfiguration.save(Main.itemFile);
+                    player.sendMessage(Main.prefix + "§eDu hast die Items erfolgreich hinzugefügt!");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 return true;
             }
 
-            if(args[2].equalsIgnoreCase("normal")) {
-                if (args[3].equalsIgnoreCase("inventory")) {
+            if(args[3].equalsIgnoreCase("normal")) {
+                if (args[4].equalsIgnoreCase("inventory")) {
                     for (int i = 0; i < playerInventoryItems.length; i++) {
                         if (playerInventoryItems[i] == null) {
                             continue;
@@ -97,7 +101,7 @@ public class Command_addItem implements CommandExecutor {
                             enchantments.add(new KitEnchantments(enchantment.getId(), level));
                         });
 
-                        RandomItemInChest randomItemInChest = new RandomItemInChest(playerInventoryItems[i].getData().getItemType().getId(), enchantments, min, max);
+                        RandomItemInChest randomItemInChest = new RandomItemInChest(playerInventoryItems[i].getData().getItemType().getId(), enchantments, min, max, chance);
 
                         normal.add(Convert.getPropertiesToMap(randomItemInChest));
                         enchantments.clear();
@@ -106,6 +110,7 @@ public class Command_addItem implements CommandExecutor {
                     try {
                         Main.itemConfiguration.set("normal", normal);
                         Main.itemConfiguration.save(Main.itemFile);
+                        player.sendMessage(Main.prefix + "§eDu hast die Items erfolgreich hinzugefügt!");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -114,8 +119,8 @@ public class Command_addItem implements CommandExecutor {
 
             }
 
-            if(args[2].equalsIgnoreCase("center")) {
-                if (args[3].equalsIgnoreCase("inventory")) {
+            if(args[3].equalsIgnoreCase("center")) {
+                if (args[4].equalsIgnoreCase("inventory")) {
                     for (int i = 0; i < playerInventoryItems.length; i++) {
                         if (playerInventoryItems[i] == null) {
                             continue;
@@ -125,7 +130,7 @@ public class Command_addItem implements CommandExecutor {
                             enchantments.add(new KitEnchantments(enchantment.getId(), level));
                         });
 
-                        RandomItemInChest randomItemInChest = new RandomItemInChest(playerInventoryItems[i].getData().getItemType().getId(), enchantments, min, max);
+                        RandomItemInChest randomItemInChest = new RandomItemInChest(playerInventoryItems[i].getData().getItemType().getId(), enchantments, min, max, chance);
 
                         center.add(Convert.getPropertiesToMap(randomItemInChest));
                         enchantments.clear();
@@ -133,6 +138,7 @@ public class Command_addItem implements CommandExecutor {
                     try {
                         Main.itemConfiguration.set("center", center);
                         Main.itemConfiguration.save(Main.itemFile);
+                        player.sendMessage(Main.prefix + "§eDu hast die Items erfolgreich hinzugefügt!");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -141,7 +147,7 @@ public class Command_addItem implements CommandExecutor {
             }
 
         } else {
-            player.sendMessage(Main.prefix + "§cBitte benutze den Befehl /addItem <min> <max> <normal/center> <hand/inventory>");
+            player.sendMessage(Main.prefix + "§cBitte benutze den Befehl /addItem <chance> <min> <max> <normal/center> <hand/inventory>");
         }
         return false;
     }

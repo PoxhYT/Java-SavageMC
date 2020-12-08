@@ -1,5 +1,6 @@
 package de.sw.listener;
 
+import de.sw.countdown.ProtectionCountdown;
 import de.sw.main.Main;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
@@ -76,4 +78,12 @@ public class ProtectionListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        if(!Main.protectionCountdown.isRunning()) {
+            event.setCancelled(false);
+        } else {
+            event.setCancelled(true);
+        }
+    }
 }

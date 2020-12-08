@@ -23,8 +23,8 @@ public class InventoryManager {
         player.openInventory(inventory);
     }
 
-    public void NaviInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 45, "§eSetupInventory");
+    public void openNavigator(Player player) {
+        Inventory inventory = Bukkit.createInventory(null, 45, "§eNavigator");
         for (int i = 0; i < 45; i++) {
             inventory.setItem(i, new ItemBuilderAPI(Material.STAINED_GLASS_PANE, (short)7).setDisplayName("§e ").build());
         }

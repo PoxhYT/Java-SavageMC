@@ -9,9 +9,11 @@ import de.sw.enums.Path;
 import de.sw.listener.*;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,14 +23,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class Main extends JavaPlugin {
     //Strings
     public static String prefix = "§bSkyWars §8❘ §7";
     public static String noPerms = prefix + "§cDazu hast du keine Rechte!";
+    private static String source;
+    private static String destination;
 
     //Instances
     public static Main instance;
@@ -71,7 +76,6 @@ public class Main extends JavaPlugin {
     public static List<Map<String, Object>> normal = (List<Map<String, Object>>) itemConfiguration.getList("normal");
     public static List<Map<String, Object>> center = (List<Map<String, Object>>) itemConfiguration.getList("center");
 
-
     public void onEnable() {
         luckPerms = getServer().getServicesManager().load(LuckPerms.class);
         this.instance = this;
@@ -80,6 +84,7 @@ public class Main extends JavaPlugin {
     }
 
     public void init() {
+
         SkyWarsMapData map = chooseRandom();
 
         chestManager = new ChestManager(map.getLocationOfMiddlePoint(), map);
@@ -89,8 +94,12 @@ public class Main extends JavaPlugin {
 
         Log.d("ANZAHL DER MAPS:" + maps.size());
 
+//        copyWorld();
+
         registerEvents(map);
         registerCommands();
+
+
         Bukkit.getConsoleSender().sendMessage(prefix + "§eDas Plugin wurde erfolgreich gestartet!!!!");
     }
 
@@ -117,7 +126,7 @@ public class Main extends JavaPlugin {
         Random random = new Random();
         Log.d(result.size());
         int mapsSize = random.nextInt(result.size());
-        Map<String, Object> finalMap = result.get(1);
+        Map<String, Object> finalMap = result.get(0);
 //        Map<String, Object> finalMap = result.get(mapsSize);
         Log.d(finalMap.get(Path.MapName.toString()));
 
@@ -161,6 +170,28 @@ public class Main extends JavaPlugin {
         getCommand("enchantAll").setExecutor(new Command_enchantAll());
     }
 
+
+
+
+    //Copy the world folder
+//    public static void copyWorld(){
+//
+//        String directory = System.getProperty("user.dir");
+//        String worldName = (String) MapName1.get(Path.MapName.toString());
+//        source = directory + "\\" + worldName;
+//        File srcDir = new File(source);
+//
+//        destination = directory + "\\WorldBackup";
+//        File destDir = new File(destination);
+//
+//        try {
+//            FileUtils.copyDirectory(srcDir, destDir);
+//            Bukkit.getConsoleSender().sendMessage(Main.prefix + "§eDer Weltordner " + destination + " §ewurde erfolgreich kopiert!");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     public void registerEvents(SkyWarsMapData map) {
         kitListener = new KitListener();
 
@@ -170,7 +201,6 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
         pluginManager.registerEvents((Listener) new TeamListener(map, luckPerms), this);
         pluginManager.registerEvents(new ServerPingListener(), this);
-
     }
 
     public KitListener getKitListener() {
@@ -193,4 +223,14 @@ public class Main extends JavaPlugin {
         return data;
     }
 
+
+    @Override
+    public void onDisable() {
+
+//        try {
+//            FileUtils.deleteDirectory(new File(destination));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
 }

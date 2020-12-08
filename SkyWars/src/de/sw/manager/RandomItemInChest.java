@@ -11,18 +11,13 @@ public class RandomItemInChest {
     public final int Min;
     public final int Max;
 
-    public RandomItemInChest(int ItemId, List<KitEnchantments> KitEnchantments, int Min, int Max) {
+    public final int Chance;
+
+    public RandomItemInChest(int ItemId, List<KitEnchantments> KitEnchantments, int Min, int Max, int Chance) {
         this.ItemId = ItemId;
         this.KitEnchantments = KitEnchantments;
         this.Min = Min;
         this.Max = Max;
-    }
-
-    public static ItemStack getItemWithRange(int materialId, int min, int max,List<KitEnchantments> enchantments) {
-        return getItem(materialId, ThreadLocalRandom.current().nextInt(min, max + 1), enchantments);
-    }
-
-    public static ItemStack getItem(int itemId, int amount, List<KitEnchantments> kitEnchantments) {
-        return ItemDocument.getItem(itemId, amount, kitEnchantments);
+        this.Chance = Chance;
     }
 }

@@ -32,6 +32,11 @@ public class SkyWarsMapData {
 
         this.radius = defaultRadius;
 
+        if(locations.length == 0) {
+            locationOfMiddlePoint = null;
+            return;
+        }
+
         // Calculate MiddlePoint Of Map
         int[] pIndex = new int[4];
         pIndex[0] = 0;

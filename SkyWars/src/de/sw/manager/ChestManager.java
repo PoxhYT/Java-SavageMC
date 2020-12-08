@@ -6,6 +6,7 @@ import com.google.gson.internal.Primitives;
 import com.rosemite.services.helper.Convert;
 import com.rosemite.services.helper.Log;
 import de.sw.api.ItemBuilderAPI;
+import de.sw.enums.Path;
 import de.sw.main.Main;
 import de.sw.manager.SkyWarsMapData;
 import org.bukkit.Chunk;
@@ -21,7 +22,9 @@ import org.bukkit.inventory.ItemStack;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class ChestManager {
     private final Location locationOfMiddlePoint;
@@ -30,8 +33,6 @@ public class ChestManager {
 
     private final List<RandomItemInChest> normal;
     private final List<RandomItemInChest> center;
-
-    private List<Integer> l = new ArrayList<>();
 
     public ChestManager(Location locationOfMiddlePoint, SkyWarsMapData map) {
         this.locationOfMiddlePoint = locationOfMiddlePoint;
@@ -85,9 +86,8 @@ public class ChestManager {
 
     private void populateChests(List<Chest> chests, boolean center) {
         for (int i = 0; i < chests.size(); i++) {
-
-            //Generate Random number
-            int length = random.nextInt(10 - 6);
+            // Generate Random number
+            int length = getRandomNumber(7, 16);
 
             for (int j = 0; j < length; j++) {
                 RandomItemInChest item = getRandomItem(center);
@@ -98,9 +98,13 @@ public class ChestManager {
                 });
 
                 int index = getRandomNumber(0, 23);
-                Log.d(l.contains(index));
 
-                chests.get(i).getBlockInventory().setItem(index, builder.build());
+                if(item.Min == item.Max) {
+                    chests.get(i).getBlockInventory().setItem(index, builder.setAmount(getRandomNumber(item.Min, item.Max + 1)).build());
+                    continue;
+                }
+
+                chests.get(i).getBlockInventory().setItem(index, builder.setAmount(getRandomNumber(item.Min, item.Max)).build());
             }
         }
     }
@@ -120,15 +124,30 @@ public class ChestManager {
     }
 
     private int getRandomNumber(int min, int max) {
-        return random.nextInt(max - min);
+        return random.nextInt(max - min) + min;
     }
 
     private RandomItemInChest getRandomItem(boolean center) {
         if (center) {
-            return this.center.get(random.nextInt(this.center.size()));
+            int i = random.nextInt(99) + 1;
+
+            List<RandomItemInChest> items = this.center.stream().filter((c) -> c.Chance >= i).collect(Collectors.toList());
+            Log.d(items.size());
+            if (items.size() == 0) {
+                return getRandomItem(center);
+            }
+            return items.get(random.nextInt(items.size()));
         }
 
-        return normal.get(random.nextInt(normal.size()));
+        int i = random.nextInt(65) + 1;
+
+
+        List<RandomItemInChest> items = this.normal.stream().filter((c) -> c.Chance >= i).collect(Collectors.toList());
+        Log.d(items.size());
+        if (items.size() == 0) {
+            return getRandomItem(center);
+        }
+        return items.get(random.nextInt(items.size()));
     }
 
     private List<Chest> getAllChestsInRadius(Location locationOfMiddlePoint, int radius) {

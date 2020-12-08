@@ -2,7 +2,9 @@ package com.poxh.main;
 
 import com.poxh.api.LocationAPI;
 import com.poxh.commands.Command_build;
+import com.poxh.listener.ChestLotteryListener;
 import com.poxh.listener.PlayerChatListener;
+import com.poxh.listener.PlayerInteractListener;
 import com.poxh.listener.PlayerJoinListener;
 import com.poxh.manager.InventoryManager;
 import org.bukkit.Bukkit;
@@ -74,6 +76,8 @@ public class Main extends JavaPlugin {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new PlayerChatListener(), this);
         pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new ChestLotteryListener(), this);
+        pluginManager.registerEvents(new PlayerInteractListener(), this);
     }
 
     public static int getAmountOfLogins(Player player) {
