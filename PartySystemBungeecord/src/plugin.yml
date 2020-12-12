@@ -5,4 +5,5 @@ main: com.poxh.party.Main
 commands:
     party:
     leave:
+    p:
 

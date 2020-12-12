@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="BugeeAPI" level="project" />
     <orderEntry type="module" module-name="Services" />
+    <orderEntry type="library" name="BugeeAPI" level="project" />
   </component>
 </module>

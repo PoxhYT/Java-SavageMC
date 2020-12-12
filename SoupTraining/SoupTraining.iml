@@ -18,6 +18,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="server1" level="project" />
     <orderEntry type="module" module-name="Services" />
-    <orderEntry type="library" name="CoinsAPI" level="project" />
   </component>
 </module>
