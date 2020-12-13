@@ -120,14 +120,13 @@ public class Main extends JavaPlugin {
     }
 
     public SkyWarsMapData chooseRandom() {
-        List<Map<String, Object>> result = maps.stream().filter(map -> !(boolean) map.get(Path.StillUnderDevelopment.toString())).collect(Collectors.toList());
-
-        loadFiles();
         Random random = new Random();
+        loadFiles();
+        List<Map<String, Object>> result = maps.stream().filter(map -> !(boolean) map.get(Path.StillUnderDevelopment.toString())).collect(Collectors.toList());
         Log.d(result.size());
         int mapsSize = random.nextInt(result.size());
-        Map<String, Object> finalMap = result.get(0);
-//        Map<String, Object> finalMap = result.get(mapsSize);
+//        Map<String, Object> finalMap = result.get(0);
+        Map<String, Object> finalMap = result.get(mapsSize);
         Log.d(finalMap.get(Path.MapName.toString()));
 
         MapName1 = finalMap;

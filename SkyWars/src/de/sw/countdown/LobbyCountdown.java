@@ -16,7 +16,7 @@ import java.util.List;
 
 public class LobbyCountdown extends Countdown{
 
-    public static int seconds = 5;
+    public static int seconds = 60;
     private boolean isRunning;
     private int idleID;
     private boolean isIdling;

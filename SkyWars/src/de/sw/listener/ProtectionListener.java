@@ -80,10 +80,10 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if(!Main.protectionCountdown.isRunning()) {
-            event.setCancelled(false);
-        } else {
+        if(Main.protectionCountdown.isRunning()) {
             event.setCancelled(true);
+        } else {
+            event.setCancelled(false);
         }
     }
 }

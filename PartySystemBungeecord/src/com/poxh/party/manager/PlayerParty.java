@@ -8,6 +8,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -61,12 +62,27 @@ public class PlayerParty {
 
     public boolean getPartyInfo(ProxiedPlayer player) {
 
+
+        String[] names = new String[members.size()];
+
+        // Set names
+        for (int j = 0; j < names.length; j++) {
+            names[j] = members.get(j).getName();
+        }
+
+        // Add Players to TeamList
+        String[] playersInTeam = new String[members.size()];
+        for (int j = 0; j < names.length; j++) {
+            playersInTeam[j] = "§7- §f" + names[j];
+        }
+
         int partySize = members.size() + 1;
 
         player.sendMessage(new TextComponent("§7§m--------------§5PartySystem§7§m-----------------"));
         player.sendMessage(new TextComponent("§7Die §5Party §7wird von " + getLeader().getDisplayName() + " §7geleitet!"));
         player.sendMessage(new TextComponent("§7Die Anzahl §7der §5Mitglieder §7lautet: " + partySize));
-        player.sendMessage(new TextComponent("§7Die §5Party §7ist aktuell auf dem §e" + getServerInfo(player) + " §7Server!"));
+        player.sendMessage(new TextComponent("§e" + (Arrays.asList(playersInTeam.clone()))));
+        player.sendMessage(new TextComponent("§7Die §5Party §7ist aktuell auf dem §e" + getServerInfo().getName() + " §7Server!"));
         player.sendMessage(new TextComponent("§7§m-----------------------------------------------"));
         return true;
     }
@@ -86,6 +102,11 @@ public class PlayerParty {
     public boolean removePlayer(ProxiedPlayer player) {
         if(this.members.contains(player)) {
             this.members.remove(player);
+            for (ProxiedPlayer players : getMembers()) {
+                players.sendMessage(new TextComponent(Main.Prefix + player.getDisplayName() + " §chat die Party verlassen!"));
+            }
+            leader.sendMessage(new TextComponent(Main.Prefix + player.getDisplayName() + " §chat die Party verlassen!"));
+            player.sendMessage(new TextComponent(Main.Prefix + "§cDu hast die Party verlassen!"));
             return true;
         }
         return  false;
@@ -99,7 +120,7 @@ public class PlayerParty {
         return false;
     }
 
-    public ServerInfo getServerInfo(ProxiedPlayer player) {
+    public ServerInfo getServerInfo() {
         return this.leader.getServer().getInfo();
     }
 

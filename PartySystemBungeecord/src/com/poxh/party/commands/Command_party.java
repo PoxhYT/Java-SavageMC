@@ -143,7 +143,17 @@ public class Command_party extends Command {
                             player.sendMessage(new TextComponent(Main.Prefix + "§cDieser Spieler ist nicht in deiner Party!"));
                         }
                     } else {
-                        player.sendMessage(new TextComponent(Main.Prefix + "§cDu bist nicht der Leiter der Party!"));
+                        player.sendMessage(new TextComponent(Main.Prefix + target.getDisplayName() + " §cist nicht in deine Party!"));
+                    }
+                } else if(args[0].equalsIgnoreCase("leave")) {
+                    ProxiedPlayer target = BungeeCord.getInstance().getPlayer(args[1]);
+                    if (PartyManager.getParty(target) == null) {
+                        player.sendMessage(new TextComponent(Main.Prefix + "§cDu bist nicht in der Party von " + args[1] + "§c!"));
+                        return;
+                    }
+                    PlayerParty party = PartyManager.getParty(target);
+                    if(party.isInParty(player)) {
+                        party.removePlayer(player);
                     }
                 }
             } else {

@@ -26,7 +26,7 @@ public class ServerSwitch implements Listener {
                     pp.sendMessage(new TextComponent(Main.Prefix + "Die §5Party §7trettet einen §e" + party.getLeader().getServer().getInfo().getName() + " Server §7bei!"));
                     BungeeCord.getInstance().getScheduler().schedule(Main.getInstance(), new Runnable() {
                     public void run() {
-                        pp.connect(party.getServerInfo(party.getLeader()));
+                        pp.connect(party.getServerInfo());
                         }
                     },  2L, TimeUnit.SECONDS);
                 }

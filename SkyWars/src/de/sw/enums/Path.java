@@ -10,7 +10,8 @@ public enum Path {
     MaxPlayersInTeam("MaxPlayersInTeam"),
     GameSize("GameSize"),
     MaxPlayers("Settings.MaxPlayers"),
-    MinPlayers("Settings.MinPlayers");
+    MinPlayers("Settings.MinPlayers"),
+    Radius("Radius");
     private final String text;
 
     @Override

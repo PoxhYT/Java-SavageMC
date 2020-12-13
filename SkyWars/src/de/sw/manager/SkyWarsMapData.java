@@ -78,7 +78,16 @@ public class SkyWarsMapData {
     }
 
     public static Map<String, Object> toMap(SkyWarsMapData data) {
-        return Convert.getPropertiesToMap(data);
+        Map<String, Object> map = new HashMap<>();
+        map.put(Path.MapName.toString(), data.mapName);
+        map.put(Path.GameSize.toString(), data.gameSize);
+        map.put(Path.Locations.toString(), data.locations);
+        map.put(Path.MaxTeamCount.toString(), data.maxTeamCount);
+        map.put(Path.MaxPlayersInTeam.toString(), data.maxPlayersInTeam);
+        map.put(Path.StillUnderDevelopment.toString(), data.stillUnderDevelopment);
+        map.put(Path.Radius.toString(), data.radius);
+        map.put(Path.Id.toString(), data.id);
+        return (map);
     }
 
     private double m(double value1, double value2) {

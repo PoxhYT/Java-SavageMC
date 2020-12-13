@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -255,8 +256,10 @@ public class TeamListener implements Listener {
                 }
 
                 inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + (i + 1) + " §8[§a" + Main.instance.teams[i].getPlayers().size() + "§7/§c"
-                        + maxPlayersInTeam + "§8]").setLore(playersInTeam).build());
+                        + maxPlayersInTeam + "§8]").setLore((playersInTeam)).build());
                 player.openInventory(inventory);
+
+
             }
         }
     }
