@@ -41,12 +41,19 @@ public class Main extends JavaPlugin {
     public static List<Player> build = new ArrayList<>();
     public static List<Player> onlinePlayers = new ArrayList<>();
 
+    //Booleans
+    public static Boolean villagerSet = false;
+
     @Override
     public void onEnable() {
         init();
     }
 
     public void init() {
+
+        if(!villagerSet) {
+            Bukkit.getConsoleSender().sendMessage(prefix + "§cDer Reward-Villager wurde noch nicht gesetzt. Bitte setzte Ihn bevor du ");
+        }
 
         //Instances
         this.mongoDatabase = mongoDatabase;
