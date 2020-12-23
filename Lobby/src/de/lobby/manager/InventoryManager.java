@@ -5,6 +5,7 @@ import com.rosemite.services.main.MainService;
 import com.rosemite.services.services.coin.CoinService;
 import com.rosemite.services.services.ticket.TicketService;
 import de.lobby.api.ItemBuilderAPI;
+import de.lobby.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -78,5 +79,13 @@ public class InventoryManager {
             inv.setItem(i, new ItemBuilderAPI(Material.ENDER_CHEST).setDisplayName("§6Ticket").build());
         }
         player.openInventory(inv);
+    }
+
+    public void openRewardInventory(Player player) {
+        Inventory inventory = Bukkit.createInventory(null, 27, "§eBelohnungen");
+        for (int i = 0; i < inventory.getSize(); i++) {
+            inventory.setItem(i, new ItemBuilderAPI(Material.STAINED_GLASS_PANE,(short)7).setDisplayName("§e").build());
+        }
+        player.openInventory(inventory);
     }
 }

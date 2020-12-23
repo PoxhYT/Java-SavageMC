@@ -4,7 +4,7 @@
     <facet type="minecraft" name="Minecraft">
       <configuration>
         <autoDetectTypes>
-          <platformType>SPIGOT</platformType>
+          <platformType>WATERFALL</platformType>
         </autoDetectTypes>
       </configuration>
     </facet>
@@ -16,6 +16,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="server1" level="project" />
+    <orderEntry type="library" name="BugeeAPI" level="project" />
+    <orderEntry type="module" module-name="Services" />
   </component>
 </module>

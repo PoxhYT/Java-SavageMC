@@ -123,9 +123,9 @@ public class ChestLotteryListener implements Listener {
     public void onClickTicket(InventoryClickEvent e){
         try {
             Player p = (Player) e.getWhoClicked();
-            if (e.getView().getTitle().equalsIgnoreCase("§3Wähle 5 Lose")) {
+            if (e.getView().getTitle().equalsIgnoreCase("§eWähle 5 Lose")) {
                 e.setCancelled(true);
-                if (e.getCurrentItem().getType().equals(Material.ENDER_CHEST) && e.getCurrentItem().getItemMeta().getDisplayName().equals("§6Ticket")) {
+                if (e.getCurrentItem().getType().equals(Material.ENDER_CHEST) && e.getCurrentItem().getItemMeta().getDisplayName().equals("§eTicket")) {
                     if (opendticket.get(p) != 5) {
                         Integer endopen = opendticket.get(p);
                         endopen++;

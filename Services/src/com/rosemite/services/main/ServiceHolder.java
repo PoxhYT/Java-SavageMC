@@ -3,6 +3,7 @@ package com.rosemite.services.main;
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.services.service.report.ReportService;
 import com.rosemite.services.services.coin.CoinService;
+import com.rosemite.services.services.lobby.LobbyService;
 import com.rosemite.services.services.player.PlayerService;
 import com.rosemite.services.services.skywars.SkywarsService;
 import com.rosemite.services.services.souptraining.SoupTrainingService;
@@ -15,6 +16,7 @@ public class ServiceHolder {
     private final CoinService coinService;
     private final ReportService reportService;
     private final TicketService ticketService;
+    private final LobbyService lobbyService;
 
     public ServiceHolder(MongoDatabase db, MainService service) {
         this.soupTrainingService = new SoupTrainingService(db, service);
@@ -23,6 +25,7 @@ public class ServiceHolder {
         this.coinService = new CoinService(db, service);
         this.reportService = new ReportService(db);
         this.ticketService = new TicketService(db, service);
+        this.lobbyService = new LobbyService(db, service);
     }
 
     public SoupTrainingService getSoupTrainingService() {
@@ -47,5 +50,9 @@ public class ServiceHolder {
 
     public TicketService getTicketService() {
         return ticketService;
+    }
+
+    public LobbyService getLobbyService() {
+        return lobbyService;
     }
 }

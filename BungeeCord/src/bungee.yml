@@ -5,3 +5,4 @@ main: de.bungee.main.Main
 commands:
     leave:
     ping:
+    banPlayer:

@@ -16,8 +16,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="server1" level="project" />
     <orderEntry type="module" module-name="SkyWars" />
     <orderEntry type="library" name="bson-4.1.1" level="project" />
+    <orderEntry type="library" name="server1" level="project" />
   </component>
 </module>

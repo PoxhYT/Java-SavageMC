@@ -6,7 +6,8 @@ public enum Paths {
     DefaultSkywarsKits("DefaultSkywarsKits"),
     Report("ErrorReports"),
     PlayerSkywarsStats("PlayerSkywarsStats"),
-    PlayerInfo("Players");
+    PlayerInfo("Players"),
+    LobbyInfo("Lobby");
     private final String text;
 
     @Override

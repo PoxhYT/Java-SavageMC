@@ -1,12 +1,14 @@
 package de.lobby.main;
 
 import com.mongodb.client.MongoDatabase;
+import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import de.lobby.commands.*;
 import de.lobby.listener.ChestLotteryListener;
 import de.lobby.listener.PlayerInteractListener;
 import de.lobby.listener.PlayerJoinListener;
 import de.lobby.listener.ProtectionListener;
+import de.lobby.manager.EntityManager;
 import de.lobby.manager.InventoryManager;
 import de.lobby.manager.SBManager;
 import net.luckperms.api.LuckPerms;
@@ -36,13 +38,11 @@ public class Main extends JavaPlugin {
     //Objects
     public InventoryManager inventoryManager = new InventoryManager(mongoDatabase, services);
     public SBManager scoreboardAPI = new SBManager();
+    public EntityManager entityManager = new EntityManager();
 
     //Lists
     public static List<Player> build = new ArrayList<>();
     public static List<Player> onlinePlayers = new ArrayList<>();
-
-    //Booleans
-    public static Boolean villagerSet = false;
 
     @Override
     public void onEnable() {
@@ -51,10 +51,6 @@ public class Main extends JavaPlugin {
 
     public void init() {
 
-        if(!villagerSet) {
-            Bukkit.getConsoleSender().sendMessage(prefix + "§cDer Reward-Villager wurde noch nicht gesetzt. Bitte setzte Ihn bevor du ");
-        }
-
         //Instances
         this.mongoDatabase = mongoDatabase;
         this.services = MainService.getService(services);
@@ -62,6 +58,15 @@ public class Main extends JavaPlugin {
 
         //Objects
         luckPerms = getServer().getServicesManager().load(LuckPerms.class);
+
+//        //freeze entities
+//        for (World world : Bukkit.getWorlds()) {
+//            for (Entity entity : world.getEntities()) {
+//                if(entity.getCustomName().equalsIgnoreCase(entityManager.name)) {
+//                    entityManager.freezeEntity(entity);
+//                }
+//            }
+//        }
 
         //Strings
         Bukkit.getConsoleSender().sendMessage(Main.prefix + "§eDas Plugin wurde erfolgreich gestartet!");
@@ -74,6 +79,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getConsoleSender().sendMessage(Main.prefix + "§cDas Plugin wurde erfolgreich beendet!");
+        Log.d
     }
 
     private void registerEvents() {
@@ -82,6 +88,7 @@ public class Main extends JavaPlugin {
         manager.registerEvents((Listener) new PlayerInteractListener(), this);
         manager.registerEvents(new ChestLotteryListener(services, mongoDatabase), this);
         manager.registerEvents(new ProtectionListener(), this);
+        manager.registerEvents(new EntityManager(), this);
     }
 
     private void registerCommands() {
@@ -89,6 +96,9 @@ public class Main extends JavaPlugin {
         getCommand("tickets").setExecutor(new Command_tickets(mongoDatabase, services));
         getCommand("coins").setExecutor(new Command_coins(mongoDatabase, services));
         getCommand("build").setExecutor(new Command_build());
+        getCommand("setReward").setExecutor(new Command_setReward());
+        getCommand("setBan").setExecutor(new Command_banPlayer());
+        getCommand("removeBans").setExecutor(new Command_removeBan());
     }
 
 

@@ -6,10 +6,10 @@ import com.rosemite.services.models.player.PlayerInfo;
 import com.rosemite.services.services.player.PlayerService;
 import com.rosemite.services.services.skywars.SkywarsService;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+
 
 public class PlayerJoinEvent implements Listener {
 
@@ -24,13 +24,13 @@ public class PlayerJoinEvent implements Listener {
     @EventHandler
     public void onJoin(org.bukkit.event.player.PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerInfo playerInfo = playerService.getPlayerInfo(player.getUniqueId().toString());
+        PlayerInfo  playerInfo = playerService.getPlayerInfo(player.getUniqueId().toString());
 
         if (playerInfo == null) {
-            Log.d("Creating new Player: " + player.getDisplayName());
+            Bukkit.getConsoleSender().sendMessage(MainService.prefix + "§eCreating new Player: " + player.getDisplayName());
             createNewPlayer(player);
         } else {
-            Log.d("Player already Exists: " + player.getDisplayName());
+            Bukkit.getConsoleSender().sendMessage(MainService.prefix + "§ePlayer already Exists: " + player.getDisplayName());
         }
     }
 
@@ -40,7 +40,7 @@ public class PlayerJoinEvent implements Listener {
 
         // Initialize Kits
         this.skywarsService.initializeKits(player.getUniqueId().toString());
-        MainService.getService(null).getSoupTrainingService().initializePlayer(player);
+        MainService.getService(null).getSoupTrainingService().initializePlayer((PlayerInfo) player);
 
         return playerInfo;
     }

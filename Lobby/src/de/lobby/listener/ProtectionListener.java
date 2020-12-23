@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
@@ -45,10 +46,15 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        Player player = (Player) event.getEntity();
-        if(!Main.build.contains(player)) {
-            event.setCancelled(true);
-        }
+        try {
+            if (event.getEntity() instanceof Player) {
+                event.setCancelled(true);
+            }
+            Player player = (Player) event.getEntity();
+            if (!Main.build.contains(player)) {
+                event.setCancelled(true);
+            }
+        } catch (Exception e) {}
     }
 
     @EventHandler
