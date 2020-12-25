@@ -1,7 +1,5 @@
 package de.sw.manager;
 
-import com.rosemite.services.helper.Log;
-import de.sw.main.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -93,9 +91,6 @@ public class TeamManager {
 
     public void teleportPlayers() {
         if (this.location == null) {
-            Log.d("bad");
-            Log.d("bad");
-            Log.d("bad");
             return;
         }
         players.forEach(player -> player.teleport(this.location));

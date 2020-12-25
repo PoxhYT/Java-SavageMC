@@ -1,18 +1,10 @@
 package de.sw.listener;
 
-import com.rosemite.services.helper.Log;
-import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.sw.main.Main;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-
-import java.util.UUID;
 
 public class KillDeathListener implements Listener {
 
@@ -36,13 +28,6 @@ public class KillDeathListener implements Listener {
             }
         } catch (NullPointerException e) {}
     }
-
-    //Death event
-    @EventHandler
-    public void onDeath(EntityDamageEvent.DamageCause event) {
-
-    }
-
 
     public String getExactTeam(Player player) {
         return Main.teamManagerMap.get(player.getUniqueId());

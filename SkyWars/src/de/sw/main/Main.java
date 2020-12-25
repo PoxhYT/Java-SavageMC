@@ -1,8 +1,7 @@
 package de.sw.main;
 
-import com.rosemite.services.helper.Log;
-import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.gamestateapi.main.GameStateAPIManager;
+import de.poxh.services.models.skywars.PlayerSkywarsStats;
 import de.sw.commands.*;
 import de.sw.countdown.*;
 import de.sw.enums.Path;
@@ -80,7 +79,6 @@ public class Main extends JavaPlugin {
         luckPerms = getServer().getServicesManager().load(LuckPerms.class);
         this.instance = this;
         init();
-        Log.d(items.size());
     }
 
     public void init() {
@@ -91,8 +89,6 @@ public class Main extends JavaPlugin {
 
         loadFiles();
         GameStateAPIManager.setState(GameStateAPIManager.LOBBY);
-
-        Log.d("ANZAHL DER MAPS:" + maps.size());
 
 //        copyWorld();
 
@@ -123,11 +119,9 @@ public class Main extends JavaPlugin {
         Random random = new Random();
         loadFiles();
         List<Map<String, Object>> result = maps.stream().filter(map -> !(boolean) map.get(Path.StillUnderDevelopment.toString())).collect(Collectors.toList());
-        Log.d(result.size());
         int mapsSize = random.nextInt(result.size());
 //        Map<String, Object> finalMap = result.get(0);
         Map<String, Object> finalMap = result.get(mapsSize);
-        Log.d(finalMap.get(Path.MapName.toString()));
 
         MapName1 = finalMap;
 
@@ -200,6 +194,7 @@ public class Main extends JavaPlugin {
         pluginManager.registerEvents((Listener) new ProtectionListener(), this);
         pluginManager.registerEvents((Listener) new TeamListener(map, luckPerms), this);
         pluginManager.registerEvents(new ServerPingListener(), this);
+        pluginManager.registerEvents(new PlayerTeleporter(this), this);
     }
 
     public KitListener getKitListener() {

@@ -1,22 +1,15 @@
 package de.sw.commands;
 
-import com.rosemite.services.helper.Convert;
-import com.rosemite.services.helper.Log;
-import de.sw.enums.ChestType;
+import de.poxh.services.helper.Convert;
 import de.sw.main.Main;
-import de.sw.manager.ItemDocument;
 import de.sw.manager.KitEnchantments;
 import de.sw.manager.RandomItemInChest;
-import net.minecraft.server.v1_8_R3.Items;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +48,6 @@ public class Command_addItem implements CommandExecutor {
                 });
 
                 RandomItemInChest randomItemInChest = new RandomItemInChest(playerHandItemItems.getData().getItemType().getId(), enchantments, min, max, chance);
-
-                Log.d("ACHTUNG:" + randomItemInChest);
-                Log.d("ACHTUNGV2:" + normal);
 
                 normal.add(Convert.getPropertiesToMap(randomItemInChest));
 

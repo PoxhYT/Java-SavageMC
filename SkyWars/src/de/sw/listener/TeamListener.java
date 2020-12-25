@@ -1,8 +1,7 @@
 package de.sw.listener;
 
-import com.rosemite.services.helper.Log;
-import com.rosemite.services.main.MainService;
-import com.rosemite.services.models.skywars.PlayerSkywarsStats;
+import de.poxh.services.main.MainService;
+import de.poxh.services.models.skywars.PlayerSkywarsStats;
 import de.sw.api.ItemBuilderAPI;
 import de.sw.enums.Path;
 import de.sw.main.Main;
@@ -21,9 +20,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +46,7 @@ public class TeamListener implements Listener {
 
         for (int i = 0; i < Main.instance.teams.length; i++) {
             if (data.locations == null) {
-                Log.d("Locations are null");
+                return;
             }
             Main.instance.teams[i] = new TeamManager("§eTeam" + (i+1), "§eTeam", data.locations[i], Material.WOOL, data.maxPlayersInTeam);
         }
@@ -60,7 +60,6 @@ public class TeamListener implements Listener {
 
         for (int i = 0; i < Main.instance.teams.length; i++) {
             if (!Main.instance.teams[i].isFull()) {
-                Log.d("Du bist im " + Main.instance.teams[i].getTeamName());
                 String teamDisplayName = Main.instance.teams[i].getTeamName();
                 p.sendMessage(Main.prefix + "Du bist im " + Main.instance.teams[i].getTeamName());
                 p.setDisplayName(teamDisplayName);
@@ -200,9 +199,8 @@ public class TeamListener implements Listener {
 
                 if(!Main.endingCountdown.isRunning()) {
                     Main.endingCountdown.start();
-                    Log.d("Game Ended");
 
-                    Main.stats.forEach((uuid, playerSkywarsStats) -> services.getSkywarsService().addPlayerStats(uuid.toString(), playerSkywarsStats));
+                    Main.stats.forEach((uuid, playerSkywarsStats) -> services.getSkyWarsService().addPlayerStats(uuid.toString(), playerSkywarsStats));
                 }
             }
         } catch (NullPointerException e) { }

@@ -1,8 +1,6 @@
 package de.sw.manager;
 
-import com.rosemite.services.helper.Log;
-import com.rosemite.services.main.MainService;
-import com.rosemite.services.models.skywars.PlayerSkywarsStats;
+import de.poxh.services.main.MainService;
 import de.sw.enums.Path;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
@@ -15,10 +13,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class SBManager {
 
@@ -43,7 +37,7 @@ public class SBManager {
         obj.getScore("§8➥ §8(§e" + Main.MapName1.get(Path.GameSize.toString()) + "§8)").setScore(4);
         obj.getScore("§3 ").setScore(3);
         obj.getScore("§8• §fKit").setScore(2);
-        obj.getScore("§8➥ §e" + service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString())).setScore(1);
+        obj.getScore("§8➥ §e" + service.getSkyWarsService().getLatestSelectedKit(player.getUniqueId().toString())).setScore(1);
         obj.getScore("§4 ").setScore(0);
 
         player.setScoreboard(board);
@@ -63,7 +57,7 @@ public class SBManager {
         obj.getScore("§8➥ §e 0").setScore(4);
         obj.getScore("§3 ").setScore(3);
         obj.getScore("§8• §fKit").setScore(2);
-        obj.getScore("§8➥ §e" + service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString())).setScore(1);
+        obj.getScore("§8➥ §e" + service.getSkyWarsService().getLatestSelectedKit(player.getUniqueId().toString())).setScore(1);
         obj.getScore("§4 ").setScore(0);
 
         player.setScoreboard(board);

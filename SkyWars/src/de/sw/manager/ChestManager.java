@@ -2,13 +2,8 @@ package de.sw.manager;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import com.google.gson.internal.Primitives;
-import com.rosemite.services.helper.Convert;
-import com.rosemite.services.helper.Log;
 import de.sw.api.ItemBuilderAPI;
-import de.sw.enums.Path;
 import de.sw.main.Main;
-import de.sw.manager.SkyWarsMapData;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,13 +11,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -132,7 +124,6 @@ public class ChestManager {
             int i = random.nextInt(99) + 1;
 
             List<RandomItemInChest> items = this.center.stream().filter((c) -> c.Chance >= i).collect(Collectors.toList());
-            Log.d(items.size());
             if (items.size() == 0) {
                 return getRandomItem(center);
             }
@@ -143,7 +134,6 @@ public class ChestManager {
 
 
         List<RandomItemInChest> items = this.normal.stream().filter((c) -> c.Chance >= i).collect(Collectors.toList());
-        Log.d(items.size());
         if (items.size() == 0) {
             return getRandomItem(center);
         }

@@ -1,7 +1,5 @@
 package de.sw.commands;
 
-import com.google.gson.Gson;
-import com.rosemite.services.helper.Log;
 import de.sw.enums.Path;
 import de.sw.main.Main;
 import de.sw.manager.SkyWarsMapData;
@@ -12,8 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,8 +42,6 @@ public class Command_create implements CommandExecutor {
                     player.sendMessage(Main.prefix + "§cDie Map wurde bereits erstellt!");
                     return false;
                 }
-
-                Log.d(maps.get(i).get(Path.MapName.toString()));
             }
 
             String gameSize = maxTeamCount + "x" + maxPlayersInTeam;

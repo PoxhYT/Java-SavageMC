@@ -1,7 +1,6 @@
 package de.sw.listener;
 
-import com.rosemite.services.helper.Log;
-import com.rosemite.services.main.MainService;
+import de.poxh.services.main.MainService;
 import de.sw.main.Main;
 import de.sw.api.ItemBuilderAPI;
 import de.sw.manager.KitManager;
@@ -40,10 +39,9 @@ public class KitListener implements Listener {
         Player player = event.getPlayer();
         List<KitManager> kits = defaultKits();
 
-        String latestKit = service.getSkywarsService().getLatestSelectedKit(player.getUniqueId().toString());
+        String latestKit = service.getSkyWarsService().getLatestSelectedKit(player.getUniqueId().toString());
 
         kits.forEach(kit -> {
-            Log.d(latestKit);
             if (latestKit.equals(kit.getKitNameLiteralString())) {
                 player.getInventory().setItem(8, new ItemBuilderAPI(kit.getKitIcon()).setDisplayName(kit.getKitNameLiteralStringColored()).build());
                 Main.kitMap.put(player, kit);
@@ -93,7 +91,7 @@ public class KitListener implements Listener {
 
                     if (result.getValue()) {
                         // Buy Kit
-                        service.getSkywarsService().buyKit(uuid, kits[i].getKitNameLiteralString());
+                        service.getSkyWarsService().buyKit(uuid, kits[i].getKitNameLiteralString());
                         player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " gekauft!");
                         player.playSound(player.getLocation(), Sound.LEVEL_UP, 1, 1);
                         player.closeInventory();
@@ -110,7 +108,7 @@ public class KitListener implements Listener {
                     Main.kitMap.put(player, kits[i]);
 
                     player.sendMessage(Main.prefix + "Du hast das " + kits[i].getKitNameLiteralStringColored() + " §eKit §7ausgewählt!");
-                    service.getSkywarsService().updateLatestSelectedKit(player.getUniqueId().toString(), kits[i].getKitNameLiteralString());
+                    service.getSkyWarsService().updateLatestSelectedKit(player.getUniqueId().toString(), kits[i].getKitNameLiteralString());
                     Main.instance.sbManager.setLobbyBoard(player);
 
                     player.getInventory().setItem(8, new ItemBuilderAPI(kits[i].getKitIcon()).setDisplayName(kits[i].getKitNameLiteralStringColored()).build());
@@ -166,14 +164,14 @@ public class KitListener implements Listener {
     }
 
     private List<KitManager> defaultKits() {
-        return service.getSkywarsService().getDefaultKits();
+        return service.getSkyWarsService().getDefaultKits();
     }
 
     private KitManager[] getKits(Player player) {
         service = MainService.getService(service);
-        List<KitManager> kits = service.getSkywarsService().getDefaultKits();
+        List<KitManager> kits = service.getSkyWarsService().getDefaultKits();
 
-        kits = service.getSkywarsService().verifyKits(kits, player.getUniqueId().toString());
+        kits = service.getSkyWarsService().verifyKits(kits, player.getUniqueId().toString());
 
         return kits.toArray(new KitManager[0]);
     }

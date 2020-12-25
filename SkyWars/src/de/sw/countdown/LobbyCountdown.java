@@ -1,9 +1,7 @@
 package de.sw.countdown;
 
-import com.rosemite.services.helper.Log;
 import de.gamestateapi.main.GameStateAPIManager;
 import de.sw.enums.Path;
-import de.sw.manager.ChestManager;
 import de.sw.manager.KitItem;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
@@ -84,7 +82,6 @@ public class LobbyCountdown extends Countdown{
                             // Give Player their kits
                             Main.kitMap.forEach((player, kit) -> {
                                 List<KitItem> kitItems = kit.getKitItem();
-                                Log.d("The Player: " + player.getName() + " has the kits...");
                                 for (int i = 0; i < kitItems.size(); i++) {
                                     player.getInventory().addItem(kitItems.get(i).getItem());
                                 }

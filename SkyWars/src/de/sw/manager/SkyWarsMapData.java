@@ -2,9 +2,6 @@ package de.sw.manager;
 
 import java.util.Map;
 import java.util.HashMap;
-import com.google.gson.Gson;
-import com.rosemite.services.helper.Convert;
-import com.rosemite.services.helper.Log;
 import de.sw.enums.Path;
 import org.bukkit.Location;
 
@@ -47,7 +44,6 @@ public class SkyWarsMapData {
         Location[] points = new Location[4];
         for (int i = 0; i < points.length; i++) {
             points[i] = locations[pIndex[i]];
-            Log.d(points[i]);
         }
 
         // Calculate X
@@ -61,7 +57,6 @@ public class SkyWarsMapData {
         z += m(points[1].getZ(), points[3].getZ());
 
         this.locationOfMiddlePoint = new Location(locations[0].getWorld(), x, locations[0].getY(), z);
-        Log.d(this.locationOfMiddlePoint);
     }
 
     public SkyWarsMapData(int id, String mapName, String gameSize, Location[] locations, int maxTeamCount, int maxPlayersInTeam, boolean stillUnderDevelopment, int radius, Location locationOfMiddlePoint) {
