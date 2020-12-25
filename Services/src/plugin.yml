@@ -1,3 +1,4 @@
 name: Services
 version: 1.0
-main: de.poxh.services.main.MainService
+author: SolomonRosemite
+main: com.rosemite.services.main.MainService
