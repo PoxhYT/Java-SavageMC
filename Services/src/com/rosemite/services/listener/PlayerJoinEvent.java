@@ -1,6 +1,5 @@
 package com.rosemite.services.listener;
 
-import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.player.PlayerInfo;
 import com.rosemite.services.services.player.PlayerService;
@@ -27,10 +26,10 @@ public class PlayerJoinEvent implements Listener {
         PlayerInfo  playerInfo = playerService.getPlayerInfo(player.getUniqueId().toString());
 
         if (playerInfo == null) {
-            Bukkit.getConsoleSender().sendMessage(MainService.prefix + "§eCreating new Player: " + player.getDisplayName());
+            Bukkit.getConsoleSender().sendMessage("§eCreating new Player: " + player.getDisplayName());
             createNewPlayer(player);
         } else {
-            Bukkit.getConsoleSender().sendMessage(MainService.prefix + "§ePlayer already Exists: " + player.getDisplayName());
+            Bukkit.getConsoleSender().sendMessage("§ePlayer already Exists: " + player.getDisplayName());
         }
     }
 
@@ -40,7 +39,7 @@ public class PlayerJoinEvent implements Listener {
 
         // Initialize Kits
         this.skywarsService.initializeKits(player.getUniqueId().toString());
-        MainService.getService(null).getSoupTrainingService().initializePlayer((PlayerInfo) player);
+        MainService.getService(null).getSoupTrainingService().initializePlayer(player);
 
         return playerInfo;
     }

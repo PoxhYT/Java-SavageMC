@@ -1,9 +1,11 @@
 package com.rosemite.services.services.player;
 
 import com.google.gson.Gson;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.rosemite.services.helper.Convert;
+import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import com.rosemite.services.models.common.Paths;
 import com.rosemite.services.models.player.PlayerInfo;
@@ -22,6 +24,9 @@ public class PlayerService {
 
     public PlayerService(MongoDatabase db, MainService mainService) {
         this.db = db;
+        db.listCollections().forEach(document -> {
+            Log.d("ALRIGHT!");
+        });
     }
 
     public PlayerInfo createNewPlayer(Player player) {
@@ -34,7 +39,8 @@ public class PlayerService {
             500,
             5,
             0,
-            "none"
+            "none",
+            "NOW"
         );
 
         String json = new Gson().toJson(playerInfo, PlayerInfo.class);
@@ -65,8 +71,25 @@ public class PlayerService {
 
     public PlayerSkywarsKits getPlayerSkywarsKits(String uuid) {
         Document doc = db.getCollection(Paths.PlayerSkywarsKits.toString()).find( eq("uuid", uuid)).first();
-
+        Log.d(doc);
+        Log.d(uuid);
+        FindIterable<Document> doc1 = db.getCollection(Paths.PlayerSkywarsKits.toString()).find( eq("uuid", uuid));
+        doc1.forEach(document -> {
+            Log.d("HELLO JOW ARE YOU");
+                }
+        );
         return new PlayerSkywarsKits(new Gson().fromJson(doc.toJson(), Map.class));
+    }
+
+
+    public void setRewardDate(String uuid, String date) {
+        db.getCollection(Paths.PlayerInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
+                combine(set("receiveReward", date)));
+    }
+
+    public String getRewardDate(String uuid) {
+        Document doc = db.getCollection(Paths.PlayerInfo.toString()).find(eq("uuid", uuid)).first();
+        return (String) doc.get("receiveReward");
     }
 
     public void setPlayerBan(String uuid, String date) {

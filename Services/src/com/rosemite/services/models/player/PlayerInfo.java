@@ -10,8 +10,9 @@ public class PlayerInfo {
     private final int tickets;
     private final int bans;
     private final String endBanDate;
+    private final String receiveReward;
 
-    public PlayerInfo(boolean hasPremium, boolean isBanned, String playername, String latestSelectedSkywarsKit, String uuid, int coins, int tickets, int bans, String endBanDate) {
+    public PlayerInfo(boolean hasPremium, boolean isBanned, String playername, String latestSelectedSkywarsKit, String uuid, int coins, int tickets, int bans, String endBanDate, String receiveReward) {
         this.latestSelectedSkywarsKit = latestSelectedSkywarsKit;
         this.hasPremium = hasPremium;
         this.isBanned = isBanned;
@@ -21,6 +22,7 @@ public class PlayerInfo {
         this.tickets = tickets;
         this.bans = bans;
         this.endBanDate = endBanDate;
+        this.receiveReward = receiveReward;
     }
 
     public boolean hasPremium() {

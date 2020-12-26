@@ -1,7 +1,7 @@
 package de.sw.listener;
 
-import de.poxh.services.main.MainService;
-import de.poxh.services.models.skywars.PlayerSkywarsStats;
+import com.rosemite.services.main.MainService;
+import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.sw.api.ItemBuilderAPI;
 import de.sw.enums.Path;
 import de.sw.main.Main;
@@ -20,8 +20,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 import java.io.File;
 import java.util.HashMap;
@@ -54,21 +52,6 @@ public class TeamListener implements Listener {
 
 //    private String teamItemDisplayName = "§8[§a" + Main.instance.teams.length + "§7/§c" + (data != null).maxTeamCount;
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        Player p = event.getPlayer();
-
-        for (int i = 0; i < Main.instance.teams.length; i++) {
-            if (!Main.instance.teams[i].isFull()) {
-                String teamDisplayName = Main.instance.teams[i].getTeamName();
-                p.sendMessage(Main.prefix + "Du bist im " + Main.instance.teams[i].getTeamName());
-                p.setDisplayName(teamDisplayName);
-                Main.instance.teams[i].addPlayer(p);
-                Main.teamManagerMap.put(p.getUniqueId(), Main.instance.teams[i].getTeamName());
-                break;
-            }
-        }
-    }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
@@ -200,7 +183,7 @@ public class TeamListener implements Listener {
                 if(!Main.endingCountdown.isRunning()) {
                     Main.endingCountdown.start();
 
-                    Main.stats.forEach((uuid, playerSkywarsStats) -> services.getSkyWarsService().addPlayerStats(uuid.toString(), playerSkywarsStats));
+                    Main.stats.forEach((uuid, playerSkywarsStats) -> services.getSkywarsService().addPlayerStats(uuid.toString(), playerSkywarsStats));
                 }
             }
         } catch (NullPointerException e) { }
@@ -230,12 +213,15 @@ public class TeamListener implements Listener {
 
     // [2/4]
     public void openTeamInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 9, "§eTeamauswahl");
+
+
 
         String size = (String) Main.MapName1.get(Path.GameSize.toString());
         Integer maxTeams = (Integer) Main.MapName1.get(Path.MaxTeamCount.toString());
         Integer maxPlayersInTeam = (Integer) Main.MapName1.get(Path.MaxPlayersInTeam.toString());
 
+        int chestSize = Integer.valueOf(size.split("x")[0]) > 8 ? 18:9;
+        Inventory inventory = Bukkit.createInventory(null, chestSize, "§eTeamauswahl");
 
         if (size.equals(size)) {
             for (int i = 0; i < maxTeams; i++) {
@@ -256,8 +242,6 @@ public class TeamListener implements Listener {
                 inventory.setItem(i, new ItemBuilderAPI(Material.WOOL).setDisplayName("§eTeam" + (i + 1) + " §8[§a" + Main.instance.teams[i].getPlayers().size() + "§7/§c"
                         + maxPlayersInTeam + "§8]").setLore((playersInTeam)).build());
                 player.openInventory(inventory);
-
-
             }
         }
     }

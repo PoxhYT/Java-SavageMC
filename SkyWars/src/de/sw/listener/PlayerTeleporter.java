@@ -37,7 +37,6 @@ public class PlayerTeleporter implements Listener {
     private void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         alivePlayers.add(player);
-        changeName(player, "§8[§eTeam1§8] §7");
     }
 
     @EventHandler
@@ -121,7 +120,7 @@ public class PlayerTeleporter implements Listener {
     }
 
     private static void changeName(Player player, String prefix) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Team team = scoreboard.getTeam(prefix);
         if(team == null) {
             team = scoreboard.registerNewTeam(prefix);

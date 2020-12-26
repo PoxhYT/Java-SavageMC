@@ -1,21 +1,27 @@
 package de.sw.listener;
 
-import de.poxh.services.main.MainService;
+import com.nametagedit.plugin.NametagManager;
+import com.rosemite.services.helper.Log;
+import com.rosemite.services.main.MainService;
 import de.sw.api.LocationAPI;
 import de.sw.enums.Path;
 import de.sw.main.Main;
 import de.sw.manager.*;
 import net.luckperms.api.LuckPerms;
+import net.minecraft.server.v1_8_R3.EntityHuman;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 public class PlayerConnectionEvent implements Listener {
@@ -55,13 +61,30 @@ public class PlayerConnectionEvent implements Listener {
         event.setJoinMessage(Main.prefix + "§8» §e" + player.getName() + " §7hat das Spiel betreten! §7[§a"
                 + Main.alivePlayers.size() + "§7/§c" + MAX_PLAYERS + "§7]");
 
-        //Adding player to ScoreBoard
+
+
         for (int i = 0; i < Main.instance.teams.length; i++) {
-            changeName(player, Main.instance.teams[i].getTeamName());
+            if (!Main.instance.teams[i].isFull()) {
+                String teamDisplayName = Main.instance.teams[i].getTeamName();
+                player.sendMessage(Main.prefix + "Du bist im " + Main.instance.teams[i].getTeamName());
+                player.setDisplayName(teamDisplayName);
+                Main.instance.teams[i].addPlayer(player);
+                Main.teamManagerMap.put(player.getUniqueId(), Main.instance.teams[i].getTeamName());
+                break;
+            }
         }
 
+        for (int i = 0; i < Main.instance.teams.length; i++) {
+            for (int j = 0; j < Main.instance.teams[i].getPlayers().size(); j++) {
+                if(player.getUniqueId() == Main.instance.teams[i].getPlayers().get(j).getUniqueId()) {
+                    NameTagManager.instance.setNametag(player.getName(), Main.instance.teams[i].getTeamName(), "");
+                }
+            }
+        }
 
         Main.getInstance().sbManager.setLobbyBoard(player);
+
+        //Adding player to ScoreBoard
 
 
         Random chance = new Random();
@@ -99,19 +122,6 @@ public class PlayerConnectionEvent implements Listener {
                 Main.instance.countdown.stop();
                 Main.instance.countdown.startIdle();
             }
-        }
-    }
-
-    private static void changeName(Player player, String prefix) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team team = scoreboard.getTeam(prefix);
-        if(team == null) {
-            team = scoreboard.registerNewTeam(prefix);
-        }
-        team.setPrefix(prefix);
-        team.addPlayer(player);
-        for (Player players : Bukkit.getOnlinePlayers()) {
-            players.setScoreboard(scoreboard);
         }
     }
 }
