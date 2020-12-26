@@ -2,6 +2,7 @@ package com.rosemite.services.services.player;
 
 import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.rosemite.services.helper.Convert;
@@ -39,8 +40,7 @@ public class PlayerService {
             500,
             5,
             0,
-            "none",
-            "NOW"
+            "none"
         );
 
         String json = new Gson().toJson(playerInfo, PlayerInfo.class);
@@ -49,6 +49,11 @@ public class PlayerService {
         db.getCollection(Paths.PlayerInfo.toString()).insertOne(new Document(doc));
 
         return playerInfo;
+    }
+
+    public void setReceivedRewards(String uuid, boolean bool) {
+        db.getCollection(Paths.PlayerInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
+                combine(set("receivedReward", bool)));
     }
 
     public PlayerInfo getPlayerInfo(String uuid) {
