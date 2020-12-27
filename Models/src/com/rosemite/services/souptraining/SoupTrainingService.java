@@ -29,14 +29,14 @@ public class SoupTrainingService {
 
     private IService service;
 
-    public SoupTrainingService(MongoDatabase db, IService mainService) {
+    public SoupTrainingService(MongoDatabase db, IService service) {
         this.db = db;
         this.collection = db.getCollection(Paths.SoupTraining.toString());
-        service = MainService.getService(mainService);
+        this.service = service;
     }
 
-    public void saveScore(Player player, Object type, String time, int droppedSoups, int coins) {
-        Document doc = collection.find(Filters.eq("UUID", player.getUniqueId().toString())).first();
+    public void saveScore(String uuid, String displayName, Object type, String time, int droppedSoups, int coins) {
+        Document doc = collection.find(Filters.eq("UUID", uuid)).first();
 
         if (doc == null) {
             // Todo: Report
@@ -47,14 +47,14 @@ public class SoupTrainingService {
             );
 
             // Todo: Create missing Doc
-            initializePlayer(player);
+            initializePlayer(uuid, displayName);
         }
 
         // Add Coins
-        Document document = db.getCollection(Paths.PlayerInfo.toString()).find(Filters.eq("uuid", player.getUniqueId().toString())).first();
+        Document document = db.getCollection(Paths.PlayerInfo.toString()).find(Filters.eq("uuid", uuid)).first();
         coins += Convert.c(document.get("coins"));
 
-        db.getCollection(Paths.PlayerInfo.toString()).updateOne(Filters.eq("uuid", player.getUniqueId().toString()),
+        db.getCollection(Paths.PlayerInfo.toString()).updateOne(Filters.eq("uuid", uuid.toString()),
             combine(
                     set("coins", coins)
         ));
@@ -64,7 +64,7 @@ public class SoupTrainingService {
             return;
         }
 
-        collection.updateOne(Filters.eq("UUID", player.getUniqueId().toString()),
+        collection.updateOne(Filters.eq("UUID", uuid),
             combine(
                     set(type.toString(), droppedSoups),
                     set(type.toString()+"TIME", time)
@@ -100,8 +100,8 @@ public class SoupTrainingService {
         return list;
     }
 
-    public void initializePlayer(Player player) {
-        SoupScoreModel model = new SoupScoreModel(player);
+    public void initializePlayer(String uuid, String displayName) {
+        SoupScoreModel model = new SoupScoreModel(uuid, displayName);
 
         String json = new Gson().toJson(model);
         Map<String, Object> doc = new Gson().fromJson(json, Map.class);

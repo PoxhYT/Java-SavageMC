@@ -11,6 +11,10 @@ import com.rosemite.services.main.MainService;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -24,21 +28,27 @@ public class RewardService {
         this.db = db;
     }
 
-    public RewardInfo createNewPlayer(Player player) {
+    public RewardInfo createNewPlayer(String uuid, String displayName) {
+
+        Date date = new Date();
+        String pattern = "dd/MM/yyyy H:m";
+        DateFormat df = new SimpleDateFormat(pattern);
+        String dateAsString = df.format(date);
+
         RewardInfo rewardInfo = new RewardInfo(
-                player.getDisplayName(),
-                player.getUniqueId().toString(),
-                "JETZT",
+                uuid,
+                displayName,
+                dateAsString,
                 false,
-                "JETZT",
+                dateAsString,
                 false,
-                "JETZT",
+                dateAsString,
                 false,
-                "JETZT",
+                dateAsString,
                 false,
-                "JETZT",
+                dateAsString,
                 false,
-                "JETZT",
+                dateAsString,
                 false
         );
 
@@ -79,7 +89,7 @@ public class RewardService {
 
     public void setPlayerTicket(String uuid, boolean receive) {
         db.getCollection(Paths.RewardInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
-                combine(set("playerTicketReceive", receive)));
+                combine(set("playerTicketReceived", receive)));
     }
 
     public void setPlayerCoinsDate(String uuid, String date) {
@@ -94,7 +104,7 @@ public class RewardService {
 
     public void setPlayerCoins(String uuid, boolean receive) {
         db.getCollection(Paths.RewardInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
-                combine(set("playerCoinsReceive", receive)));
+                combine(set("playerCoinsReceived", receive)));
     }
 
     public void setPremiumTicketDate(String uuid, String date) {
@@ -109,7 +119,7 @@ public class RewardService {
 
     public void setPremiumTicket(String uuid, boolean receive) {
         db.getCollection(Paths.RewardInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
-                combine(set("premiumTicketReceive", receive)));
+                combine(set("premiumTicketReceived", receive)));
     }
 
     public void setPremiumCoinsDate(String uuid, String date) {
@@ -124,7 +134,7 @@ public class RewardService {
 
     public void setPremiumCoins(String uuid, boolean receive) {
         db.getCollection(Paths.RewardInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
-                combine(set("premiumCoinsReceive", receive)));
+                combine(set("premiumCoinsReceived", receive)));
     }
 
     public void setSavageTicketDate(String uuid, String date) {
@@ -139,7 +149,7 @@ public class RewardService {
 
     public void setSavageTicket(String uuid, boolean receive) {
         db.getCollection(Paths.RewardInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
-                combine(set("savageTicketReceive", receive)));
+                combine(set("savageTicketReceived", receive)));
     }
 
     public void setSavageCoinsDate(String uuid, String date) {
@@ -154,7 +164,7 @@ public class RewardService {
 
     public void setSavageCoins(String uuid, boolean receive) {
         db.getCollection(Paths.RewardInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
-                combine(set("savageCoinsReceive", receive)));
+                combine(set("savageCoinsReceived", receive)));
     }
 
 
