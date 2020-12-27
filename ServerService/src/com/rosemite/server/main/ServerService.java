@@ -1,9 +1,9 @@
 package com.rosemite.server.main;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.helper.Log;
-import com.rosemite.models.service.common.SecureClass;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.server.config.Config;
 import com.rosemite.services.coin.CoinService;
@@ -12,10 +12,10 @@ import com.rosemite.services.holder.ServiceHolder;
 import com.rosemite.services.lobby.LobbyService;
 import com.rosemite.services.player.PlayerService;
 import com.rosemite.services.report.ReportService;
+import com.rosemite.services.reward.RewardService;
 import com.rosemite.services.skywars.SkywarsService;
 import com.rosemite.services.souptraining.SoupTrainingService;
 import com.rosemite.services.ticket.TicketService;
-import com.sun.istack.internal.NotNull;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -74,6 +74,11 @@ public class ServerService extends Plugin implements IService {
     @Override
     public PlayerService getPlayerService() {
         return holder.getPlayerService();
+    }
+
+    @Override
+    public RewardService getRewardService() {
+        return holder.getRewardService();
     }
 
     public static IService getService(IService service) {

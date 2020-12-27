@@ -4,8 +4,8 @@ public class PlayerInfo {
     private final boolean hasPremium;
     private final boolean isBanned;
     private final String playername;
-    private final String latestSelectedSkywarsKit;
     private final String uuid;
+    private final String latestSelectedSkywarsKit;
     private final int coins;
     private final int tickets;
     private final int bans;

@@ -8,14 +8,15 @@ public enum Paths {
     PlayerSkywarsStats("PlayerSkywarsStats"),
     PlayerInfo("Players"),
     RewardInfo("Reward"),
+    Relationships("Relationships"),
     LobbyInfo("Lobby");
-    private final String value;
+    public final String val;
 
     @Override
     public String toString() {
-        return value;
+        return val;
     }
     Paths(final String text) {
-        this.value = text;
+        this.val = text;
     }
 }
