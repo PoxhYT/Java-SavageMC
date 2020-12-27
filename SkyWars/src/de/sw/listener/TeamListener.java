@@ -1,7 +1,8 @@
 package de.sw.listener;
 
+import com.rosemite.models.service.common.IService;
+import com.rosemite.models.service.skywars.PlayerSkywarsStats;
 import com.rosemite.services.main.MainService;
-import com.rosemite.services.models.skywars.PlayerSkywarsStats;
 import de.sw.api.ItemBuilderAPI;
 import de.sw.enums.Path;
 import de.sw.main.Main;
@@ -33,14 +34,14 @@ public class TeamListener implements Listener {
     private HashMap<UUID, PlayerSkywarsStats> stats = new HashMap<>();
     private LuckPerms luckPerms;
     private Main instance;
-    private MainService services;
+    private IService services;
     private final SkyWarsMapData data;
 
     public TeamListener(SkyWarsMapData data, LuckPerms luckPerms) {
+        this.services = MainService.getService(services);
+        Main.instance.teams = new TeamManager[data.maxTeamCount];
         this.data = data;
         this.luckPerms = luckPerms;
-        Main.instance.teams = new TeamManager[data.maxTeamCount];
-        this.services = MainService.getService(services);
 
         for (int i = 0; i < Main.instance.teams.length; i++) {
             if (data.locations == null) {
@@ -49,9 +50,6 @@ public class TeamListener implements Listener {
             Main.instance.teams[i] = new TeamManager("§eTeam" + (i+1), "§eTeam", data.locations[i], Material.WOOL, data.maxPlayersInTeam);
         }
     }
-
-//    private String teamItemDisplayName = "§8[§a" + Main.instance.teams.length + "§7/§c" + (data != null).maxTeamCount;
-
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
@@ -210,8 +208,6 @@ public class TeamListener implements Listener {
         }
     }
 
-
-    // [2/4]
     public void openTeamInventory(Player player) {
 
 

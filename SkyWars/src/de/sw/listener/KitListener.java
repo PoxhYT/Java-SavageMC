@@ -1,9 +1,10 @@
 package de.sw.listener;
 
+import com.rosemite.models.service.common.IService;
+import com.rosemite.models.skywars.KitManager;
 import com.rosemite.services.main.MainService;
 import de.sw.main.Main;
 import de.sw.api.ItemBuilderAPI;
-import de.sw.manager.KitManager;
 import javafx.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,7 +21,7 @@ import org.bukkit.inventory.Inventory;
 import java.util.List;
 
 public class KitListener implements Listener {
-    private MainService service;
+    private IService service;
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {

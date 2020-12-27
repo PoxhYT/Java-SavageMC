@@ -1,6 +1,7 @@
 package de.sw.main;
 
-import com.rosemite.services.models.skywars.PlayerSkywarsStats;
+import com.rosemite.models.service.skywars.PlayerSkywarsStats;
+import com.rosemite.models.skywars.KitManager;
 import de.gamestateapi.main.GameStateAPIManager;
 import de.sw.commands.*;
 import de.sw.countdown.*;

@@ -1,8 +1,8 @@
 package de.sw.commands;
 
-import com.rosemite.services.helper.Convert;
+import com.rosemite.helper.Convert;
+import com.rosemite.services.skywars.KitEnchantments;
 import de.sw.main.Main;
-import de.sw.manager.KitEnchantments;
 import de.sw.manager.RandomItemInChest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

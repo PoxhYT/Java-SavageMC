@@ -1,9 +1,9 @@
 package com.rosemite.services.listener;
 
+import com.rosemite.models.service.player.PlayerInfo;
 import com.rosemite.services.main.MainService;
-import com.rosemite.services.models.player.PlayerInfo;
-import com.rosemite.services.services.player.PlayerService;
-import com.rosemite.services.services.skywars.SkywarsService;
+import com.rosemite.services.player.PlayerService;
+import com.rosemite.services.skywars.SkywarsService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

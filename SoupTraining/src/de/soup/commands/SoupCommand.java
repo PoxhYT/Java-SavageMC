@@ -1,6 +1,7 @@
 package de.soup.commands;
 
 import com.google.common.collect.Maps;
+import com.rosemite.models.service.common.IService;
 import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import de.soup.events.SoupListener;
@@ -48,7 +49,7 @@ public class SoupCommand implements CommandExecutor {
     private final String hart = "§7Der §eSchwierigkeitsgrad §7wurde auf §eHart §7angepasst!";
     private final String legende = "§7Der §eSchwierigkeitsgrad §7wurde auf §eLegende §7angepasst!";
 
-    private MainService service = MainService.getService(null);
+    private IService service = MainService.getService(null);
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

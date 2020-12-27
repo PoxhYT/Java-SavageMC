@@ -1,8 +1,8 @@
 package de.sw.countdown;
 
+import com.rosemite.services.skywars.KitItem;
 import de.gamestateapi.main.GameStateAPIManager;
 import de.sw.enums.Path;
-import de.sw.manager.KitItem;
 import de.sw.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;

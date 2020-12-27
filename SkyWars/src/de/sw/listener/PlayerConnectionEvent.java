@@ -1,7 +1,6 @@
 package de.sw.listener;
 
-import com.nametagedit.plugin.NametagManager;
-import com.rosemite.services.helper.Log;
+import com.rosemite.models.service.common.IService;
 import com.rosemite.services.main.MainService;
 import de.sw.api.LocationAPI;
 import de.sw.enums.Path;
@@ -28,7 +27,7 @@ public class PlayerConnectionEvent implements Listener {
 
     private Main instance;
     private LuckPerms luckPerms;
-    private MainService service;
+    private IService service;
 
     private static File file = new File("plugins/SkyWars", "config.yml");
     private static YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
@@ -36,7 +35,7 @@ public class PlayerConnectionEvent implements Listener {
     private static boolean joinMessage = false;
 
     public PlayerConnectionEvent(Main instance, LuckPerms luckPerms) {
-        service = MainService.getService(service);
+        service = MainService.getService(null);
         this.instance = instance;
         this.luckPerms = luckPerms;
     }
@@ -77,7 +76,7 @@ public class PlayerConnectionEvent implements Listener {
         for (int i = 0; i < Main.instance.teams.length; i++) {
             for (int j = 0; j < Main.instance.teams[i].getPlayers().size(); j++) {
                 if(player.getUniqueId() == Main.instance.teams[i].getPlayers().get(j).getUniqueId()) {
-                    NameTagManager.instance.setNametag(player.getName(), Main.instance.teams[i].getTeamName(), "");
+//                    NameTagManager.instance.setNametag(player.getName(), Main.instance.teams[i].getTeamName(), "");
                 }
             }
         }

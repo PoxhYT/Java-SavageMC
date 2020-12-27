@@ -1,5 +1,6 @@
 package de.sw.manager;
 
+import com.rosemite.models.service.common.IService;
 import com.rosemite.services.main.MainService;
 import de.sw.enums.Path;
 import de.sw.main.Main;
@@ -19,7 +20,7 @@ public class SBManager {
     private Main instance;
     private static File fileSkywars = new File("plugins/SkyWars", "MapData.yml");
     private static YamlConfiguration yamlConfigurationSkyWars = YamlConfiguration.loadConfiguration(fileSkywars);
-    private static MainService service;
+    private static IService service;
 
     public void setLobbyBoard(Player player) {
 

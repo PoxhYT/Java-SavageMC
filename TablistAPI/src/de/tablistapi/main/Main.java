@@ -9,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 
 public class Main extends JavaPlugin implements Listener {
-
     Scoreboard sb;
 
     @Override
