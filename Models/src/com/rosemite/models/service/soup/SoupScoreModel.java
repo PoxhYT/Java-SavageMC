@@ -18,7 +18,7 @@ public class SoupScoreModel {
     public final String UUID;
     public final String PLAYERNAME;
 
-    public SoupScoreModel(Player player) {
+    public SoupScoreModel(String uuid, String displayName) {
         int ds = 0;
         String dst = "00:00:00";
 
@@ -34,27 +34,7 @@ public class SoupScoreModel {
         this.HARDTIME = dst;
         this.LEGENDTIME = dst;
 
-        this.UUID = player.getUniqueId().toString();
-        this.PLAYERNAME = player.getDisplayName();
-    }
-
-    public SoupScoreModel(String playerUUID, String playername) {
-        int ds = 0;
-        String dst = "00:00:00:00";
-
-        this.NOOB = ds;
-        this.SLOW = ds;
-        this.NORMAL = ds;
-        this.HARD = ds;
-        this.LEGEND = ds;
-
-        this.NOOBTIME = dst;
-        this.SLOWTIME = dst;
-        this.NORMALTIME = dst;
-        this.HARDTIME = dst;
-        this.LEGENDTIME = dst;
-
-        this.UUID = playerUUID;
-        this.PLAYERNAME = playername;
+        this.UUID = uuid;
+        this.PLAYERNAME = displayName;
     }
 }

@@ -2,7 +2,6 @@ package de.soup.commands;
 
 import com.google.common.collect.Maps;
 import com.rosemite.models.service.common.IService;
-import com.rosemite.services.helper.Log;
 import com.rosemite.services.main.MainService;
 import de.soup.events.SoupListener;
 import de.soup.main.Main;
@@ -18,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.nio.charset.CodingErrorAction;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -124,7 +122,7 @@ public class SoupCommand implements CommandExecutor {
                             Timer time = Command_timer.timers.get(player.getUniqueId());
                             SpeedType type = this.speedType.get(player.getName());
 
-                            service.getSoupTrainingService().saveScore(player, type, time.getElapsedTime(), droppedSoups, number);
+                            service.getSoupTrainingService().saveScore(player.getUniqueId().toString(), player.getDisplayName(), type, time.getElapsedTime(), droppedSoups, number);
                             break;
                         case "speed":
                             if (!isInTraining(player)) {

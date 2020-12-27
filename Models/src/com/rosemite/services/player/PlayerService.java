@@ -29,13 +29,13 @@ public class PlayerService {
         });
     }
 
-    public PlayerInfo createNewPlayer(Player player) {
+    public PlayerInfo createNewPlayer(String uuid, String displayName) {
         PlayerInfo playerInfo = new PlayerInfo(
             false,
             false,
-            player.getDisplayName(),
+            displayName,
             "Standard",
-            player.getUniqueId().toString(),
+            uuid,
             500,
             5,
             0,

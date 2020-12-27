@@ -8,7 +8,6 @@ import com.rosemite.models.service.common.IService;
 import com.rosemite.services.coin.CoinService;
 import com.rosemite.services.friends.FriendsService;
 import com.rosemite.services.holder.ServiceHolder;
-import com.rosemite.services.listener.PlayerJoinEvent;
 import com.rosemite.services.config.Config;
 import com.rosemite.services.lobby.LobbyService;
 import com.rosemite.services.player.PlayerService;
@@ -39,19 +38,7 @@ public class MainService extends JavaPlugin implements IService {
         // Initialize Services
         holder = new ServiceHolder(db,this);
 
-        // Register Events
-        registerEvents();
-
         Log.d("Loaded Services Successfully");
-    }
-
-    private void registerEvents() {
-        final PluginManager pluginManager = Bukkit.getPluginManager();
-
-        pluginManager.registerEvents(new PlayerJoinEvent(
-                holder.getPlayerService(),
-                holder.getSkywarsService()
-        ), this);
     }
 
     @Override
