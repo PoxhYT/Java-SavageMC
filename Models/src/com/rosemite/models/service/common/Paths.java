@@ -7,6 +7,7 @@ public enum Paths {
     Report("ErrorReports"),
     PlayerSkywarsStats("PlayerSkywarsStats"),
     PlayerInfo("Players"),
+    RewardInfo("Reward"),
     LobbyInfo("Lobby");
     private final String value;
 
