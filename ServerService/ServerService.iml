@@ -4,7 +4,8 @@
     <facet type="minecraft" name="Minecraft">
       <configuration>
         <autoDetectTypes>
-          <platformType>WATERFALL</platformType>
+          <platformType>SPIGOT</platformType>
+          <platformType>BUNGEECORD</platformType>
         </autoDetectTypes>
       </configuration>
     </facet>
@@ -19,5 +20,6 @@
     <orderEntry type="library" name="BugeeAPI" level="project" />
     <orderEntry type="module" module-name="Models" />
     <orderEntry type="library" name="bson-4.1.1" level="project" />
+    <orderEntry type="library" name="BungeeCord" level="project" />
   </component>
 </module>

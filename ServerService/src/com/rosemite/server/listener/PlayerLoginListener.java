@@ -3,6 +3,7 @@ package com.rosemite.server.listener;
 import com.rosemite.models.reward.RewardInfo;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.models.service.player.PlayerInfo;
+import com.rosemite.services.friends.FriendsService;
 import com.rosemite.services.player.PlayerService;
 import com.rosemite.services.reward.RewardService;
 import com.rosemite.services.skywars.SkywarsService;
@@ -16,12 +17,14 @@ public class PlayerLoginListener implements Listener {
     private final PlayerService playerService;
     private final SkywarsService skywarsService;
     private final RewardService rewardService;
+    private final FriendsService friendsService;
     private final IService iService;
 
-    public PlayerLoginListener(PlayerService playerService, SkywarsService skywarsService, RewardService rewardService, IService iService) {
-        this.playerService = playerService;
-        this.skywarsService = skywarsService;
-        this.rewardService = rewardService;
+    public PlayerLoginListener(IService iService) {
+        this.playerService = iService.getPlayerService();
+        this.skywarsService = iService.getSkywarsService();
+        this.rewardService = iService.getRewardService();
+        this.friendsService = iService.getFriendsService();
         this.iService = iService;
     }
 
@@ -29,25 +32,33 @@ public class PlayerLoginListener implements Listener {
     @EventHandler
     public void onLogin(PostLoginEvent event) {
         ProxiedPlayer proxiedPlayer = event.getPlayer();
-        PlayerInfo playerInfo = playerService.getPlayerInfo(proxiedPlayer.getUniqueId().toString());
-        RewardInfo rewardInfo = rewardService.getPlayerInfo(proxiedPlayer.getUniqueId().toString());
+        String uuid = proxiedPlayer.getUniqueId().toString();
+        String name = proxiedPlayer.getDisplayName();
+
+        PlayerInfo playerInfo = playerService.getPlayerInfo(uuid);
+        RewardInfo rewardInfo = rewardService.getPlayerInfo(uuid);
 
         if (playerInfo == null) {
-            createNewPlayer(proxiedPlayer.getUniqueId().toString(), proxiedPlayer.getDisplayName());
+            createNewPlayer(uuid, name);
         }
 
         if(rewardInfo == null) {
-            createNewRewardInfo(proxiedPlayer.getUniqueId().toString(), proxiedPlayer.getDisplayName());
+            createNewRewardInfo(uuid, name);
         }
     }
 
     private PlayerInfo createNewPlayer(String uuid, String displayName) {
         // Add new Player to Database
-        PlayerInfo playerInfo =  playerService.createNewPlayer(uuid, displayName);
+        PlayerInfo playerInfo = playerService.createNewPlayer(uuid, displayName);
 
-        // Initialize Kits
+        // Initialize SkyWars Kits
         this.skywarsService.initializeKits(uuid);
+
+        // Initialize Soup Training Stats
         iService.getSoupTrainingService().initializePlayer(playerInfo);
+
+        // Initialize Relationships Document
+        this.friendsService.initializeRelation(uuid, displayName);
 
         return playerInfo;
     }

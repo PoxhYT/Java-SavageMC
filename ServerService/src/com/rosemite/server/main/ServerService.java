@@ -42,11 +42,8 @@ public class ServerService extends Plugin implements IService {
 
     private void registerEvents() {
         PluginManager pluginManager = ProxyServer.getInstance().getPluginManager();
-        pluginManager.registerListener(this, new PlayerLoginListener(
-                holder.getPlayerService(),
-                holder.getSkywarsService(),
-                holder.getRewardService(),
-                this));
+        pluginManager.registerListener(this, new PlayerLoginListener(this)
+        );
     }
 
     @Override
@@ -92,11 +89,6 @@ public class ServerService extends Plugin implements IService {
     @Override
     public PlayerService getPlayerService() {
         return holder.getPlayerService();
-    }
-
-    @Override
-    public RewardService getRewardService() {
-        return holder.getRewardService();
     }
 
     public static IService getService(IService service) {

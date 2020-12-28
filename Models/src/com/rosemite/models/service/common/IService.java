@@ -20,14 +20,4 @@ public interface IService {
     LobbyService getLobbyService();
     FriendsService getFriendsService();
     RewardService getRewardService();
-
-    // Note: This function should never be used... for now
-//    static IService getService(@NotNull SecureClass service) {
-//        return null;
-//    }
-
-    // Note: This might introduce a Stackoverflow
-//    public static IService getService(MainService service) {
-//        return MainService.getService(service);
-//    }
 }

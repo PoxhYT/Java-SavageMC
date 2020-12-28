@@ -25,6 +25,12 @@ public class FriendsService {
         this.db = db;
     }
 
+    public void initializeRelation(String uuid, String name) {
+        FriendsInfo info = FriendsInfo.initialize(uuid, name);
+
+        db.getCollection(Paths.Relationships.val).insertOne(new Document(info.toJson()));
+    }
+
     public ResponseCode makeFriendRequest(String requesterUUID, String friendUUID) {
         Pair<ResponseCode, FriendsInfo> res = verify(requesterUUID, friendUUID);
         if (res.getKey() != ResponseCode.Successful) {
@@ -101,6 +107,10 @@ public class FriendsService {
     }
 
     public void denyFriendRequest(String requesterUUID, String friendUUID) {
+        // Todo:...
+    }
+
+    public void removePlayerFromDenyFriendRequest(String requesterUUID, String friendUUID) {
         // Todo:...
     }
 
