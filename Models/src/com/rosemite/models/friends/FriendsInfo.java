@@ -21,7 +21,7 @@ public class FriendsInfo {
         this.deniedFriendRequests = deniedFriendRequests;
     }
 
-    private FriendsInfo(String playername, String uuid) {
+    private FriendsInfo(String uuid, String playername) {
         this.playername = playername;
         this.uuid = uuid;
         this.deniedFriendRequests = new ArrayList<>();

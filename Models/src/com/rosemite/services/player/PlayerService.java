@@ -24,9 +24,6 @@ public class PlayerService {
 
     public PlayerService(MongoDatabase db, IService mainService) {
         this.db = db;
-        db.listCollections().forEach(document -> {
-            Log.d("ALRIGHT!");
-        });
     }
 
     public PlayerInfo createNewPlayer(String uuid, String displayName) {
@@ -65,19 +62,12 @@ public class PlayerService {
         if (doc == null) {
             return null;
         }
-
         return new Gson().fromJson(doc.toJson(), PlayerInfo.class);
     }
 
     public PlayerSkywarsKits getPlayerSkywarsKits(String uuid) {
         Document doc = db.getCollection(Paths.PlayerSkywarsKits.toString()).find( eq("uuid", uuid)).first();
-        Log.d(doc);
-        Log.d(uuid);
         FindIterable<Document> doc1 = db.getCollection(Paths.PlayerSkywarsKits.toString()).find( eq("uuid", uuid));
-        doc1.forEach(document -> {
-            Log.d("HELLO JOW ARE YOU");
-                }
-        );
         return new PlayerSkywarsKits(new Gson().fromJson(doc.toJson(), Map.class));
     }
 

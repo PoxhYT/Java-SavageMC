@@ -2,6 +2,7 @@ package com.rosemite.services.coin;
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.rosemite.helper.Log;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.helper.Convert;
 import com.rosemite.models.service.common.Paths;
@@ -23,7 +24,6 @@ public class CoinService {
 
     public int getCoinAmount(String uuid) {
         Document doc = db.getCollection(Paths.PlayerInfo.toString()).find(eq("uuid", uuid)).first();
-
         return Convert.c(doc.get("coins"));
     }
 

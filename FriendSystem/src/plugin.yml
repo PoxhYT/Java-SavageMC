@@ -1,0 +1,7 @@
+name: FriendSystem
+version: 1.0
+author: PoxhYT
+main: de.poxh.friends.main.Main
+commands:
+   msg:
+   friend:

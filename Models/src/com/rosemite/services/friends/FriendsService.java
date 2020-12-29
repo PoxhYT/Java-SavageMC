@@ -3,6 +3,7 @@ package com.rosemite.services.friends;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.rosemite.helper.Log;
 import com.rosemite.models.friends.FriendsInfo;
 import com.rosemite.models.friends.ResponseCode;
 import com.rosemite.models.service.common.IService;
@@ -74,12 +75,11 @@ public class FriendsService {
 
         requesterInfo.friends.add(friendUUID);
         friendInfo.friends.add(requesterUUID);
-
         db.getCollection(Paths.Relationships.val).updateOne(
                 Filters.eq("uuid", requesterUUID),
                 combine(
                 set("openFriendRequests", requesterInfo.openFriendRequests),
-                        set("friend", requesterInfo.friends)
+                        set("friends", requesterInfo.friends)
                 )
         );
 
@@ -87,7 +87,7 @@ public class FriendsService {
             Filters.eq("uuid", friendUUID),
             combine(
            set("openFriendRequests", friendInfo.openFriendRequests),
-                    set("friend", friendInfo.friends)
+                    set("friends", friendInfo.friends)
             )
         );
     }
@@ -154,7 +154,6 @@ public class FriendsService {
         }
 
         Document doc = db.getCollection(Paths.Relationships.val).find(Filters.eq("uuid", friendUUID)).first();
-
         if (doc == null) {
             return new Pair<>(ResponseCode.DocumentUndefined, null);
         }
