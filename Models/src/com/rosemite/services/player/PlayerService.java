@@ -40,7 +40,8 @@ public class PlayerService {
             0,
             "none",
             "NOW",
-            Convert.date()
+            Convert.date(),
+            true
         );
 
         String json = new Gson().toJson(playerInfo, PlayerInfo.class);
@@ -90,12 +91,12 @@ public class PlayerService {
                 combine(set("endBanDate", date)));
     }
 
-    public void updatePlayerLastSeenDate(String uuid, Date date) {
-        Log.d("OKAY GOOD");
+    public void onLeave(String uuid) {
         db.getCollection(Paths.PlayerInfo.val).updateOne((Filters.eq("uuid", uuid)),
-            combine(set("lastSeen", Convert.date(date)))
+            combine(set("lastSeen", Convert.date()), set("isOnline", false))
         );
     }
+
 
     public void banPlayer(String uuid, boolean baned) {
         db.getCollection(Paths.PlayerInfo.toString()).updateOne((Filters.eq("uuid", uuid)),

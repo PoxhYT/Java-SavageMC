@@ -53,7 +53,7 @@ public class PlayerLoginListener implements Listener {
     @EventHandler
     public void onProxyLeave(final PlayerDisconnectEvent p) {
         Log.d("The Player: " + p.getPlayer().getName() + " left the Server.");
-        playerService.updatePlayerLastSeenDate(p.getPlayer().getUniqueId().toString(), new Date());
+        playerService.onLeave(p.getPlayer().getUniqueId().toString());
     }
 
     private PlayerInfo createNewPlayer(String uuid, String displayName) {
