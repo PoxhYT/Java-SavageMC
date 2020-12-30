@@ -3,6 +3,7 @@ package com.rosemite.services.friends;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.UpdateResult;
 import com.rosemite.helper.Log;
 import com.rosemite.models.friends.FriendsInfo;
 import com.rosemite.models.friends.ResponseCode;
@@ -20,7 +21,6 @@ public class FriendsService {
     private final MongoDatabase db;
     private final IService service;
 
-    // Todo: Do some null checks everywhere later.
     public FriendsService(MongoDatabase db, IService service) {
         this.service = service;
         this.db = db;
@@ -54,7 +54,7 @@ public class FriendsService {
         return ResponseCode.Successful;
     }
 
-    public void acceptFriendRequest(String requesterUUID, String friendUUID) {
+    public ResponseCode acceptFriendRequest(String requesterUUID, String friendUUID) {
         Document doc1 = db.getCollection(Paths.Relationships.val).find(
                 Filters.eq("uuid", requesterUUID)
         ).first();
@@ -63,18 +63,19 @@ public class FriendsService {
                 Filters.eq("uuid", friendUUID)
         ).first();
 
+        if (doc1 == null || doc2 == null) {
+            return ResponseCode.DocumentUndefined;
+        }
+
         FriendsInfo requesterInfo = getFriendInfo(doc1);
         FriendsInfo friendInfo = getFriendInfo(doc2);
 
-        try {
-            requesterInfo.openFriendRequests.remove(friendInfo.uuid);
-        } catch (Exception ignore) { }
-        try {
-            friendInfo.openFriendRequests.remove(requesterInfo.uuid);
-        } catch (Exception ignore) { }
+        requesterInfo.openFriendRequests.remove(friendInfo.uuid);
+        friendInfo.openFriendRequests.remove(requesterInfo.uuid);
 
         requesterInfo.friends.add(friendUUID);
         friendInfo.friends.add(requesterUUID);
+
         db.getCollection(Paths.Relationships.val).updateOne(
                 Filters.eq("uuid", requesterUUID),
                 combine(
@@ -90,28 +91,60 @@ public class FriendsService {
                     set("friends", friendInfo.friends)
             )
         );
+
+        return ResponseCode.Successful;
     }
 
-    public FriendsInfo getPlayerFriendsInfo(String uuid) {
-        // Todo: Do some null checks later.
+    public Pair<ResponseCode, FriendsInfo> getPlayerFriendsInfo(String uuid) {
         Document doc = db.getCollection(Paths.Relationships.val).find(
                 Filters.eq("uuid", uuid)
         ).first();
 
         if (doc == null) {
-            // Todo: Here...
-            return null;
+            return new Pair<>(ResponseCode.DocumentUndefined, null);
         }
 
-        return getFriendInfo(doc);
+        return new Pair<>(ResponseCode.Successful, getFriendInfo(doc));
     }
 
-    public void denyFriendRequest(String requesterUUID, String friendUUID) {
-        // Todo:...
+    public ResponseCode denyFriendRequest(String currentUUID, String deniedUUID) {
+        Document doc = db.getCollection(Paths.Relationships.val).find(
+            Filters.eq("uuid", currentUUID)
+        ).first();
+
+        if (doc == null) {
+            return ResponseCode.DocumentUndefined;
+        }
+
+        FriendsInfo info = getFriendInfo(doc);
+        info.deniedFriendRequests.add(deniedUUID);
+
+        db.getCollection(Paths.Relationships.val).updateOne(
+            Filters.eq("uuid", currentUUID),
+                combine(set("deniedFriendRequests", info.deniedFriendRequests))
+        );
+
+        return ResponseCode.Successful;
     }
 
-    public void removePlayerFromDenyFriendRequest(String requesterUUID, String friendUUID) {
-        // Todo:...
+    public ResponseCode removePlayerFromDenyFriendRequest(String currentUUID, String deniedUUID) {
+        Document doc = db.getCollection(Paths.Relationships.val).find(
+                Filters.eq("uuid", currentUUID)
+        ).first();
+
+        if (doc == null) {
+            return ResponseCode.DocumentUndefined;
+        }
+
+        FriendsInfo info = getFriendInfo(doc);
+        info.deniedFriendRequests.remove(deniedUUID);
+
+        db.getCollection(Paths.Relationships.val).updateOne(
+                Filters.eq("uuid", currentUUID),
+                combine(set("deniedFriendRequests", info.deniedFriendRequests))
+        );
+
+        return ResponseCode.Successful;
     }
 
     public ResponseCode removeFriend(String requesterUUID, String friendUUID) {
@@ -128,6 +161,10 @@ public class FriendsService {
         Document doc2 = db.getCollection(Paths.Relationships.val).find(
             Filters.eq("uuid", friendUUID)
         ).first();
+
+        if (doc1 == null || doc2 == null) {
+            return ResponseCode.DocumentUndefined;
+        }
 
         List<String> infoRequester = getFriendInfo(doc1).friends;
         List<String> infoFriend = getFriendInfo(doc2).friends;
