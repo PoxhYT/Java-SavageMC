@@ -1,5 +1,6 @@
 package com.rosemite.server.listener;
 
+import com.rosemite.helper.Log;
 import com.rosemite.models.reward.RewardInfo;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.models.service.player.PlayerInfo;
@@ -8,12 +9,14 @@ import com.rosemite.services.player.PlayerService;
 import com.rosemite.services.reward.RewardService;
 import com.rosemite.services.skywars.SkywarsService;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-public class PlayerLoginListener implements Listener {
+import java.util.Date;
 
+public class PlayerLoginListener implements Listener {
     private final PlayerService playerService;
     private final SkywarsService skywarsService;
     private final RewardService rewardService;
@@ -45,6 +48,12 @@ public class PlayerLoginListener implements Listener {
         if(rewardInfo == null) {
             createNewRewardInfo(uuid, name);
         }
+    }
+
+    @EventHandler
+    public void onProxyLeave(final PlayerDisconnectEvent p) {
+        Log.d("The Player: " + p.getPlayer().getName() + " left the Server.");
+        playerService.updatePlayerLastSeenDate(p.getPlayer().getUUID(), new Date());
     }
 
     private PlayerInfo createNewPlayer(String uuid, String displayName) {

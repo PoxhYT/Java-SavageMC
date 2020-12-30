@@ -14,6 +14,7 @@ import javafx.util.Pair;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
+import java.util.Date;
 import java.util.Map;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
@@ -27,7 +28,8 @@ public class PlayerService {
     }
 
     public PlayerInfo createNewPlayer(String uuid, String displayName) {
-        PlayerInfo playerInfo = new PlayerInfo(
+        PlayerInfo playerInfo;
+        playerInfo = new PlayerInfo(
             false,
             false,
             displayName,
@@ -37,7 +39,8 @@ public class PlayerService {
             5,
             0,
             "none",
-            "NOW"
+            "NOW",
+            Convert.date()
         );
 
         String json = new Gson().toJson(playerInfo, PlayerInfo.class);
@@ -85,6 +88,12 @@ public class PlayerService {
     public void setPlayerBan(String uuid, String date) {
         db.getCollection(Paths.PlayerInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
                 combine(set("endBanDate", date)));
+    }
+
+    public void updatePlayerLastSeenDate(String uuid, Date date) {
+        db.getCollection(Paths.PlayerInfo.val).updateOne((Filters.eq("uuid", uuid)),
+            combine(set("lastSeen", Convert.date(date)))
+        );
     }
 
     public void banPlayer(String uuid, boolean baned) {
