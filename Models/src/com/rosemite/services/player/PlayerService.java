@@ -91,6 +91,7 @@ public class PlayerService {
     }
 
     public void updatePlayerLastSeenDate(String uuid, Date date) {
+        Log.d("OKAY GOOD");
         db.getCollection(Paths.PlayerInfo.val).updateOne((Filters.eq("uuid", uuid)),
             combine(set("lastSeen", Convert.date(date)))
         );

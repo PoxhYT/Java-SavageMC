@@ -6,6 +6,7 @@ import com.rosemite.models.friends.ResponseCode;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.models.service.player.PlayerInfo;
 import de.poxh.friends.main.Main;
+import javafx.util.Pair;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -67,9 +68,12 @@ public class Command_friend extends Command {
 
                     } else if (args[0].equalsIgnoreCase("accept")) {
                         String uuid = target.getUuid();
-                        FriendsInfo friendsInfo = service.getFriendsService().getPlayerFriendsInfo(player.getUniqueId().toString());
+                        Pair<ResponseCode, FriendsInfo> friendsInfo = service.getFriendsService().getPlayerFriendsInfo(player.getUniqueId().toString());
+                        if(friendsInfo.getKey() != ResponseCode.Successful) {
+                            return;
+                        }
                         boolean hasRequested = false;
-                        if (friendsInfo.openFriendRequests.contains(uuid)) {
+                        if (friendsInfo.getValue().openFriendRequests.contains(uuid)) {
                             hasRequested = true;
                         }
                         Log.d(hasRequested);
