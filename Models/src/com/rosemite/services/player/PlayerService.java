@@ -91,6 +91,12 @@ public class PlayerService {
                 combine(set("endBanDate", date)));
     }
 
+    public void onJoin(String uuid) {
+        db.getCollection(Paths.PlayerInfo.val).updateOne((Filters.eq("uuid", uuid)),
+                combine(set("isOnline", true))
+        );
+    }
+
     public void onLeave(String uuid) {
         db.getCollection(Paths.PlayerInfo.val).updateOne((Filters.eq("uuid", uuid)),
             combine(set("lastSeen", Convert.date()), set("isOnline", false))

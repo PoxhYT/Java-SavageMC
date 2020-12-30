@@ -39,14 +39,12 @@ public class PlayerLoginListener implements Listener {
         String name = proxiedPlayer.getDisplayName();
 
         PlayerInfo playerInfo = playerService.getPlayerInfo(uuid);
-        RewardInfo rewardInfo = rewardService.getPlayerInfo(uuid);
 
         if (playerInfo == null) {
             createNewPlayer(uuid, name);
-        }
-
-        if(rewardInfo == null) {
             createNewRewardInfo(uuid, name);
+        } else {
+            playerService.onJoin(uuid);
         }
     }
 
