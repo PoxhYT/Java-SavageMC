@@ -100,6 +100,7 @@ public class PlayerTeleporter implements Listener {
     private static void teleport(Player player, ItemStack itemStack) {
         if(itemStack.getType() != Material.AIR && itemStack != null) {
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+
             if(skullMeta.getOwner() != null) {
                 if(Bukkit.getPlayer(skullMeta.getOwner()) != null) {
                     Player target = Bukkit.getPlayer(skullMeta.getOwner());

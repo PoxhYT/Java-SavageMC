@@ -6,6 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import com.rosemite.helper.Log;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.services.coin.CoinService;
+import com.rosemite.services.commands.Command_connect;
 import com.rosemite.services.friends.FriendsService;
 import com.rosemite.services.holder.ServiceHolder;
 import com.rosemite.services.config.Config;
@@ -20,6 +21,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import sun.applet.Main;
+import sun.plugin2.message.PluginMessage;
 
 public class MainService extends JavaPlugin implements IService {
     private ServiceHolder holder;
@@ -39,6 +42,11 @@ public class MainService extends JavaPlugin implements IService {
         holder = new ServiceHolder(db,this);
 
         Log.d("Loaded Services Successfully");
+
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new Test());
+
+        this.getCommand("connect").setExecutor(new Command_connect());
     }
 
     @Override
@@ -93,5 +101,10 @@ public class MainService extends JavaPlugin implements IService {
         }
 
         return service;
+    }
+
+    public static MainService getService() {
+        Plugin servicePlugin = Bukkit.getPluginManager().getPlugin("Services");
+        return (MainService) servicePlugin;
     }
 }

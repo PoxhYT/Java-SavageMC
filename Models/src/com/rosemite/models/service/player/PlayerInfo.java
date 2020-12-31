@@ -65,6 +65,10 @@ public class PlayerInfo {
         return lastSeen;
     }
 
+    public boolean getIsOnline() {
+        return isOnline;
+    }
+
     public String getEndBanDate() {
         return endBanDate;
     }
