@@ -1,5 +1,7 @@
 package com.rosemite.models.service.player;
 
+import java.util.List;
+
 public class PlayerInfo {
     private final boolean hasPremium;
     private final boolean isBanned;
@@ -13,8 +15,9 @@ public class PlayerInfo {
     private final String lastSeen;
     private final String receiveReward;
     private final boolean isOnline;
+    private final String serverName;
 
-    public PlayerInfo(boolean hasPremium, boolean isBanned, String playername, String latestSelectedSkywarsKit, String uuid, int coins, int tickets, int bans, String endBanDate, String receiveReward, String lastSeen, boolean isOnline) {
+    public PlayerInfo(boolean hasPremium, boolean isBanned, String playername, String latestSelectedSkywarsKit, String uuid, int coins, int tickets, int bans, String endBanDate, String receiveReward, String lastSeen, boolean isOnline, String serverName) {
         this.latestSelectedSkywarsKit = latestSelectedSkywarsKit;
         this.hasPremium = hasPremium;
         this.isBanned = isBanned;
@@ -27,7 +30,9 @@ public class PlayerInfo {
         this.receiveReward = receiveReward;
         this.lastSeen = lastSeen;
         this.isOnline = isOnline;
+        this.serverName = serverName;
     }
+
 
     public boolean hasPremium() {
         return hasPremium;
@@ -59,6 +64,10 @@ public class PlayerInfo {
 
     public int getBans() {
         return bans;
+    }
+
+    public String getServerName() {
+        return serverName;
     }
 
     public String getLastSeen() {

@@ -14,7 +14,9 @@ import javafx.util.Pair;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
@@ -41,7 +43,8 @@ public class PlayerService {
             "none",
             "NOW",
             Convert.date(),
-            true
+            true,
+            "Lobby-1"
         );
 
         String json = new Gson().toJson(playerInfo, PlayerInfo.class);
@@ -50,6 +53,24 @@ public class PlayerService {
         db.getCollection(Paths.PlayerInfo.toString()).insertOne(new Document(doc));
 
         return playerInfo;
+    }
+
+    public List<PlayerInfo> mapUUIDsToPlayerInfo(List<String> uuids) {
+        List<PlayerInfo> playerInfos = new ArrayList<>();
+        for (int i = 0; i < uuids.size(); i++) {
+            playerInfos.add(getPlayerInfo(uuids.get(i)));
+        }
+        return playerInfos;
+    }
+
+    public String getPlayerServer(String uuid) {
+        Document doc = db.getCollection(Paths.PlayerInfo.toString()).find(eq("uuid", uuid)).first();
+        return (String) doc.get("serverName");
+    }
+
+    public void setPlayerServer(String uuid, String serverName) {
+        db.getCollection(Paths.PlayerInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
+                combine(set("serverName", serverName)));
     }
 
     public PlayerInfo getPlayerInfo(String uuid) {

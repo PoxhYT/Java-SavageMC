@@ -95,6 +95,8 @@ public class FriendsService {
         return ResponseCode.Successful;
     }
 
+
+
     public Pair<ResponseCode, FriendsInfo> getPlayerFriendsInfo(String uuid) {
         Document doc = db.getCollection(Paths.Relationships.val).find(
                 Filters.eq("uuid", uuid)

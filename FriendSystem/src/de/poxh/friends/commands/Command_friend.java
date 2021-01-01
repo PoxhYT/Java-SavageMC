@@ -46,6 +46,8 @@ public class Command_friend extends Command {
                         accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend accept " + player.getName()));
                         accept.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder("§a§lAnnehmen")).create()));
 
+                        text.addExtra(accept);
+
                         ResponseCode code = service.getFriendsService().makeFriendRequest(player.getUniqueId().toString(), target.getUuid());
                         Log.d(code);
                         if (code != ResponseCode.Successful) {
@@ -64,7 +66,7 @@ public class Command_friend extends Command {
                         }
                         Main.sendMessage(Main.prefix + "Deine §aAnfrage §7an " + target.getPlayername() + " §7wurde §aerfolgreich §7versendet.", player);
                         ProxyServer.getInstance().getPlayer(target.getPlayername()).sendMessage(new TextComponent(Main.prefix + "Du hast eine §aAnfrage §7von " + player.getDisplayName() + " §7erhalten."));
-                        ProxyServer.getInstance().getPlayer(target.getPlayername()).sendMessage(text, accept);
+                        ProxyServer.getInstance().getPlayer(target.getPlayername()).sendMessage(text);
 
                     } else if (args[0].equalsIgnoreCase("accept")) {
                         String uuid = target.getUuid();
