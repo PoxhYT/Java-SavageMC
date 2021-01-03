@@ -10,6 +10,7 @@ import com.rosemite.services.commands.Command_connect;
 import com.rosemite.services.friends.FriendsService;
 import com.rosemite.services.holder.ServiceHolder;
 import com.rosemite.services.config.Config;
+import com.rosemite.services.listener.PlayerJoinListener;
 import com.rosemite.services.lobby.LobbyService;
 import com.rosemite.services.player.PlayerService;
 import com.rosemite.services.report.ReportService;
@@ -42,6 +43,8 @@ public class MainService extends JavaPlugin implements IService {
         holder = new ServiceHolder(db,this);
 
         Log.d("Loaded Services Successfully");
+
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
 
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new Test());

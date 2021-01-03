@@ -54,7 +54,7 @@ public class RewardListener implements Listener {
                 player.sendMessage(Main.prefix + "§7Du hast dein §eLotterieticket §7für heute abgeholt.");
                 player.closeInventory();
             } else if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§71 §eLotterieticket §c✘")) {
-               player.sendMessage(Main.prefix + "Du kannst dein §eLotterieticket §7in §e" + getDifferenceInHours(ticketDate, date, player) + " §7wieder abholen!");
+               player.sendMessage(Main.prefix + "Du kannst dein §eLotterieticket §7in §e" + getDifferenceInHours(date, ticketDate, player) + " §7wieder abholen!");
                player.closeInventory();
             }
 
@@ -153,6 +153,13 @@ public class RewardListener implements Listener {
             Main.service.getRewardService().setSavageTicket(player.getUniqueId().toString(), false);
         }
 
-        return elapsedHours + " §eStunden und " + elapsedMinutes + " Minuten";
+        if(elapsedHours == 0) {
+            if(elapsedMinutes < 1) {
+                return "weniger als 1 Minute";
+            }
+            return "§e" + elapsedMinutes + " Minuten";
+        } else {
+            return "§e" + elapsedHours + " §eStunden und " + elapsedMinutes + " Minuten";
+        }
     }
 }

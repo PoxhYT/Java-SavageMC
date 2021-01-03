@@ -196,8 +196,8 @@ public class ChestLottery implements Listener {
                         Random rm = new Random();
                         float chance = rm.nextFloat();
 
-                        float normal = 0.8F;
-                        float epic = 0.15F;
+                        float normal = 0.85F;
+                        float epic = 0.10F;
                         float legendary = 0.05F;
 
                         Integer gewinn;
@@ -205,7 +205,7 @@ public class ChestLottery implements Listener {
                         if ((chance >= normal) || chance >= epic) {
                             Bukkit.getConsoleSender().sendMessage("NORMAL");
                             Random r = new Random();
-                            Integer gewinnchance = r.nextInt(500 - 50 + 1) + 0;
+                            Integer gewinnchance = r.nextInt(200 - 30 + 1) + 0;
                             gewinn = gewinnchance;
                             if (opendticket.get(p) == 1) {
                                 endgewinn1.put(p, gewinn);
@@ -231,7 +231,7 @@ public class ChestLottery implements Listener {
                             endgewinn.put(p, endgewinn1.get(p) + endgewinn2.get(p) + endgewinn3.get(p) + endgewinn4.get(p) + endgewinn5.get(p));
                         } else if ((chance <= epic) || chance >= legendary) {
                             Random r = new Random();
-                            Integer gewinnchance = r.nextInt(7500 - 500 + 1) + 500;
+                            Integer gewinnchance = r.nextInt(2500 - 200 + 1) + 500;
                             gewinn = gewinnchance;
                             if (opendticket.get(p) == 1) {
                                 endgewinn1.put(p, gewinn);
@@ -258,7 +258,7 @@ public class ChestLottery implements Listener {
                             endgewinn.put(p, endgewinn1.get(p) + endgewinn2.get(p) + endgewinn3.get(p) + endgewinn4.get(p) + endgewinn5.get(p));
                         } else if ((chance <= legendary) || chance >= 0.05F) {
                             Random r = new Random();
-                            Integer gewinnchance = r.nextInt(15000 - 7500 + 1) + 7500;
+                            Integer gewinnchance = r.nextInt(15000 - 2500 + 1) + 7500;
                             gewinn = gewinnchance;
                             if (opendticket.get(p) == 1) {
                                 endgewinn1.put(p, gewinn);
@@ -455,7 +455,7 @@ public class ChestLottery implements Listener {
 
         inv.setItem(0, new ItemBuilderAPI(Material.PAPER).setDisplayName("§2Einlösen").setLore("", "§8Anzahl: §6" + getTickets(player), "§c§oZum öffnen klicken!").build());
         inv.setItem(2, new ItemBuilderAPI(Material.BOOK).setDisplayName("§cKaufen").setLore("", "§8Kosten: §61000", "§c§oZum kaufen klicken!").build());
-        inv.setItem(4, new ItemBuilderAPI(Material.ENDER_CHEST).setDisplayName("§7Raritäten").setLore("", "§8• §eNormal §8| §280%", "§8• §6§lEpic §8| §215%", "§8• §d§lLegendär §8| §25%","§8• §5§lJackpot §8| §2Kleiner als 5%", "").build());
+        inv.setItem(4, new ItemBuilderAPI(Material.ENDER_CHEST).setDisplayName("§7Raritäten").setLore("", "§8• §eNormal §8| §285%", "§8• §6§lEpic §8| §210%", "§8• §d§lLegendär §8| §25%","§8• §5§lJackpot §8| §2Kleiner als 5%", "").build());
 
         player.openInventory(inv);
     }

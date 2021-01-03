@@ -16,8 +16,11 @@ public class PlayerInfo {
     private final String receiveReward;
     private final boolean isOnline;
     private final String serverName;
+    private final boolean allowSendFriendRequests;
+    private final boolean allowSendPartyRequests;
 
-    public PlayerInfo(boolean hasPremium, boolean isBanned, String playername, String latestSelectedSkywarsKit, String uuid, int coins, int tickets, int bans, String endBanDate, String receiveReward, String lastSeen, boolean isOnline, String serverName) {
+    public PlayerInfo(boolean hasPremium, boolean isBanned, String playername, String latestSelectedSkywarsKit, String uuid, int coins, int tickets,
+        int bans, String endBanDate, String receiveReward, String lastSeen, boolean isOnline, String serverName, boolean allowSendFriendRequests, boolean allowSendPartyRequests) {
         this.latestSelectedSkywarsKit = latestSelectedSkywarsKit;
         this.hasPremium = hasPremium;
         this.isBanned = isBanned;
@@ -31,8 +34,17 @@ public class PlayerInfo {
         this.lastSeen = lastSeen;
         this.isOnline = isOnline;
         this.serverName = serverName;
+        this.allowSendFriendRequests = allowSendFriendRequests;
+        this.allowSendPartyRequests = allowSendPartyRequests;
     }
 
+    public boolean isAllowSendFriendRequests() {
+        return allowSendFriendRequests;
+    }
+
+    public boolean isAllowSendPartyRequests() {
+        return allowSendPartyRequests;
+    }
 
     public boolean hasPremium() {
         return hasPremium;

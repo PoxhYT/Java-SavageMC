@@ -1,6 +1,7 @@
 package de.poxh.lobby.manager;
 
 import com.rosemite.models.service.common.IService;
+import com.rosemite.models.service.player.PlayerInfo;
 import com.rosemite.services.main.MainService;
 import de.poxh.lobby.main.Main;
 import net.luckperms.api.LuckPerms;
@@ -12,6 +13,10 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SBManager {
 
@@ -26,6 +31,10 @@ public class SBManager {
         CachedMetaData metaData = Main.luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
         String prefix = metaData.getPrefix();
 
+        List<String> uuids = service.getFriendsService().getPlayerFriendsInfo(player.getUniqueId().toString()).getValue().friends;
+        List<PlayerInfo> playerInfos = Main.service.getPlayerService().mapUUIDsToPlayerInfo(uuids);
+        List<PlayerInfo> result = playerInfos.stream().filter(map -> map.getIsOnline()).collect(Collectors.toList());
+
         Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective obj = board.registerNewObjective("aaa", "bbb");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -38,7 +47,8 @@ public class SBManager {
         obj.getScore(updateTeam(board, "Coins", "§7" + "➥ §e" + getPlayerCoins(player), "", ChatColor.AQUA)).setScore(7);
         obj.getScore("§2 ").setScore(6);
         obj.getScore("§8• §fOnline Freunde").setScore(5);
-        obj.getScore("§7➥ §a0§7/§c0").setScore(4);
+        obj.getScore(updateTeam(board, "friends", "§7" + "§7➥ " + result.size() + "§7/" + service.getFriendsService().getPlayerFriendsInfo(player.getUniqueId().toString()).getValue().
+                friends.size(), "", ChatColor.GRAY)).setScore(4);
         obj.getScore("§3 ").setScore(3);
         obj.getScore("§8• §fSpieler").setScore(2);
         obj.getScore(updateTeam(board, "Players", "§7" + "➥ §a" + Bukkit.getOnlinePlayers().size() + "§7/§a" + Bukkit.getMaxPlayers(), "", ChatColor.BLACK)).setScore(1);
@@ -53,10 +63,17 @@ public class SBManager {
         CachedMetaData metaData = Main.luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
         String prefix = metaData.getPrefix();
         service = MainService.getService(service);
+
+        List<String> uuids = service.getFriendsService().getPlayerFriendsInfo(player.getUniqueId().toString()).getValue().friends;
+        List<PlayerInfo> playerInfos = Main.service.getPlayerService().mapUUIDsToPlayerInfo(uuids);
+        List<PlayerInfo> result = playerInfos.stream().filter(map -> map.getIsOnline()).collect(Collectors.toList());
+
         Scoreboard board = player.getScoreboard();
         Objective obj = board.getObjective("aaa");
         obj.getScore(updateTeam(board, "Rang", "§7" + "§8➥ " + prefix, "", ChatColor.BLUE)).setScore(10);
         obj.getScore(updateTeam(board, "Coins", "§7" + "➥ §e" + getPlayerCoins(player), "", ChatColor.AQUA)).setScore(7);
+        obj.getScore(updateTeam(board, "friends", "§7" + "§7➥ " + result.size() + "§7/" + service.getFriendsService().getPlayerFriendsInfo(player.getUniqueId().toString()).getValue().
+                friends.size(), "", ChatColor.GRAY)).setScore(4);
         obj.getScore(updateTeam(board, "Players", "§7" + "➥ §a" + Bukkit.getOnlinePlayers().size() + "§7/§c" + Bukkit.getMaxPlayers(), "", ChatColor.BLACK)).setScore(1);
     }
 

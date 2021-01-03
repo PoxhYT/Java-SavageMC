@@ -5,6 +5,7 @@ import com.rosemite.models.friends.FriendsInfo;
 import com.rosemite.models.friends.ResponseCode;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.models.service.player.PlayerInfo;
+import de.poxh.friends.listener.TextComponentBuilder;
 import de.poxh.friends.main.Main;
 import javafx.util.Pair;
 import net.md_5.bungee.api.ChatColor;
@@ -38,18 +39,31 @@ public class Command_friend extends Command {
             PlayerInfo target = service.getPlayerService().getPlayerInfoByName(args[1]);
                 if(target != null) {
                     if (args[0].equalsIgnoreCase("add")) {
-                        //Creating clickable
-                        TextComponent text = new TextComponent(Main.prefix + "§aAnnehmen §7mit:");
-                        text.setBold(true);
 
-                        TextComponent accept = new TextComponent("§e/friend accept " + player.getName());
-                        accept.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend accept " + player.getName()));
-                        accept.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder("§a§lAnnehmen")).create()));
+                        TextComponent component = new TextComponentBuilder("§7" + player.getName() + " §7hat dir eine Anfrage gesendet ").
+                                addHover("§7Entscheide dich").build();
+                        TextComponent component1 = new TextComponentBuilder("§7[§aAnnehmen§7] ").addHover("§aAnnehmen").
+                                addClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend accept " + player.getName()).build();
+                        TextComponent component2 = new TextComponentBuilder("§7[§cAblehnen§7] ").addHover("§cAblehnen").
+                                addClickEvent(ClickEvent.Action.RUN_COMMAND, "/gamemode 1 " + player.getName()).build();
+                        component.addExtra(component1);
+                        component.addExtra(component2);
 
-                        text.addExtra(accept);
+                        if(!service.getFriendsService().getPlayerFriendsInfo(target.getUuid()).getValue().openFriendRequests.contains(player.getUniqueId().toString())) {
+                            if (ProxyServer.getInstance().getPlayer(target.getUuid()) != null) {
+                                Main.sendMessage(Main.prefix + "Deine §aAnfrage §7an " + target.getPlayername() + " §7wurde §aerfolgreich §7versendet.", player);
+                                service.getFriendsService().makeFriendRequest(player.getUniqueId().toString(), target.getUuid());
+                                ProxyServer.getInstance().getPlayer(target.getPlayername()).sendMessage(new TextComponent(Main.prefix + "Du hast eine §aAnfrage §7von " + player.getDisplayName() + " §7erhalten."));
+                                ProxyServer.getInstance().getPlayer(target.getPlayername()).sendMessage(component);
+                            } else {
+                                Main.sendMessage(Main.prefix + "Deine §aAnfrage §7an " + target.getPlayername() + " §7wurde §aerfolgreich", player);
+                                service.getFriendsService().makeFriendRequest(player.getUniqueId().toString(), target.getUuid());
+                            }
+                        } else {
+                            Main.sendMessage(Main.prefix + "§7Du hast bereits " + target.getPlayername() + " §7eine §eAnfrage §7gesendet.", player);
+                        }
 
                         ResponseCode code = service.getFriendsService().makeFriendRequest(player.getUniqueId().toString(), target.getUuid());
-                        Log.d(code);
                         if (code != ResponseCode.Successful) {
                             switch (code) {
                                 case IsUnderDeniedFriends:
@@ -60,13 +74,12 @@ public class Command_friend extends Command {
                                 case RequestStillPending:
                                     break;
                                 case AddedYourSelf:
+                                    Main.sendMessage(Main.prefix + "§cDu kannst dir selber keine Anfragen schicken", player);
                                     break;
                             }
                             return;
                         }
-                        Main.sendMessage(Main.prefix + "Deine §aAnfrage §7an " + target.getPlayername() + " §7wurde §aerfolgreich §7versendet.", player);
-                        ProxyServer.getInstance().getPlayer(target.getPlayername()).sendMessage(new TextComponent(Main.prefix + "Du hast eine §aAnfrage §7von " + player.getDisplayName() + " §7erhalten."));
-                        ProxyServer.getInstance().getPlayer(target.getPlayername()).sendMessage(text);
+
 
                     } else if (args[0].equalsIgnoreCase("accept")) {
                         String uuid = target.getUuid();
@@ -78,7 +91,6 @@ public class Command_friend extends Command {
                         if (friendsInfo.getValue().openFriendRequests.contains(uuid)) {
                             hasRequested = true;
                         }
-                        Log.d(hasRequested);
                         if (hasRequested) {
                             service.getFriendsService().acceptFriendRequest(player.getUniqueId().toString(), uuid);
                             Main.sendMessage(Main.prefix + "Du bist nun mit " + target.getPlayername() + " §7befreundet.", player);

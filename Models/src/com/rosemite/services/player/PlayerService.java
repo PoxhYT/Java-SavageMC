@@ -44,7 +44,9 @@ public class PlayerService {
             "NOW",
             Convert.date(),
             true,
-            "Lobby-1"
+            "Lobby-1",
+            true,
+            true
         );
 
         String json = new Gson().toJson(playerInfo, PlayerInfo.class);
@@ -128,6 +130,16 @@ public class PlayerService {
     public void banPlayer(String uuid, boolean baned) {
         db.getCollection(Paths.PlayerInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
                 combine(set("isBanned", baned)));
+    }
+
+    public void setAllowSendFriendRequest(String uuid, boolean allowed) {
+        db.getCollection(Paths.PlayerInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
+                combine(set("allowSendFriendRequests", allowed)));
+    }
+
+    public void setAllowSendPartyRequest(String uuid, boolean allowed) {
+        db.getCollection(Paths.PlayerInfo.toString()).updateOne((Filters.eq("uuid", uuid)),
+                combine(set("allowSendPartyRequests", allowed)));
     }
 
     public int getBanAmount(String uuid) {

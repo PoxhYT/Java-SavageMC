@@ -17,7 +17,6 @@ public class Test implements PluginMessageListener {
 
         ByteArrayDataInput i = ByteStreams.newDataInput(message);
         String subChannel = i.readUTF();
-        Log.d(subChannel);
     }
 
     public void connect(Player p, String server) {

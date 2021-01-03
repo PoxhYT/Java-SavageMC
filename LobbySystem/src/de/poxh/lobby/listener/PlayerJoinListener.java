@@ -33,14 +33,12 @@ public class PlayerJoinListener implements Listener {
         CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
         String prefix = metaData.getPrefix();
 
-        String serverName = player.getServer().getServerName();
-        Main.service.getPlayerService().setPlayerServer(player.getUniqueId().toString(), serverName);
+        InventoryManager.setLobbyInventory(player);
 
         if(prefix == null) {
             event.setJoinMessage(Main.prefix + "§7Spieler" + " §7❘ " + player.getName() + " §7hat den Server betreten!");
         } else {
             event.setJoinMessage(Main.prefix + prefix + " §7❘ " + player.getName() + " §7hat den Server betreten!");
-            InventoryManager.setLobbyInventory(player);
             EffectsManager.createFireWork(player);
         }
     }
