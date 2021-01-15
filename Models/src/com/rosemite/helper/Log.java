@@ -1,9 +1,14 @@
 package com.rosemite.helper;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
 public class Log {
     public static void d(Object message) {
-        System.out.println("§6[Log]: §e" + message); }
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Log]: " + ChatColor.GRAY + message);
+    }
 
     public static void w(Object message) {
-        System.out.println("§c[Log] Warning: §e" + message); }
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Warning]: " + ChatColor.GRAY + message);
+    }
 }
