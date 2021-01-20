@@ -11,9 +11,7 @@ import com.rosemite.models.service.common.Paths;
 import com.rosemite.models.service.common.Severity;
 import com.rosemite.models.service.player.PlayerInfo;
 import com.rosemite.models.service.soup.SoupScoreModel;
-import com.rosemite.services.main.MainService;
 import org.bson.Document;
-import org.bukkit.entity.Player;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

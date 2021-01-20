@@ -3,16 +3,15 @@ package com.rosemite.services.friends;
 import com.google.gson.Gson;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.result.UpdateResult;
-import com.rosemite.helper.Log;
+import com.rosemite.models.common.Entry;
 import com.rosemite.models.friends.FriendsInfo;
 import com.rosemite.models.friends.ResponseCode;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.models.service.common.Paths;
-import javafx.util.Pair;
 import org.bson.Document;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
@@ -33,7 +32,7 @@ public class FriendsService {
     }
 
     public ResponseCode makeFriendRequest(String requesterUUID, String friendUUID) {
-        Pair<ResponseCode, FriendsInfo> res = verify(requesterUUID, friendUUID);
+        Map.Entry<ResponseCode, FriendsInfo> res = verify(requesterUUID, friendUUID);
         if (res.getKey() != ResponseCode.Successful) {
             return res.getKey();
         }
@@ -97,16 +96,16 @@ public class FriendsService {
 
 
 
-    public Pair<ResponseCode, FriendsInfo> getPlayerFriendsInfo(String uuid) {
+    public Map.Entry<ResponseCode, FriendsInfo> getPlayerFriendsInfo(String uuid) {
         Document doc = db.getCollection(Paths.Relationships.val).find(
                 Filters.eq("uuid", uuid)
         ).first();
 
         if (doc == null) {
-            return new Pair<>(ResponseCode.DocumentUndefined, null);
+            return new Entry<>(ResponseCode.DocumentUndefined, null);
         }
 
-        return new Pair<>(ResponseCode.Successful, getFriendInfo(doc));
+        return new Entry<>(ResponseCode.Successful, getFriendInfo(doc));
     }
 
     public ResponseCode denyFriendRequest(String currentUUID, String deniedUUID) {
@@ -150,7 +149,7 @@ public class FriendsService {
     }
 
     public ResponseCode removeFriend(String requesterUUID, String friendUUID) {
-        Pair<ResponseCode, Boolean> value = areFriends(requesterUUID, friendUUID);
+        Map.Entry<ResponseCode, Boolean> value = areFriends(requesterUUID, friendUUID);
 
         if (value.getKey() != ResponseCode.Successful || value.getValue() == null || !value.getValue()) {
             return value.getKey();
@@ -187,34 +186,34 @@ public class FriendsService {
         return ResponseCode.Successful;
     }
 
-    private Pair<ResponseCode, FriendsInfo> verify(String requesterUUID, String friendUUID) {
+    private Map.Entry<ResponseCode, FriendsInfo> verify(String requesterUUID, String friendUUID) {
         if (requesterUUID.equalsIgnoreCase(friendUUID)) {
-            return new Pair<>(ResponseCode.AddedYourSelf, null);
+            return new Entry<>(ResponseCode.AddedYourSelf, null);
         }
 
         Document doc = db.getCollection(Paths.Relationships.val).find(Filters.eq("uuid", friendUUID)).first();
         if (doc == null) {
-            return new Pair<>(ResponseCode.DocumentUndefined, null);
+            return new Entry<>(ResponseCode.DocumentUndefined, null);
         }
 
         FriendsInfo info = new Gson().fromJson(doc.toJson(), FriendsInfo.class);
 
-        return new Pair<>(ResponseCode.Successful, info);
+        return new Entry<>(ResponseCode.Successful, info);
     }
 
-    private Pair<ResponseCode, Boolean> areFriends(String requesterUUID, String friendUUID) {
-        Pair<ResponseCode, FriendsInfo> res = verify(requesterUUID, friendUUID);
+    private Map.Entry<ResponseCode, Boolean> areFriends(String requesterUUID, String friendUUID) {
+        Map.Entry<ResponseCode, FriendsInfo> res = verify(requesterUUID, friendUUID);
 
         if (res.getKey() != ResponseCode.Successful) {
-            return new Pair<>(res.getKey(), null);
+            return new Entry<>(res.getKey(), null);
         }
 
         FriendsInfo info = res.getValue();
         if (!info.friends.contains(requesterUUID)) {
-            return new Pair<>(ResponseCode.AreNotFriends, false);
+            return new Entry<>(ResponseCode.AreNotFriends, false);
         }
 
-        return new Pair<>(ResponseCode.Successful, true);
+        return new Entry<>(ResponseCode.Successful, true);
     }
 
     private ResponseCode verifyForAddFriend(FriendsInfo info, String requesterUUID) {

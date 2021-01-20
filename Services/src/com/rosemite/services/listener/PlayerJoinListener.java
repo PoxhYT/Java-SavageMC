@@ -16,6 +16,6 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        service.getPlayerService().setPlayerServer(player.getUniqueId().toString(), player.getServer().getServerName());
+        service.getPlayerService().setPlayerServer(player.getUniqueId().toString(), player.getServer().getName());
     }
 }

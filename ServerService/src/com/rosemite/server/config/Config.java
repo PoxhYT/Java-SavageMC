@@ -11,7 +11,7 @@ public class Config {
     public static String getConnectionString() {
         Map<String, String> json = null;
 
-        String path = System.getProperty("user.dir") + "\\plugins\\ServerServices\\Config.json";
+        String path = System.getProperty("user.dir") + "/plugins/ServerServices/Config.json";
 
         try {
             json = new Gson().fromJson(new String(Files.readAllBytes(Paths.get(path))), Map.class);

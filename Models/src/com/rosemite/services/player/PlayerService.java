@@ -4,18 +4,15 @@ import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.rosemite.models.common.Entry;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.helper.Convert;
-import com.rosemite.helper.Log;
 import com.rosemite.models.service.common.Paths;
 import com.rosemite.models.service.player.PlayerInfo;
 import com.rosemite.models.service.skywars.PlayerSkywarsKits;
-import javafx.util.Pair;
 import org.bson.Document;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import static com.mongodb.client.model.Filters.eq;
@@ -158,12 +155,12 @@ public class PlayerService {
         return total;
     }
 
-    public Pair<Integer, Boolean> removeBans(String uuid, int amount) {
+    public Map.Entry<Integer, Boolean> removeBans(String uuid, int amount) {
         int current = getBanAmount(uuid);
         int total = current - amount;
 
         if (total < 0) {
-            return new Pair<>(current, false);
+            return new Entry<>(current, false);
         }
 
         db.getCollection(Paths.PlayerInfo.toString()).updateOne(
@@ -171,6 +168,6 @@ public class PlayerService {
                 combine(set( "bans", total))
         );
 
-        return new Pair<>(total, true);
+        return new Entry<>(total, true);
     }
 }

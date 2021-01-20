@@ -5,6 +5,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.helper.Log;
 import com.rosemite.models.service.common.IService;
+import com.rosemite.services.citybuild.CityBuildService;
 import com.rosemite.services.coin.CoinService;
 import com.rosemite.services.commands.Command_connect;
 import com.rosemite.services.friends.FriendsService;
@@ -95,6 +96,11 @@ public class MainService extends JavaPlugin implements IService {
     @Override
     public RewardService getRewardService() {
         return holder.getRewardService();
+    }
+
+    @Override
+    public CityBuildService getCityBuildService() {
+        return holder.getCityBuildService();
     }
 
     public static IService getService(IService service) {

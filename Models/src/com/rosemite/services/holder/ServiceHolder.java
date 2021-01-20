@@ -2,6 +2,7 @@ package com.rosemite.services.holder;
 
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.models.service.common.IService;
+import com.rosemite.services.citybuild.CityBuildService;
 import com.rosemite.services.coin.CoinService;
 import com.rosemite.services.friends.FriendsService;
 import com.rosemite.services.lobby.LobbyService;
@@ -22,9 +23,11 @@ public class ServiceHolder {
     private final LobbyService lobbyService;
     private final FriendsService friendsService;
     private final RewardService rewardService;
+    private final CityBuildService cityBuildService;
 
     public ServiceHolder(MongoDatabase db, IService service) {
         this.soupTrainingService = new SoupTrainingService(db, service);
+        this.cityBuildService = new CityBuildService(db, service);
         this.skywarsService = new SkywarsService(db, service);
         this.playerService = new PlayerService(db, service);
         this.friendsService = new FriendsService(db, service);
@@ -69,5 +72,9 @@ public class ServiceHolder {
 
     public RewardService getRewardService() {
         return rewardService;
+    }
+
+    public CityBuildService getCityBuildService() {
+        return cityBuildService;
     }
 }

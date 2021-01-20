@@ -1,26 +1,19 @@
 package de.poxh.friends.commands;
 
-import com.rosemite.helper.Log;
 import com.rosemite.models.friends.FriendsInfo;
 import com.rosemite.models.friends.ResponseCode;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.models.service.player.PlayerInfo;
 import de.poxh.friends.listener.TextComponentBuilder;
 import de.poxh.friends.main.Main;
-import javafx.util.Pair;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Map;
 
 public class Command_friend extends Command {
 
@@ -83,7 +76,7 @@ public class Command_friend extends Command {
 
                     } else if (args[0].equalsIgnoreCase("accept")) {
                         String uuid = target.getUuid();
-                        Pair<ResponseCode, FriendsInfo> friendsInfo = service.getFriendsService().getPlayerFriendsInfo(player.getUniqueId().toString());
+                        Map.Entry<ResponseCode, FriendsInfo> friendsInfo = service.getFriendsService().getPlayerFriendsInfo(player.getUniqueId().toString());
                         if(friendsInfo.getKey() != ResponseCode.Successful) {
                             return;
                         }

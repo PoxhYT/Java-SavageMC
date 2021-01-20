@@ -1,0 +1,6 @@
+name: MLGRUSH
+version: 1.0
+author: PoxhYT
+main: de.poxh.mlgrush.main.Main
+commands:
+   createTeam:

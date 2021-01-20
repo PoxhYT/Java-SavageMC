@@ -7,6 +7,7 @@ import com.rosemite.helper.Log;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.server.config.Config;
 import com.rosemite.server.listener.PlayerLoginListener;
+import com.rosemite.services.citybuild.CityBuildService;
 import com.rosemite.services.coin.CoinService;
 import com.rosemite.services.friends.FriendsService;
 import com.rosemite.services.holder.ServiceHolder;
@@ -20,6 +21,7 @@ import com.rosemite.services.ticket.TicketService;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
+
 
 public class ServerService extends Plugin implements IService {
     private ServiceHolder holder;
@@ -89,6 +91,11 @@ public class ServerService extends Plugin implements IService {
     @Override
     public PlayerService getPlayerService() {
         return holder.getPlayerService();
+    }
+
+    @Override
+    public CityBuildService getCityBuildService() {
+        return holder.getCityBuildService();
     }
 
     public static IService getService(IService service) {

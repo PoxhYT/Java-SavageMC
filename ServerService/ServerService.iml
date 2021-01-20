@@ -4,6 +4,7 @@
     <facet type="minecraft" name="Minecraft">
       <configuration>
         <autoDetectTypes>
+          <platformType>SPIGOT</platformType>
           <platformType>WATERFALL</platformType>
         </autoDetectTypes>
       </configuration>
@@ -16,10 +17,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="BugeeAPI" level="project" />
-    <orderEntry type="module" module-name="Models" />
-    <orderEntry type="library" name="bson-4.1.1" level="project" />
-    <orderEntry type="library" name="BungeeCord" level="project" />
-    <orderEntry type="library" name="server1" level="project" />
+    <orderEntry type="module" module-name="Models" exported="" />
+    <orderEntry type="library" exported="" name="bson-4.1.1" level="project" />
+    <orderEntry type="library" exported="" name="Waterfall" level="project" />
   </component>
 </module>

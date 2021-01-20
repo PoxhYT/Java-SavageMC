@@ -1,6 +1,5 @@
 package com.rosemite.models.service.soup;
 
-import org.bukkit.entity.Player;
 
 public class SoupScoreModel {
     public final int NOOB;

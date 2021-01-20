@@ -3,7 +3,9 @@ package de.sw.main;
 import com.rosemite.models.service.skywars.PlayerSkywarsStats;
 import com.rosemite.models.skywars.KitManager;
 import de.gamestateapi.main.GameStateAPIManager;
-import de.sw.commands.*;
+import de.sw.commands.admins.*;
+import de.sw.commands.player.Command_forceStart;
+import de.sw.commands.player.Command_start;
 import de.sw.countdown.*;
 import de.sw.enums.Path;
 import de.sw.listener.*;
@@ -118,8 +120,8 @@ public class Main extends JavaPlugin {
         loadFiles();
         List<Map<String, Object>> result = maps.stream().filter(map -> !(boolean) map.get(Path.StillUnderDevelopment.toString())).collect(Collectors.toList());
         int mapsSize = random.nextInt(result.size());
-//        Map<String, Object> finalMap = result.get(0);
-        Map<String, Object> finalMap = result.get(mapsSize);
+        Map<String, Object> finalMap = result.get(1);
+//        Map<String, Object> finalMap = result.get(mapsSize);
 
         MapName1 = finalMap;
 
@@ -159,6 +161,7 @@ public class Main extends JavaPlugin {
         getCommand("setup").setExecutor(new Command_setup());
         getCommand("addItem").setExecutor(new Command_addItem());
         getCommand("enchantAll").setExecutor(new Command_enchantAll());
+        getCommand("forceStart").setExecutor(new Command_forceStart());
     }
 
 

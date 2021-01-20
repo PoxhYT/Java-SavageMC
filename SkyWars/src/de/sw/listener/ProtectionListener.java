@@ -77,13 +77,4 @@ public class ProtectionListener implements Listener {
             e.setCancelled(false);
         }
     }
-
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-        if(Main.protectionCountdown.isRunning()) {
-            event.setCancelled(true);
-        } else {
-            event.setCancelled(false);
-        }
-    }
 }

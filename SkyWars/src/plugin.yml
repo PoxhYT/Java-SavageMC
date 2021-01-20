@@ -11,3 +11,4 @@ commands:
     setup:
     addItem:
     enchantAll:
+    forceStart:

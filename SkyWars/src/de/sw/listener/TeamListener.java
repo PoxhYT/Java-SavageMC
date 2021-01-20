@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -96,6 +97,8 @@ public class TeamListener implements Listener {
         try {
             Player d = event.getEntity();
             Player k = d.getKiller();
+            EntityDamageEvent lastDamageEvent = d.getLastDamageCause();
+            EntityDamageEvent.DamageCause damageCause = lastDamageEvent.getCause();
 
             if (k != null) {
                 event.setDeathMessage(Main.prefix + d.getName() + " §7wurde von " + k.getName() + " §cgetötet§7!");
@@ -112,11 +115,29 @@ public class TeamListener implements Listener {
                 Main.stats.put(k.getUniqueId(), stats);
 
                 Main.instance.sbManager.setIngameBoard(k);
-            } else {
-                event.setDeathMessage(Main.prefix + d.getName() + " §7ist gestorben!");
-                Main.alivePlayers.remove(d);
             }
 
+            if(d.getHealth() <= 0) {
+                if(damageCause == EntityDamageEvent.DamageCause.FALL) {
+                    event.setDeathMessage(Main.prefix + d.getDisplayName() + " §7ist an §c§lFallschaden §7gestorben!");
+                }
+
+                if(damageCause == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
+                    event.setDeathMessage(Main.prefix + d.getDisplayName() + " §7ist an einer §c§lExplosion eines Creepers §7gestorben!");
+                }
+
+                if(damageCause == EntityDamageEvent.DamageCause.VOID) {
+                    event.setDeathMessage(Main.prefix + d.getDisplayName() + " §7ist ins §c§lLeere §7gefallen!");
+                }
+
+                if(damageCause == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
+                    event.setDeathMessage(Main.prefix + d.getDisplayName() + " §7ist an einer §c§lExplosion §7gestorben!");
+                }
+
+                if(damageCause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                    event.setDeathMessage(Main.prefix + d.getDisplayName() + " §7ist an ein §c§lMonster §7gestorben!");
+                }
+            }
 
             for (int i = 0; i < Main.instance.teams.length; i++) {
                 int finalI = i;

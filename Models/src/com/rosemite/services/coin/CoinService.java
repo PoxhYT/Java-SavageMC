@@ -3,11 +3,14 @@ package com.rosemite.services.coin;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.rosemite.helper.Log;
+import com.rosemite.models.common.Entry;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.helper.Convert;
 import com.rosemite.models.service.common.Paths;
 import org.bson.Document;
 import javafx.util.Pair;
+
+import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.combine;
@@ -39,12 +42,12 @@ public class CoinService {
         return total;
     }
 
-    public Pair<Integer, Boolean> removeCoins(String uuid, int amount) {
+    public Map.Entry<Integer, Boolean> removeCoins(String uuid, int amount) {
         int current = getCoinAmount(uuid);
         int total = current - amount;
 
         if (total < 0) {
-            return new Pair<>(current, false);
+            return new Entry<>(current, false);
         }
 
         db.getCollection(Paths.PlayerInfo.toString()).updateOne(
@@ -52,6 +55,6 @@ public class CoinService {
                 combine(set( "coins", total))
         );
 
-        return new Pair<>(total, true);
+        return new Entry<>(total, true);
     }
 }

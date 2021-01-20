@@ -26,14 +26,14 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     private void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.teleport(LocationAPI.getSpawn("Lobby"));
-        Main.sbManager.setLobbyBoard(player);
+//        player.teleport(LocationAPI.getSpawn("Lobby"));
+//        Main.sbManager.setLobbyBoard(player);
 
         //Getting players prefix
         CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
         String prefix = metaData.getPrefix();
 
-        InventoryManager.setLobbyInventory(player);
+//        InventoryManager.setLobbyInventory(player);
 
         if(prefix == null) {
             event.setJoinMessage(Main.prefix + "§7Spieler" + " §7❘ " + player.getName() + " §7hat den Server betreten!");

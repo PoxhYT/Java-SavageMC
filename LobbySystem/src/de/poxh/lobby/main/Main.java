@@ -3,6 +3,7 @@ package de.poxh.lobby.main;
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.services.main.MainService;
+import de.poxh.lobby.chestOpener.ChestOpener;
 import de.poxh.lobby.commands.Command_CreateEntity;
 import de.poxh.lobby.commands.Command_build;
 import de.poxh.lobby.commands.Command_setSpawn;
@@ -30,6 +31,7 @@ public class Main extends JavaPlugin {
 
     public static Main instance;
     public static LuckPerms luckPerms;
+    private static LuckPerms luckPermsAPI;
 
     //Service
     public static IService service = MainService.getService(null);
@@ -43,7 +45,7 @@ public class Main extends JavaPlugin {
     private void init() {
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         instance = this;
-        scheduleManager.scoreCD();
+//        scheduleManager.scoreCD();
         luckPerms = getServer().getServicesManager().load(LuckPerms.class);
         registerEvents();
         registerCommands();
@@ -76,9 +78,14 @@ public class Main extends JavaPlugin {
         getCommand("create").setExecutor(new Command_CreateEntity());
         getCommand("setspawn").setExecutor(new Command_setSpawn());
         getCommand("build").setExecutor(new Command_build());
+        getCommand("gamble").setExecutor(new ChestOpener());
     }
 
     public static Main getInstance() {
         return instance;
+    }
+
+    public static LuckPerms getLuckPermsAPI() {
+        return luckPermsAPI;
     }
 }

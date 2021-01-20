@@ -5,7 +5,7 @@
       <configuration>
         <autoDetectTypes>
           <platformType>SPIGOT</platformType>
-          <platformType>BUNGEECORD</platformType>
+          <platformType>WATERFALL</platformType>
         </autoDetectTypes>
       </configuration>
     </facet>
@@ -17,8 +17,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="server1" level="project" />
-    <orderEntry type="library" name="bson-4.1.1" level="project" />
-    <orderEntry type="module" module-name="Models" />
+    <orderEntry type="library" exported="" name="bson-4.1.1" level="project" />
+    <orderEntry type="module" module-name="Models" exported="" />
+    <orderEntry type="library" name="Maven: org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="BugeeAPI" level="project" />
   </component>
 </module>

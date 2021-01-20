@@ -8,6 +8,7 @@ public enum Paths {
     PlayerSkywarsStats("PlayerSkywarsStats"),
     PlayerInfo("Players"),
     RewardInfo("Reward"),
+    CityBuild("CityBuild"),
     Relationships("Relationships"),
     LobbyInfo("Lobby");
     public final String val;

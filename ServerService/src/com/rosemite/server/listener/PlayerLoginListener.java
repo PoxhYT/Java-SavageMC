@@ -1,9 +1,11 @@
 package com.rosemite.server.listener;
 
 import com.rosemite.helper.Log;
+import com.rosemite.models.citybuild.CityBuildInfos;
 import com.rosemite.models.reward.RewardInfo;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.models.service.player.PlayerInfo;
+import com.rosemite.services.citybuild.CityBuildService;
 import com.rosemite.services.friends.FriendsService;
 import com.rosemite.services.player.PlayerService;
 import com.rosemite.services.reward.RewardService;
@@ -21,6 +23,7 @@ public class PlayerLoginListener implements Listener {
     private final SkywarsService skywarsService;
     private final RewardService rewardService;
     private final FriendsService friendsService;
+    private final CityBuildService cityBuildService;
     private final IService iService;
 
     public PlayerLoginListener(IService iService) {
@@ -28,6 +31,7 @@ public class PlayerLoginListener implements Listener {
         this.skywarsService = iService.getSkywarsService();
         this.rewardService = iService.getRewardService();
         this.friendsService = iService.getFriendsService();
+        this.cityBuildService =  iService.getCityBuildService();
         this.iService = iService;
     }
 
@@ -36,7 +40,8 @@ public class PlayerLoginListener implements Listener {
     public void onLogin(PostLoginEvent event) {
         ProxiedPlayer proxiedPlayer = event.getPlayer();
         String uuid = proxiedPlayer.getUniqueId().toString();
-        String name = proxiedPlayer.getDisplayName();
+        String name = proxiedPlayer.getName();
+        String displayName = proxiedPlayer.getDisplayName();
 
         PlayerInfo playerInfo = playerService.getPlayerInfo(uuid);
 
@@ -45,6 +50,12 @@ public class PlayerLoginListener implements Listener {
             createNewRewardInfo(uuid, name);
         } else {
             playerService.onJoin(uuid);
+        }
+
+        CityBuildInfos cityBuildInfos = cityBuildService.getPlayerInfo(uuid);
+
+        if(cityBuildInfos == null) {
+            createUser(uuid, name, displayName);
         }
     }
 
@@ -68,6 +79,11 @@ public class PlayerLoginListener implements Listener {
         this.friendsService.initializeRelation(uuid, displayName);
 
         return playerInfo;
+    }
+
+    private CityBuildInfos createUser(String uuid, String playerName, String displayName) {
+        CityBuildInfos cityBuildInfos = cityBuildService.createNewPlayer(uuid, playerName, displayName);
+        return cityBuildInfos;
     }
 
     private RewardInfo createNewRewardInfo(String uuid, String displayName) {

@@ -1,5 +1,6 @@
 package de.sw.listener;
 
+import com.rosemite.models.common.Entry;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.models.skywars.KitManager;
 import com.rosemite.services.main.MainService;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.List;
+import java.util.Map;
 
 public class KitListener implements Listener {
     private IService service;
@@ -88,7 +90,7 @@ public class KitListener implements Listener {
                 if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§aKaufen")) {
                     String uuid = player.getUniqueId().toString();
                     int amount = kits[i].getKitPrice();
-                    Pair<Integer, Boolean> result = service.getCoinService().removeCoins(uuid, amount);
+                    Map.Entry<Integer, Boolean> result = service.getCoinService().removeCoins(uuid, amount);
 
                     if (result.getValue()) {
                         // Buy Kit

@@ -47,9 +47,6 @@ public class PlayerConnectionEvent implements Listener {
         int MAX_PLAYERS = yamlConfiguration.getInt(Path.MaxPlayers.toString());
         int MIN_PLAYERS = yamlConfiguration.getInt(Path.MaxPlayersInTeam.toString());
 
-//        CachedMetaData metaData = luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
-//        String prefix = metaData.getPrefix();
-
         player.getInventory().clear();
         Main.getInstance().getInventoryManager().setLobbyInventory(player);
 
