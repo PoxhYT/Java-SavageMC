@@ -1,0 +1,5 @@
+name: Souptraining
+version: ${project.version}
+main: de.poxh.souptraining.main.Main
+api-version: 1.16
+authors: [ PoxhYT, SolomonRosemite ]

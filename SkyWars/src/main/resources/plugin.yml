@@ -1,0 +1,5 @@
+name: SkyWars
+version: ${project.version}
+main: de.poxh.skywars.main.Main
+api-version: 1.16
+authors: [ PoxhYT, SolomonRosemite ]

@@ -1,7 +1,0 @@
-name: Main
-version: 1.0
-main: de.poxh.chestopener.main.Main
-api-version: 1.16
-authors: [PoxhYT]
-commands:
-   gamble:

@@ -1,0 +1,3 @@
+name: ServerServices
+version: ${project.version}
+main: com.rosemite.server.main.ServerServices

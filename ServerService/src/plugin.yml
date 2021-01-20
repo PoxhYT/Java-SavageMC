@@ -1,4 +1,0 @@
-name: ServerServices
-version: 1.0
-author: SolomonRosemite
-main: com.rosemite.server.main.ServerService

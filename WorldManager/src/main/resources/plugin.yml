@@ -1,0 +1,5 @@
+name: WorldManager
+version: ${project.version}
+main: de.poxh.worldmanager.main.Main
+api-version: 1.16
+authors: [ PoxhYT, SolomonRosemite ]
