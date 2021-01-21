@@ -1,12 +1,11 @@
-package de.soup.commands;
+package de.poxh.souptraining.commands;
 
-import de.soup.main.Main;
+import de.poxh.souptraining.main.Main;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.potion.PotionEffect;

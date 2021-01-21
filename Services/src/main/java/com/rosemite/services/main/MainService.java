@@ -1,7 +1,8 @@
 package com.rosemite.services.main;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.helper.Log;
 import com.rosemite.models.service.common.IService;
@@ -23,8 +24,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import sun.applet.Main;
-import sun.plugin2.message.PluginMessage;
 
 public class MainService extends JavaPlugin implements IService {
     private ServiceHolder holder;
@@ -37,7 +36,7 @@ public class MainService extends JavaPlugin implements IService {
         // Get Credentials & Connect to Mongodb
         String connectionString = config.getConfiguration("backend.url").toString();
 
-        MongoClient mongoClient = MongoClients.create(connectionString);
+        MongoClient mongoClient = new MongoClient(new MongoClientURI(connectionString));;
         MongoDatabase db = mongoClient.getDatabase("savagemc");
 
         // Initialize Services

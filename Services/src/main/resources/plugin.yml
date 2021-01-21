@@ -3,3 +3,5 @@ version: ${project.version}
 main: de.poxh.chestopener.main.Main
 api-version: 1.16
 authors: [PoxhYT, SolomonRosemite]
+commands:
+  connect:

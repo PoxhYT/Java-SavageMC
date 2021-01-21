@@ -1,6 +1,6 @@
-package de.soup.events;
+package de.poxh.souptraining.events;
 
-import de.soup.commands.SoupCommand;
+import de.poxh.souptraining.commands.SoupCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,4 +1,4 @@
-package de.soup.manager;
+package de.poxh.souptraining.manager;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

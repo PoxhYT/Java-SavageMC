@@ -1,4 +1,4 @@
-package de.soup.storage;
+package de.poxh.souptraining.storage;
 
 public enum SpeedType {
     NOOB, SLOW, NORMAL, HARD, LEGEND;

@@ -1,6 +1,5 @@
-package de.soup.events;
+package de.poxh.souptraining.events;
 
-import de.soup.manager.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,7 +29,7 @@ public class PlayerInteractListener implements Listener {
         Inventory inventory = Bukkit.createInventory(null, 27, "§eTeleporter");
 
         for (int i = 0; i < 27; i++)
-            inventory.setItem(i, new ItemManager(Material.STAINED_GLASS_PANE,(short)7).setDisplayName("§1 ").build());
+            inventory.setItem(i, new ItemManager(Material.GLASS_PANE,(short)7).setDisplayName("§1 ").build());
         inventory.setItem(13, new ItemManager(Material.NETHER_STAR).setDisplayName("§cSpawn").build());
         inventory.setItem(15, new ItemManager(Material.CHEST).setDisplayName("§eShop").build());
         inventory.setItem(11, new ItemManager(Material.PAPER).setDisplayName("§aSchwierigkeit").build());

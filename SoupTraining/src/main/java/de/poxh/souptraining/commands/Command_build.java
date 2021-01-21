@@ -1,6 +1,6 @@
-package de.soup.commands;
+package de.poxh.souptraining.commands;
 
-import de.soup.main.Main;
+import de.poxh.souptraining.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;

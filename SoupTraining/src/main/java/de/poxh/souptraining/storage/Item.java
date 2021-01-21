@@ -1,4 +1,4 @@
-package de.soup.storage;
+package de.poxh.souptraining.storage;
 
 import org.bukkit.inventory.ItemStack;
 

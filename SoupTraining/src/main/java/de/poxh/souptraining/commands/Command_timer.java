@@ -1,9 +1,7 @@
-package de.soup.commands;
+package de.poxh.souptraining.commands;
 
 import com.google.common.collect.Maps;
-import de.soup.main.Main;
-import de.soup.timer.Timer;
-import org.bukkit.Sound;
+import de.poxh.souptraining.main.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

@@ -1,10 +1,12 @@
-package de.soup.main;
+package de.poxh.souptraining.main;
 
 import com.rosemite.services.listener.PlayerJoinListener;
-import de.soup.commands.*;
-import de.soup.events.*;
-import de.soup.manager.SBManager;
-import de.soup.storage.Item;
+import de.poxh.souptraining.commands.*;
+import de.poxh.souptraining.events.PlayerInteractListener;
+import de.poxh.souptraining.events.PlayerMoveEvent;
+import de.poxh.souptraining.events.ProtectionListener;
+import de.poxh.souptraining.events.SoupListener;
+import de.poxh.souptraining.manager.SBManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;

@@ -1,7 +1,6 @@
-package de.soup.events;
+package de.poxh.souptraining.events;
 
-import de.soup.commands.SoupCommand;
-import de.soup.main.Main;
+import de.poxh.souptraining.commands.SoupCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;

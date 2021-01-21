@@ -1,7 +1,7 @@
 package com.rosemite.server.main;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import com.rosemite.helper.Log;
 import com.rosemite.models.service.common.IService;
@@ -23,7 +23,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
 
-public class ServerService extends Plugin implements IService {
+public class ServerServices extends Plugin implements IService {
     private ServiceHolder holder;
 
     @Override
@@ -31,7 +31,7 @@ public class ServerService extends Plugin implements IService {
         super.onEnable();
         String connectionString = Config.getConnectionString();
 
-        MongoClient mongoClient = MongoClients.create(connectionString);
+        MongoClient mongoClient = new MongoClient(new MongoClientURI(connectionString));;
         MongoDatabase db = mongoClient.getDatabase("savagemc");
 
         // Initialize Services
@@ -101,7 +101,7 @@ public class ServerService extends Plugin implements IService {
     public static IService getService(IService service) {
         Plugin servicePlugin = ProxyServer.getInstance().getPluginManager().getPlugin("ServerServices");
         if (servicePlugin != null && service == null) {
-            return (ServerService) servicePlugin;
+            return (ServerServices) servicePlugin;
         }
 
         return null;

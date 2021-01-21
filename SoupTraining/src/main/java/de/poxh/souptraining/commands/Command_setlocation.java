@@ -1,7 +1,6 @@
-package de.soup.commands;
+package de.poxh.souptraining.commands;
 
-import de.soup.main.Main;
-import de.soup.manager.LocationManager;
+import de.poxh.souptraining.main.Main;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -28,7 +27,7 @@ public class Command_setlocation implements CommandExecutor {
             component.addExtra(clickme);
             if(args.length == 0 && args.length != 1) {
                 player.spigot().sendMessage(component);
-                player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1, 1);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1, 1);
                 return true;
             }
             if (args[0].equalsIgnoreCase("lobby") || args[0].equalsIgnoreCase("shop") || args[0].equalsIgnoreCase("spawn")) {

@@ -1,7 +1,4 @@
-package de.soup.manager;
-
-//import de.magnus.coinsapi.util.CoinsAPI;
-import de.magnus.coinsapi.util.CoinsAPI;
+package de.poxh.souptraining.manager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;

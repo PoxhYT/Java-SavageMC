@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 public class Command_connect implements CommandExecutor {
-
     private Test pluginMessage = new Test();
 
     @Override

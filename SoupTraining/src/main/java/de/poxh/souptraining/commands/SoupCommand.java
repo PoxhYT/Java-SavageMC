@@ -1,13 +1,9 @@
-package de.soup.commands;
+package de.poxh.souptraining.commands;
 
 import com.google.common.collect.Maps;
 import com.rosemite.models.service.common.IService;
 import com.rosemite.services.main.MainService;
-import de.soup.events.SoupListener;
-import de.soup.main.Main;
-import de.soup.storage.Item;
-import de.soup.storage.SpeedType;
-import de.soup.timer.Timer;
+import de.poxh.souptraining.storage.SpeedType;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;

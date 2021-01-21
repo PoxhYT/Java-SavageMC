@@ -1,6 +1,6 @@
-package de.soup.manager;
+package de.poxh.souptraining.manager;
 
-import de.soup.main.Main;
+import de.poxh.souptraining.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

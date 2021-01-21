@@ -1,10 +1,8 @@
-package de.soup.events;
+package de.poxh.souptraining.events;
 
-//import de.magnus.coinsapi.util.CoinsAPI;
-import de.soup.main.Main;
-import de.soup.manager.ItemManager;
-import de.soup.manager.LocationManager;
-import de.soup.manager.SBManager;
+import de.poxh.souptraining.main.Main;
+import de.poxh.souptraining.manager.ItemManager;
+import de.poxh.souptraining.manager.SBManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,7 +35,7 @@ public class PlayerJoinListener implements Listener {
         getLobbyItems(player);
         SBManager.setLobbyBoard(player);
         Main.scoreCD();
-        player.teleport(LocationManager.getSpawn("Lobby"));
+        player.teleport(de.soup.manager.LocationManager.getSpawn("Lobby"));
         for (Player players : Bukkit.getOnlinePlayers())
             players.hidePlayer(players);
 
