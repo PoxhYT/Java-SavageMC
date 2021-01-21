@@ -2,4 +2,7 @@ name: Friendsystem
 version: ${project.version}
 main: de.poxh.friendsystem.main.Main
 api-version: 1.16
-authors: [ PoxhYT, SolomonRosemite ]
+authors: [PoxhYT, SolomonRosemite]
+commands:
+  msg:
+  friend:

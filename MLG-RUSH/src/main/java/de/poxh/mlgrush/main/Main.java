@@ -1,17 +1,26 @@
 package de.poxh.mlgrush.main;
 
+import de.poxh.mlgrush.command.Command_createTeam;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Main extends JavaPlugin {
+public class Main extends JavaPlugin {
+
+    public static String prefix = "§3§lMLG§7-§3§lRUSH §8❘ §7§l";
+
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
-
+        Bukkit.getConsoleSender().sendMessage(Main.prefix + "§a§lSuccessfully loaded!");
+        registerCommands();
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        super.onDisable();
+    }
+
+    private void registerCommands() {
+        getCommand("createTeam").setExecutor(new Command_createTeam());
     }
 }

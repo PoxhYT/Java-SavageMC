@@ -2,4 +2,14 @@ name: Citybuildsystem
 version: ${project.version}
 main: de.poxh.citybuildsystem.main.Main
 api-version: 1.16
-authors: [ PoxhYT, SolomonRosemite ]
+authors: [PoxhYT, SolomonRosemite]
+commands:
+  clan:
+  pos:
+  ah:
+  cb:
+  coins:
+  tpa:
+  world:
+  bp:
+  shop:
