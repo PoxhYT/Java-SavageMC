@@ -1,5 +1,4 @@
-name: PremiumKickAPI
+name: PremiumKick
 version: ${project.version}
-main: de.poxh.premiumkickapi.main.Main
+main: de.poxh.premiumkick.main.Main
 api-version: 1.16
-authors: [ PoxhYT, SolomonRosemite ]
